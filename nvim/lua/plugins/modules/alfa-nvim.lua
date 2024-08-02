@@ -1,0 +1,64 @@
+return {
+  "goolord/alpha-nvim",
+  enabled = true,
+  event = "VimEnter",
+  lazy = true,
+  opts = function()
+    local dashboard = require("alpha.themes.dashboard")
+
+    local logo = [[
+                                                     
+              ████ ██████           █████      ██
+             ███████████             █████ 
+             █████████ ███████████████████ ███   ███████████
+            █████████  ███    █████████████ █████ ██████████████
+           █████████ ██████████ █████████ █████ █████ ████ █████
+         ███████████ ███    ███ █████████ █████ █████ ████ █████
+        ██████  █████████████████████ ████ █████ █████ ████ ██████
+
+     ]]
+    dashboard.section.header.val = vim.split(logo, "\n")
+    dashboard.section.buttons.val = vim.tbl_map(function(btn)
+      local button = dashboard.button(btn[1], btn[2] .. " " .. btn[3], btn[4])
+      button.opts.hl = "AlphaButtons"
+      button.opts.hl_shortcut = "AlphaShortcut"
+      return button
+    end, {
+      { "p", "\u{e601}", "Projects", ":Telescope projects <CR>" },
+      { "f", "", "Find file", ":Telescope find_files <CR>" },
+      { "n", "", "New file", ":ene <BAR> startinsert <CR>" },
+      { "r", "", "Recent files", ":Telescope oldfiles <CR>" },
+      { "g", "", "Find text", ":Telescope live_grep <CR>" },
+      { "c", "", "Config", ":e ~/.config/nvim/init.lua <CR>" },
+      { "l", "󰒲", "Lazy", ":Lazy<CR>" },
+      { "q", "", "Quit", ":qa<CR>" }
+    })
+
+    local function set_highlight(group, color)
+      vim.api.nvim_set_hl(0, group, { foreground = color })
+    end
+
+    set_highlight("AlphaHeader", 0xB87333)
+    set_highlight("AlphaFooter", 0x808080)
+    set_highlight("AlphaShortcut", 0x808080)
+    set_highlight("AlphaButtons", 0x808080)
+
+    dashboard.section.header.opts.hl = "AlphaHeader"
+    dashboard.section.buttons.opts.hl = "AlphaButtons"
+    dashboard.section.footer.opts.hl = "AlphaFooter"
+    dashboard.opts.layout[1].val = 8
+    return dashboard
+  end,
+  config = function(_, dashboard)
+    require("alpha").setup(dashboard.opts)
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyVimStarted",
+      callback = function()
+        local stats = require("lazy").stats()
+        local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+        dashboard.section.footer.val = "Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+        pcall(vim.cmd.AlphaRedraw)
+      end,
+    })
+  end,
+}

@@ -1,0 +1,91 @@
+---
+- name: enforce dotfile configuration
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  vars:
+    dotfiles_repo: "git@github.com:dkooll/dotfiles.git"
+    dotfiles_local_path: "{{ lookup('env', 'HOME') }}/Documents/workspaces/dkooll/dotfiles"
+    goenv_repo: "https://github.com/syndbg/goenv.git"
+    goenv_local_path: "{{ lookup('env', 'HOME') }}/.goenv"
+
+  tasks:
+    - name: Install homebrew packages
+      ansible.builtin.homebrew:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+      loop:
+        - { name: starship, state: latest }
+        - { name: neovim, state: present }
+        - { name: node, state: present }
+        - { name: npm, state: present }
+        - { name: gnu-sed, state: present }
+        - { name: gcc, state: present }
+        - { name: cmake, state: present }
+        - { name: ripgrep, state: present }
+        - { name: fd, state: present }
+        - { name: mingw-w64, state: present }
+        - { name: zsh-autosuggestions, state: present }
+        - { name: zoxide, state: present }
+        - { name: tenv, state: present }
+        - { name: eza, state: present }
+        - { name: dive, state: present }
+        - { name: otree, state: present }
+        - { name: rust, state: present }
+        - { name: atuin, state: present }
+
+    - name: Install serpl using Cargo
+      ansible.builtin.command:
+        cmd: cargo install serpl
+
+    - name: Install homebrew cask packages
+      homebrew_cask:
+        name: alacritty
+        state: present
+
+    - name: Install neovim node.js dependencies
+      ansible.builtin.command:
+        cmd: npm install -g neovim
+
+    - name: Clone dotfiles repository
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_local_path }}"
+        update: yes
+        force: yes
+
+    - name: Check if nvim configuration directory exists
+      ansible.builtin.stat:
+        path: "{{ lookup('env', 'HOME') }}/.config/nvim"
+      register: nvim_config_dir
+
+    - name: Create nvim configuration directory if it does not exist
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }}/.config/nvim"
+        state: directory
+      when: not nvim_config_dir.stat.exists
+
+    - name: Symlink config files
+      ansible.builtin.file:
+        src: "{{ dotfiles_local_path }}/{{ item.src }}"
+        dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
+        state: link
+      loop:
+        - { src: 'starship.toml', dest: '.config/starship.toml' }
+        - { src: '.zshrc', dest: '.zshrc' }
+        - { src: '.tmux.conf', dest: '.tmux.conf' }
+        - { src: 'nvim', dest: '.config/nvim' }
+        - { src: '.alacritty.toml', dest: '.alacritty.toml' }
+
+    - name: Clone goenv repository
+      ansible.builtin.git:
+        repo: "{{ goenv_repo }}"
+        dest: "{{ goenv_local_path }}"
+        version: master
+        force: yes
+
+    - name: Set permissions for goenv
+      ansible.builtin.file:
+        path: "{{ goenv_local_path }}"
+        mode: 'u+x'
+        recurse: yes
