@@ -70,6 +70,7 @@
         src: "{{ dotfiles_local_path }}/{{ item.src }}"
         dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
         state: link
+        force: yes
       loop:
         - { src: 'starship.toml', dest: '.config/starship.toml' }
         - { src: '.zshrc', dest: '.zshrc' }
