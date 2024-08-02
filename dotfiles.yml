@@ -75,15 +75,13 @@
 
         - name: Remove existing directory if it's not a symlink
           ansible.builtin.file:
-            path: "{{ lookup('env', 'HOME') }}/{{ item.item.dest }}"
+            path: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
             state: absent
           when:
-            - dest_stat.results[index].stat.exists
-            - dest_stat.results[index].stat.isdir
-            - not dest_stat.results[index].stat.islnk
+            - dest_stat.results[ansible.loop.index0].stat.exists
+            - dest_stat.results[ansible.loop.index0].stat.isdir
+            - not dest_stat.results[ansible.loop.index0].stat.islnk
           loop: "{{ symlink_files }}"
-          loop_control:
-            index_var: index
 
         - name: Create symlinks
           ansible.builtin.file:
