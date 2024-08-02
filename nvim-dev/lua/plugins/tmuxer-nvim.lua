@@ -3,8 +3,8 @@ return {
   dependencies = { "nvim-telescope/telescope.nvim" },
   cmd = { "WorkspaceOpen", "TmuxSessions" },
   keys = {
-    { "<leader>mc", "<cmd>WorkspaceOpen<cr>", desc = "Create tmux session" },
-    { "<leader>ms", "<cmd>TmuxSessions<cr>",  desc = "Switch tmux session" },
+    { "tc", "<cmd>WorkspaceOpen<cr>", desc = "Create tmux session" },
+    { "ts", "<cmd>TmuxSessions<cr>",  desc = "Switch tmux session" },
   },
   opts = {
     workspaces = {
