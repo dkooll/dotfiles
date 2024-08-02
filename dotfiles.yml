@@ -54,48 +54,31 @@
         update: yes
         force: yes
 
-    - name: Check if nvim configuration directory exists
+    - name: Check if nvim and nvim-dev configuration directories exist
       ansible.builtin.stat:
-        path: "{{ lookup('env', 'HOME') }}/.config/nvim"
-      register: nvim_config_dir
+        path: "{{ lookup('env', 'HOME') }}/.config/{{ item }}"
+      register: nvim_config_dirs
+      loop:
+        - nvim
+        - nvim-dev
 
-    - name: Create nvim configuration directory if it does not exist
+    - name: Create nvim and nvim-dev configuration directories if they do not exist
       ansible.builtin.file:
-        path: "{{ lookup('env', 'HOME') }}/.config/nvim"
+        path: "{{ lookup('env', 'HOME') }}/.config/{{ item.item }}"
         state: directory
-      when: not nvim_config_dir.stat.exists
+      when: not item.stat.exists
+      loop: "{{ nvim_config_dirs.results }}"
 
     - name: Symlink config files
-      block:
-        - name: Check if destination exists and is a directory
-          ansible.builtin.stat:
-            path: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
-          register: dest_stat
-          loop: "{{ symlink_files }}"
-
-        - name: Remove existing directory if it's not a symlink
-          ansible.builtin.file:
-            path: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
-            state: absent
-          when:
-            - dest_stat.results[ansible.loop.index0].stat.exists
-            - dest_stat.results[ansible.loop.index0].stat.isdir
-            - not dest_stat.results[ansible.loop.index0].stat.islnk
-          loop: "{{ symlink_files }}"
-
-        - name: Create symlinks
-          ansible.builtin.file:
-            src: "{{ dotfiles_local_path }}/{{ item.src }}"
-            dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
-            state: link
-            force: yes
-          loop: "{{ symlink_files }}"
-
-      vars:
-        symlink_files:
-          - { src: 'starship.toml', dest: '.config/starship.toml' }
-          - { src: '.zshrc', dest: '.zshrc' }
-          - { src: '.tmux.conf', dest: '.tmux.conf' }
-          - { src: 'nvim', dest: '.config/nvim' }
-          - { src: 'nvim-dev', dest: '.config/nvim-dev' }
-          - { src: '.alacritty.toml', dest: '.alacritty.toml' }
+      ansible.builtin.file:
+        src: "{{ dotfiles_local_path }}/{{ item.src }}"
+        dest: "{{ lookup('env', 'HOME') }}/{{ item.dest }}"
+        state: link
+        force: yes
+      loop:
+        - { src: 'starship.toml', dest: '.config/starship.toml' }
+        - { src: '.zshrc', dest: '.zshrc' }
+        - { src: '.tmux.conf', dest: '.tmux.conf' }
+        - { src: 'nvim', dest: '.config/nvim' }
+        - { src: 'nvim-dev', dest: '.config/nvim-dev' }
+        - { src: '.alacritty.toml', dest: '.alacritty.toml' }
