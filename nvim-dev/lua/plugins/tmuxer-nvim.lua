@@ -1,10 +1,11 @@
+-- .TODO: change commands to TmuxCreate and TmuxSwitch
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
   cmd = { "WorkspaceOpen", "TmuxSessions" },
   keys = {
-    { "tc", "<cmd>WorkspaceOpen<cr>", desc = "Create tmux session" },
-    { "ts", "<cmd>TmuxSessions<cr>",  desc = "Switch tmux session" },
+    { "tc", "<cmd>WorkspaceOpen<cr>", desc = "create tmux session" },
+    { "ts", "<cmd>TmuxSessions<cr>",  desc = "switch tmux session" },
   },
   opts = {
     workspaces = {
