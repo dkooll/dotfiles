@@ -75,6 +75,7 @@
         - { src: '.zshrc', dest: '.zshrc' }
         - { src: '.tmux.conf', dest: '.tmux.conf' }
         - { src: 'nvim', dest: '.config/nvim' }
+        - { src: 'nvim-dev', dest: '.config/nvim-dev' }
         - { src: '.alacritty.toml', dest: '.alacritty.toml' }
 
     - name: Clone goenv repository
