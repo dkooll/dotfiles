@@ -1,5 +1,8 @@
 # Path and environment
-export PATH="$HOME/.cargo/bin:/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/go@1.20/bin:$HOME/.cargo/bin:/opt/homebrew/bin:$PATH"
+export GOROOT="/opt/homebrew/opt/go@1.20/libexec"
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
 export HOMEBREW_NO_EMOJI=1
 export GREP_OPTIONS="--color=never"
