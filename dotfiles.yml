@@ -6,9 +6,6 @@
   vars:
     dotfiles_repo: "git@github.com:dkooll/dotfiles.git"
     dotfiles_local_path: "{{ lookup('env', 'HOME') }}/Documents/workspaces/dkooll/dotfiles"
-    goenv_repo: "https://github.com/syndbg/goenv.git"
-    goenv_local_path: "{{ lookup('env', 'HOME') }}/.goenv"
-
   tasks:
     - name: Install homebrew packages
       ansible.builtin.homebrew:
@@ -33,6 +30,7 @@
         - { name: otree, state: present }
         - { name: rust, state: present }
         - { name: atuin, state: present }
+        - { name: tmux, state: present }
 
     - name: Install serpl using Cargo
       ansible.builtin.command:
@@ -68,6 +66,19 @@
         state: directory
       when: not item.stat.exists
       loop: "{{ nvim_config_dirs.results }}"
+
+    - name: Ensure .tmux/plugins directory exists
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'HOME') }}/.tmux/plugins"
+        state: directory
+        mode: '0755'
+
+    - name: Clone TPM (Tmux Plugin Manager)
+      ansible.builtin.git:
+        repo: "https://github.com/tmux-plugins/tpm"
+        dest: "{{ lookup('env', 'HOME') }}/.tmux/plugins/tpm"
+        version: master
+        update: yes
 
     - name: Symlink config files
       ansible.builtin.file:
