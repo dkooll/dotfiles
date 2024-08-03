@@ -1,8 +1,4 @@
 # path and environment settings
-export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
-export PATH="$GOENV_ROOT/shims:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
 export PATH="/opt/homebrew/bin:$PATH"
