@@ -53,6 +53,7 @@ return {
       breadcrumb = "»",
       separator = "➜",
       group = "+",
+      mappings = false,
     },
     popup_mappings = {
       scroll_down = "<c-d>",
