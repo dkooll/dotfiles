@@ -24,7 +24,6 @@ return {
       button.opts.hl_shortcut = "AlphaShortcut"
       return button
     end, {
-      { "p", "\u{e601}", "Projects", ":Telescope projects <CR>" },
       { "f", "", "Find file", ":Telescope find_files <CR>" },
       { "n", "", "New file", ":ene <BAR> startinsert <CR>" },
       { "r", "", "Recent files", ":Telescope oldfiles <CR>" },
@@ -54,9 +53,13 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "LazyVimStarted",
       callback = function()
-        local stats = require("lazy").stats()
-        local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-        dashboard.section.footer.val = "Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms"
+        local lazy_stats = require("lazy").stats()
+        local ms = (math.floor(lazy_stats.startuptime * 100 + 0.5) / 100)
+        dashboard.section.footer.val = string.format(
+          "Neovim loaded %d plugins in %.2fms",
+          lazy_stats.count,
+          ms
+        )
         pcall(vim.cmd.AlphaRedraw)
       end,
     })

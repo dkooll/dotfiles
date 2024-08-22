@@ -1,81 +1,75 @@
 local api = vim.api
+local opt = vim.opt
 
--- don't auto comment new line
-api.nvim_create_autocmd("BufEnter", { command = [[set formatoptions-=cro]] })
+-- Helper function for creating autocommands
+local function autocmd(event, pattern, callback, group)
+  api.nvim_create_autocmd(event, {
+    pattern = pattern,
+    callback = callback,
+    group = group
+  })
+end
 
---- Remove all trailing whitespace on save
+-- Don't auto comment new lines
+opt.formatoptions:remove({ 'c', 'r', 'o' })
+
+-- Remove all trailing whitespace on save
 local TrimWhiteSpaceGrp = api.nvim_create_augroup("TrimWhiteSpaceGrp", { clear = true })
-api.nvim_create_autocmd("BufWritePre", {
-  command = [[:%s/\s\+$//e]],
-  group = TrimWhiteSpaceGrp,
-})
+autocmd("BufWritePre", "*", function()
+  local save_cursor = api.nvim_win_get_cursor(0)
+  vim.cmd([[%s/\s\+$//e]])
+  api.nvim_win_set_cursor(0, save_cursor)
+end, TrimWhiteSpaceGrp)
 
--- wrap words "softly" (no carriage return) in mail buffer
-api.nvim_create_autocmd("Filetype", {
-  pattern = "mail",
-  callback = function()
-    vim.opt.textwidth = 0
-    vim.opt.wrapmargin = 0
-    vim.opt.wrap = true
-    vim.opt.linebreak = true
-    vim.opt.columns = 80
-    vim.opt.colorcolumn = "80"
-  end,
-})
+-- Wrap words "softly" (no carriage return) in mail buffer
+autocmd("FileType", "mail", function()
+  opt.textwidth = 0
+  opt.wrapmargin = 0
+  opt.wrap = true
+  opt.linebreak = true
+  opt.columns = 80
+  opt.colorcolumn = "80"
+end)
 
 -- Highlight on yank
-vim.api.nvim_command('hi YankHighlight guifg=#9E8069 guibg=NONE')
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    vim.highlight.on_yank({ higroup = 'YankHighlight', timeout = 30 })
-  end,
-})
+api.nvim_set_hl(0, 'YankHighlight', { fg = '#9E8069', bg = 'NONE' })
+autocmd("TextYankPost", "*", function()
+  vim.highlight.on_yank({ higroup = 'YankHighlight', timeout = 300 })
+end)
 
--- go to last loc when opening a buffer
-api.nvim_create_autocmd("BufReadPost", {
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    local lcount = vim.api.nvim_buf_line_count(0)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-})
+-- Go to last location when opening a buffer
+autocmd("BufReadPost", "*", function()
+  local mark = api.nvim_buf_get_mark(0, '"')
+  local lcount = api.nvim_buf_line_count(0)
+  if mark[1] > 0 and mark[1] <= lcount then
+    pcall(api.nvim_win_set_cursor, 0, mark)
+  end
+end)
 
-api.nvim_create_autocmd("FileType", { pattern = "man", command = [[nnoremap <buffer><silent> q :quit<CR>]] })
+-- Set 'q' to quit in man pages
+autocmd("FileType", "man", function()
+  vim.keymap.set('n', 'q', ':quit<CR>', { buffer = true, silent = true })
+end)
 
- --Apply the cursor line highlight setting after any color scheme is loaded
+-- Apply the cursor line highlight setting after any color scheme is loaded
 local myGroup = api.nvim_create_augroup("MyColorSchemeFixes", { clear = true })
-api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    vim.cmd("highlight CursorLine guibg=NONE")
-  end,
-  group = myGroup,
-})
+autocmd("ColorScheme", "*", function()
+  api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
+end, myGroup)
 
 -- Enable spell checking for certain file types
-api.nvim_create_autocmd(
-  { "BufRead", "BufNewFile" },
-  -- { pattern = { "*.txt", "*.md", "*.tex" }, command = [[setlocal spell<cr> setlocal spelllang=en,de<cr>]] }
-  {
-    pattern = { "*.txt", "*.md", "*.tex" },
-    callback = function()
-      vim.opt.spell = false
-      vim.opt.spelllang = "en,de"
-    end,
-  }
-)
+autocmd({ "BufRead", "BufNewFile" }, { "*.txt", "*.md", "*.tex" }, function()
+  opt.spell = false
+  opt.spelllang = "en,de"
+end)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    local opts = { buffer = ev.buf }
-    vim.keymap.set('n', '<leader>v', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", opts)
-  end,
-})
+autocmd('LspAttach', '*', function(ev)
+  vim.keymap.set('n', '<leader>v', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", { buffer = ev.buf })
+end)
 
-vim.api.nvim_exec([[
-  au BufRead,BufNewFile *.tf,*.tfvars,*.tfstate set filetype=terraform
-]], false)
+-- Set filetype for Terraform files
+autocmd({ "BufRead", "BufNewFile" }, { "*.tf", "*.tfvars", "*.tfstate" }, function()
+  vim.bo.filetype = "terraform"
+end)

@@ -1,6 +1,3 @@
---vim.g.mapleader = ' '
---vim.g.maplocalleader = ' '
-
 local opts = { noremap = true, silent = true }
 
 local navigation_keys = {
@@ -32,8 +29,10 @@ map("v", "p", '"_dp')
 map("v", "P", '"_dP')
 
 -- Fast saving
-vim.keymap.set('n', '<Leader>w', ':write!<CR>')
-vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
+--vim.keymap.set('n', '<Leader>w', ':write!<CR>')
+--vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
+vim.keymap.set('n', 'w', ':write!<CR>')
+vim.keymap.set('n', 'q', ':q!<CR>', { silent = true })
 
 -- Exit on jj and jk
 vim.keymap.set('i', 'jj', '<ESC>')

@@ -6,4 +6,3 @@ return {
   go = "Goto type definition",
   gr = "Goto references",
 }
-

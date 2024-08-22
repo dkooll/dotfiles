@@ -112,7 +112,6 @@ return {
     Package = "",
     Pencil = "",
     Plus = "",
-    Project = "",
     Search = "",
     SignIn = "",
     SignOut = "",
