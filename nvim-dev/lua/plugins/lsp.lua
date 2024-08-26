@@ -25,7 +25,6 @@ return {
         "terraformls",
         "rust_analyzer",
         "gopls",
-        "pyright",
         "lua_ls",
       },
       automatic_installation = true,
