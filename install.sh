@@ -9,20 +9,23 @@ sudo apt-get install -y \
     ripgrep \
     fd-find \
     curl \
-    tmux \
-    git
+    git \
+    starship \
+    zoxide \
+    fzf \
+    eza
 
-source $HOME/.cargo/env
-cargo install starship zoxide eza
+#source $HOME/.cargo/env
+#cargo install starship zoxide eza
 
 # Clone dotfiles repository
 git clone https://github.com/dkooll/dotfiles.git ~/testdotfiles
 
 # Create necessary directories
-mkdir -p ~/.config/nvim ~/.config/nvim-dev ~/.tmux/plugins
+#mkdir -p ~/.config/nvim ~/.config/nvim-dev ~/.tmux/plugins
 
 # Clone TPM (Tmux Plugin Manager)
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+#git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Symlink config files
 ln -sf ~/testdotfiles/starship.toml ~/.config/starship.toml
