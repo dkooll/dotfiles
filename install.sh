@@ -12,11 +12,7 @@ sudo apt-get install -y \
     tmux \
     git
 
-# Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
-
-# Install Rust-based tools
 cargo install starship zoxide eza
 
 # Clone dotfiles repository
