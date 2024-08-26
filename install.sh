@@ -9,14 +9,10 @@ sudo apt-get install -y \
     ripgrep \
     fd-find \
     curl \
-    git \
-    starship \
-    zoxide \
-    fzf \
-    eza
+    git
 
-#source $HOME/.cargo/env
-#cargo install starship zoxide eza
+source $HOME/.cargo/env
+cargo install starship zoxide eza
 
 # Clone dotfiles repository
 git clone https://github.com/dkooll/dotfiles.git ~/testdotfiles
