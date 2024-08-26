@@ -9,6 +9,7 @@ sudo apt-get install -y \
     ripgrep \
     fd-find \
     curl \
+    tmux \
     git
 
 # Install Rust
