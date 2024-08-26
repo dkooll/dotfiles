@@ -15,7 +15,7 @@ source $HOME/.cargo/env
 cargo install starship zoxide eza
 
 # Clone dotfiles repository
-git clone https://github.com/dkooll/dotfiles.git ~/testdotfiles
+# git clone https://github.com/dkooll/dotfiles.git ~/testdotfiles
 
 # Create necessary directories
 #mkdir -p ~/.config/nvim ~/.config/nvim-dev ~/.tmux/plugins
@@ -24,10 +24,10 @@ git clone https://github.com/dkooll/dotfiles.git ~/testdotfiles
 #git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Symlink config files
-ln -sf ~/testdotfiles/starship.toml ~/.config/starship.toml
-ln -sf ~/testdotfiles/.zshrc ~/.zshrc
-ln -sf ~/testdotfiles/.tmux.conf ~/.tmux.conf
-ln -sf ~/testdotfiles/nvim ~/.config/nvim
+ln -sf ~/dotfiles/starship.toml ~/.config/starship.toml
+ln -sf ~/dotfiles/.zshrc ~/.zshrc
+ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
+ln -sf ~/dotfiles/nvim ~/.config/nvim
 
 # Set Zsh as default shell
 sudo chsh -s $(which zsh) $USER
