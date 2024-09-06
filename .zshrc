@@ -1,6 +1,6 @@
 # Path and environment
-export PATH="/opt/homebrew/opt/go@1.20/bin:$HOME/.cargo/bin:/opt/homebrew/bin:$PATH"
-export GOROOT="/opt/homebrew/opt/go@1.20/libexec"
+export PATH="/opt/homebrew/bin:$HOME/.cargo/bin:$PATH"
+export GOROOT="$(brew --prefix golang)/libexec"
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"

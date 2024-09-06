@@ -15,6 +15,7 @@ map("n", "<C-u>", "<C-u>zz", opts)
 map("v", "J", ":m '>+1<CR>gv=gv", opts)
 map("v", "K", ":m '<-2<CR>gv=gv", opts)
 map("n", "<leader><leader>", ":Telescope buffers<CR>", opts)
+map("n", "m", "ciw", opts)
 
 -- Remap for dealing with visual line wraps
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
