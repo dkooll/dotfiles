@@ -94,6 +94,7 @@ return {
           NvimTreeExecFile = { fg = colors.text },
           Visual = { fg = "#9E8069" },
           FloatBorder = { fg = "#303030" },
+          Comment = { fg = "#9E8069" },
         }
       end,
     })
