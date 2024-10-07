@@ -62,3 +62,5 @@ program = "/bin/zsh"
 decorations = "buttonless"
 dynamic_padding = false
 opacity = 0.40
+
+blur = true

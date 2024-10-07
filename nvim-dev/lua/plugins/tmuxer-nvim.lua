@@ -1,4 +1,5 @@
 -- .TODO: change commands to TmuxCreate and TmuxSwitch
+--  create control D support for killing sessions
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
