@@ -55,7 +55,7 @@ return {
           },
           mappings             = {
             i = {
-              ["q"] = actions.close,
+              ["<esc>"] = actions.close,
               ["<C-d>"] = function(prompt_bufnr)
                 local action_state = require("telescope.actions.state")
                 local current_picker = action_state.get_current_picker(prompt_bufnr)
@@ -67,7 +67,7 @@ return {
               end,
             },
             n = {
-              ["q"] = actions.close,
+              ["<esc>"] = actions.close,
             },
           },
         },
