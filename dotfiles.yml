@@ -31,6 +31,7 @@
         - { name: rust, state: present }
         - { name: atuin, state: present }
         - { name: tmux, state: present }
+        - { name: tokei, state: present }
 
     - name: Install serpl using Cargo
       ansible.builtin.command:
