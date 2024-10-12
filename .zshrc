@@ -18,6 +18,7 @@ export SAVEHIST=1000
 # Alias definitions
 alias tf='terraform'
 alias cd='z'
+alias t='tmux'
 alias nvim-dev='NVIM_APPNAME=nvim-dev nvim'
 
 # ZSH options
