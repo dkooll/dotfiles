@@ -4,23 +4,24 @@ if not status_ok then
 end
 
 local opts = {
-  mode = "n", -- NORMAL mode
+  mode = "n",     -- NORMAL mode
   prefix = "<leader>",
-  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-  silent = true, -- use `silent` when creating keymaps
+  buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true,  -- use `silent` when creating keymaps
   noremap = true, -- use `noremap` when creating keymaps
-  nowait = true, -- use `nowait` when creating keymaps
+  nowait = true,  -- use `nowait` when creating keymaps
 }
+
 local mappings = {
   l = {
-    f = { "<cmd>GoFmt<cr>", "Format (GoFmt)" },
+    name = "+LSP",
+    f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format file" },
   },
   g = {
     name = "+Go",
     i = { "<cmd>GoInstallDeps<Cr>", "Install Go Dependencies" },
     o = { "<cmd>GoPkgOutline<cr>", "Outline" },
     I = { "<cmd>GoToggleInlay<cr>", "Toggle inlay" },
-    -- l = { "<cmd>GoLint<cr>", "Run linter" },
     g = { "<cmd>GoGenerate<Cr>", "Go Generate" },
     G = { "<cmd>GoGenerate %<Cr>", "Go Generate File" },
     c = { "<cmd>GoCmt<Cr>", "Generate Comment" },
