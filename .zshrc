@@ -20,6 +20,7 @@ alias tf='terraform'
 alias cd='z'
 alias t='tmux'
 alias nvim-dev='NVIM_APPNAME=nvim-dev nvim'
+alias ptask='TASKDATA=~/.task-personal task'
 
 # ZSH options
 setopt INC_APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_FIND_NO_DUPS HIST_IGNORE_SPACE HIST_VERIFY EXTENDED_HISTORY

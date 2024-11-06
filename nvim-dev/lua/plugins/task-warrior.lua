@@ -1,0 +1,159 @@
+return {
+  --"ribelo/taskwarrior.nvim",
+  --keys = {
+    --{
+      --"<leader>ta",
+      --function()
+        --require("taskwarrior_nvim").browser({ "ready" }, {
+          --layout_strategy = "center",
+          --layout_config = {
+            --width = 0.8,  -- 80% of screen width
+            --height = 0.6, -- 60% of screen height
+          --},
+          --attach_mappings = function(prompt_bufnr, map)
+            --local actions = require("telescope.actions")
+            --local action_state = require("telescope.actions.state")
+
+            --map("i", "<CR>", function()
+              --local selection = action_state.get_selected_entry()
+              --if selection then
+                --actions.close(prompt_bufnr)
+                --vim.cmd(string.format("!task %s done", selection.value))
+                --require("taskwarrior_nvim").browser({ "ready" })
+              --end
+            --end)
+
+            --map("i", "<C-d>", function()
+              --local selection = action_state.get_selected_entry()
+              --if selection then
+                --actions.close(prompt_bufnr)
+                --vim.cmd(string.format("!task %s delete", selection.value))
+                --require("taskwarrior_nvim").browser({ "ready" })
+              --end
+            --end)
+            --return true
+          --end
+        --})
+      --end,
+      --desc = "Task Browser"
+    --},
+  --},
+  --config = function()
+    --require("taskwarrior_nvim").setup({
+      --filter = { "noice", "nofile" },
+    --})
+
+    ---- Improved vim commands for taskwarrior
+    --local create_command = vim.api.nvim_create_user_command
+
+    --create_command("Task", function(opts)
+      --vim.cmd('! task ' .. opts.args)
+    --end, {
+      --nargs = '*',
+      --complete = function()
+        --return { "add", "done", "delete", "modify", "project:" }
+      --end
+    --})
+
+    ---- Function to get projects for completion
+    --local function get_projects()
+      --local handle = io.popen('task _projects')
+      --if handle then
+        --local result = handle:read("*a")
+        --handle:close()
+        --local projects = {}
+        --for project in result:gmatch("[^\n]+") do
+          --table.insert(projects, project)
+        --end
+        --return projects
+      --end
+      --return {}
+    --end
+
+    ---- Project specific command with completion
+    --create_command("Project", function(opts)
+      --vim.cmd('! task project:' .. opts.args)
+    --end, { nargs = 1, complete = get_projects })
+  --end,
+  --dependencies = { "nvim-telescope/telescope.nvim" },
+}
+
+--return {
+--"ribelo/taskwarrior.nvim",
+--keys = {
+--{
+--"<leader>ta",
+--function()
+--local actions = require("telescope.actions")
+--local action_state = require("telescope.actions.state")
+
+--require("taskwarrior_nvim").browser({ "ready" }, {
+--previewer = false,
+--preview_cutoff = 1,
+--layout_strategy = "center",
+--layout_config = {
+--width = function(_, max_columns, _)
+--return math.min(max_columns - 40, 80)
+--end,
+--height = function(_, _, max_lines)
+--return math.min(max_lines - 10, 20)
+--end,
+--},
+--borderchars = {
+--{ '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+--prompt = { "─", "│", " ", "│", '╭', '╮', "│", "│" },
+--results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+--preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+--},
+--attach_mappings = function(prompt_bufnr, map)
+---- Complete task
+--map("i", "<CR>", function()
+--local selection = action_state.get_selected_entry()
+--if selection then
+--actions.close(prompt_bufnr)
+--vim.cmd(string.format("!task %s done", selection.value))
+---- Reopen to refresh
+--require("taskwarrior_nvim").browser({ "ready" })
+--end
+--end)
+
+---- Delete task
+--map("i", "<C-d>", function()
+--local selection = action_state.get_selected_entry()
+--if selection then
+--actions.close(prompt_bufnr)
+--vim.cmd(string.format("!task %s delete", selection.value))
+---- Reopen to refresh
+--require("taskwarrior_nvim").browser({ "ready" })
+--end
+--end)
+
+--return true
+--end
+--})
+--end,
+--desc = "Task Browser"
+--},
+--},
+--config = function()
+--require("taskwarrior_nvim").setup({
+--filter = { "noice", "nofile" },
+--task_file_name = ".taskwarrior.json",
+--granulation = 60 * 1000 * 10,
+--notify_start = true,
+--notify_stop = true,
+--notify_error = true,
+--})
+
+---- Global telescope configuration
+--require("telescope").setup({
+--defaults = {
+--preview = false,
+--previewer = false
+--}
+--})
+--end,
+--dependencies = {
+--"nvim-telescope/telescope.nvim",
+--},
+--}

@@ -34,7 +34,7 @@ return {
 
     local function setup_servers()
       local lspconfig = require("lspconfig")
-      local servers = { "terraformls", "rust_analyzer", "gopls", "pyright", "lua_ls" }
+      local servers = { "terraformls", "rust_analyzer", "gopls", "lua_ls" }
 
       local lua_settings = {
         Lua = {
