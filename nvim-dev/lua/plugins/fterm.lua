@@ -15,11 +15,10 @@ return {
     local fterm = require('FTerm')
     fterm.setup(opts)
 
-    -- Create a custom highlight group for the border
     vim.api.nvim_create_autocmd("ColorScheme", {
       pattern = "*",
       callback = function()
-        vim.api.nvim_set_hl(0, "FTermBorder", { fg = "#D3D3D3" })  -- Light grey color
+        vim.api.nvim_set_hl(0, "FTermBorder", { fg = "#D3D3D3" })
       end,
     })
 
