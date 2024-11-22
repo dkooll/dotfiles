@@ -11,12 +11,12 @@ return {
   opts = {
     workspaces = {
       { name = "workspaces", path = "~/Documents/workspaces" },
-    }
+    },
+    nvim_cmd = "nvim-dev" --override default nvim command
   },
   config = function(_, opts)
     local tmuxer = require("tmuxer")
     tmuxer.setup(opts)
-
     vim.api.nvim_create_user_command("WorkspaceOpen", function()
       tmuxer.open_workspace_popup(tmuxer.workspaces[1])
     end, {})

@@ -91,7 +91,7 @@ return {
     name = "+Quickfix",
     n = { "<cmd>cnext<CR>", "Next Quickfix" },
     p = { "<cmd>cprev<CR>", "Previous Quickfix" },
-    t = { "<cmd>Telescope quickfix<cr>", "Telescope Quickfix" },
+    t = { "<cmd>Telescope quickfixhistory<cr>", "Telescope Quickfix History" },
   },
   s = {
     name = "+Search",

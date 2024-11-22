@@ -1,4 +1,3 @@
--- .TODO: change commands to TmuxCreate and TmuxSwitch
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
@@ -15,7 +14,6 @@ return {
   config = function(_, opts)
     local tmuxer = require("tmuxer")
     tmuxer.setup(opts)
-
     vim.api.nvim_create_user_command("WorkspaceOpen", function()
       tmuxer.open_workspace_popup(tmuxer.workspaces[1])
     end, {})
