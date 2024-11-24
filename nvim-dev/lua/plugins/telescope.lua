@@ -25,7 +25,7 @@ return {
         defaults   = {
           theme                = 'dropdown',
           previewer            = true,
-          file_ignore_patterns = { 'node_modules', 'package-lock.json' },
+          file_ignore_patterns = { 'node_modules', 'package-lock.json', '.git/' },
           initial_mode         = 'insert',
           select_strategy      = 'reset',
           sorting_strategy     = 'ascending',
