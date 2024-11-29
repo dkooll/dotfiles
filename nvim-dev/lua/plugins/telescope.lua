@@ -21,10 +21,27 @@ return {
     config = function()
       local telescope = require('telescope')
       local actions = require('telescope.actions')
+      local previewers = require("telescope.previewers")
+      local sorters = require("telescope.sorters")
+
+      -- Optimized file previewer
+      local new_maker = function(filepath, bufnr, opts)
+        opts = opts or {}
+        filepath = vim.fn.expand(filepath)
+
+        local file_size = vim.fn.getfsize(filepath)
+        if file_size > 100000 then
+          return
+        end
+
+        previewers.buffer_previewer_maker(filepath, bufnr, opts)
+      end
+
       telescope.setup {
-        defaults   = {
-          theme                = 'dropdown',
-          previewer            = true,
+        defaults = {
+          theme = 'dropdown',
+          previewer = true,
+          buffer_previewer_maker = new_maker,
           file_ignore_patterns = {
             "%.git/",
             "%.terraform/",
@@ -36,25 +53,34 @@ return {
             "%.lock",
             "%.class",
             "__pycache__/",
-            "package-locl.json",
+            "package%-lock.json",
+            "%.o$",
+            "%.a$",
+            "%.out$",
+            "%.pdf$",
+            "%.mkv$",
+            "%.mp4$",
+            "%.zip$",
+            "%.tar$",
+            "%.tar.gz$",
+            "%.tar.bz2$",
+            "%.rar$",
+            "%.7z$",
+            "%.jar$",
+            "%.war$",
+            "%.ear$",
+            "%.min.js$",
+            "%.min.css$",
+            "dist/",
+            "build/",
           },
-          initial_mode         = 'insert',
-          select_strategy      = 'reset',
-          sorting_strategy     = 'ascending',
-          layout_strategy      = 'horizontal',
-          layout_config        = {
-            width = 0.75,
-            height = 0.75,
-            prompt_position = "top",
-            preview_cutoff = 120,
-          },
-          path_display         = { "smart" },
-          winblend             = 0,
-          border               = {},
-          borderchars          = nil,
-          color_devicons       = true,
-          set_env              = { ["colorterm"] = "truecolor" },
-          vimgrep_arguments    = {
+          file_sorter = sorters.get_fuzzy_file,
+          generic_sorter = sorters.get_generic_fuzzy_sorter,
+          path_display = { "truncate" },
+          sorting_strategy = "ascending",
+          initial_mode = "insert",
+          selection_strategy = "reset",
+          vimgrep_arguments = {
             "rg",
             "--color=never",
             "--no-heading",
@@ -64,28 +90,52 @@ return {
             "--smart-case",
             "--hidden",
             "--glob=!.git/",
+            "--max-columns=150",
+            "--max-filesize=500K",
+            "--threads=8",
+            "--no-binary",
           },
-          mappings             = {
+          cache_picker = {
+            num_pickers = 5,
+            limit_entries = 1000,
+          },
+          mappings = {
             i = {
               ["<esc>"] = actions.close,
-              ["<C-d>"] = function(prompt_bufnr)
-                local action_state = require("telescope.actions.state")
-                local current_picker = action_state.get_current_picker(prompt_bufnr)
-                current_picker:delete_selection(function(selection)
-                  if vim.api.nvim_buf_is_valid(selection.bufnr) then
-                    vim.api.nvim_buf_delete(selection.bufnr, { force = true })
-                  end
-                end)
-              end,
+              ["<C-u>"] = false,
+              ["<C-d>"] = require("telescope.actions").delete_buffer,
+              ["<C-j>"] = actions.move_selection_next,
+              ["<C-k>"] = actions.move_selection_previous,
             },
             n = {
               ["<esc>"] = actions.close,
+              ["<C-d>"] = require("telescope.actions").delete_buffer,
+              ["j"] = actions.move_selection_next,
+              ["k"] = actions.move_selection_previous,
             },
           },
+          layout_strategy = 'horizontal',
+          layout_config = {
+            width = 0.75,
+            height = 0.75,
+            prompt_position = "top",
+            preview_cutoff = 120,
+          },
         },
-        pickers    = {
+        pickers = {
           find_files = {
+            find_command = {
+              "fd",
+              "--type", "f",
+              "--strip-cwd-prefix",
+              "--hidden",
+              "--follow",
+              "--exclude", ".git",
+              "--exclude", "node_modules",
+              "-E", "*.lock",
+            },
             hidden = true,
+            no_ignore = false,
             previewer = false,
             layout_config = {
               horizontal = {
@@ -95,16 +145,10 @@ return {
               },
             },
           },
-          oldfiles = {
-            previewer = false,
-            layout_config = {
-              width = 0.5,
-              height = 0.4,
-            },
-          },
           git_files = {
             hidden = true,
             previewer = false,
+            show_untracked = true,
             layout_config = {
               horizontal = {
                 width = 0.5,
@@ -124,9 +168,21 @@ return {
               },
             },
           },
+          oldfiles = {
+            previewer = false,
+            path_display = { "smart" },
+            layout_config = {
+              horizontal = {
+                width = 0.5,
+                height = 0.4,
+                preview_width = 0.6,
+              },
+            },
+          },
           grep_string = {
             only_sort_text = true,
             previewer = true,
+            word_match = "-w",
             layout_config = {
               horizontal = {
                 width = 0.9,
@@ -137,6 +193,13 @@ return {
           },
           buffers = {
             previewer = false,
+            show_all_buffers = true,
+            sort_mru = true,
+            mappings = {
+              i = {
+                ["<c-d>"] = actions.delete_buffer,
+              },
+            },
             layout_config = {
               horizontal = {
                 width = 0.5,
@@ -157,7 +220,6 @@ return {
           },
           treesitter = {
             show_line = false,
-            sorting_strategy = nil,
             layout_config = {
               horizontal = {
                 width = 0.9,
@@ -166,48 +228,50 @@ return {
               },
             },
             symbols = {
-              "class", "function", "method", "interface",
-              "type", "const", "variable", "property",
-              "constructor", "module", "struct", "trait", "field"
+              "class",
+              "function",
+              "method",
+              "interface",
+              "type",
+              "const",
+              "variable",
+              "property",
+              "constructor",
+              "module",
+              "struct",
+              "trait",
+              "field"
             }
           }
         },
         extensions = {
-          undo = {
-            use_delta = true,
-            use_custom_command = nil,
-            side_by_side = false,
-            entry_format = "state #$id, $stat, $time",
-            mappings = {
-              i = {
-                ["<cr>"] = require("telescope-undo.actions").yank_additions,
-                ["<c-j>"] = require("telescope-undo.actions").yank_deletions,
-                ["<c-k>"] = require("telescope-undo.actions").restore,
-              },
-            }
-          },
-          project = {
-            hidden_files = true,
-          },
-          ["advanced-git_search"] = {
-            diff_plugin = "fugitive",
-            git_flags = {},
-            git_diff_flags = {},
-            show_builtin_git_pickers = true,
-          },
           fzf = {
             fuzzy = true,
             override_generic_sorter = true,
             override_file_sorter = true,
             case_mode = "smart_case",
           },
+          undo = {
+            use_delta = true,
+            side_by_side = false,
+            layout_strategy = "horizontal",
+            layout_config = {
+              preview_width = 0.6,
+            },
+          },
+          ["advanced-git-search"] = {
+            diff_plugin = "fugitive",
+            git_flags = { "--no-pager" },
+            git_diff_flags = {},
+            show_builtin_git_pickers = false,
+          },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
-              previewer        = false,
-              initial_mode     = "normal",
+              previewer = false,
+              initial_mode = "normal",
               sorting_strategy = 'ascending',
-              layout_strategy  = 'horizontal',
-              layout_config    = {
+              layout_strategy = 'horizontal',
+              layout_config = {
                 horizontal = {
                   width = 0.5,
                   height = 0.4,
@@ -219,11 +283,18 @@ return {
         }
       }
 
-      telescope.load_extension('fzf')
-      telescope.load_extension('ui-select')
-      telescope.load_extension("zoxide")
-      telescope.load_extension("undo")
-      telescope.load_extension("advanced_git_search")
+      -- Load extensions efficiently
+      local extensions = {
+        'fzf',
+        'ui-select',
+        'zoxide',
+        'undo',
+        'advanced_git_search'
+      }
+
+      for _, ext in ipairs(extensions) do
+        pcall(telescope.load_extension, ext)
+      end
     end
   },
 }
