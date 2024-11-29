@@ -8,9 +8,43 @@ return {
     },
   },
   terraformls = {
-    cmd = { "terraform-ls" },
-    arg = { "server" },
+    cmd = { vim.fn.expand('~/.local/share/nvim/mason/bin/terraform-ls'), "serve" },
     filetypes = { "terraform", "tf", "terraform-vars" },
+    single_file_support = true,
+    root_dir = function(fname)
+      local util = require('lspconfig.util')
+      return util.root_pattern('.terraform', '.git')(fname) or vim.fs.dirname(fname)
+    end,
+    capabilities = {
+      workspace = {
+        workspaceFolders = false
+      }
+    },
+    before_init = function(initialize_params)
+      initialize_params.workspaceFolders = nil
+    end,
+    on_attach = function(_, bufnr)
+      -- Set up formatting keymap
+      local opts = {
+        mode = "n",
+        prefix = "<leader>",
+        buffer = bufnr,
+        silent = true,
+        noremap = true,
+        nowait = true,
+      }
+      local mappings = {
+        l = {
+          f = {
+            function()
+              vim.lsp.buf.format({ async = true })
+            end,
+            "Format file"
+          },
+        },
+      }
+      require("which-key").register(mappings, opts)
+    end,
   },
   lua_ls = {
     settings = {
@@ -18,20 +52,14 @@ return {
         runtime = { version = "LuaJIT" },
         workspace = {
           checkThirdParty = false,
-          -- Tells lua_ls where to find all the Lua files that you have loaded
-          -- for your neovim configuration.
           library = {
             "${3rd}/luv/library",
             table.unpack(vim.api.nvim_get_runtime_file("", true)),
           },
-          -- If lua_ls is really slow on your computer, you can try this instead:
-          -- library = { vim.env.VIMRUNTIME },
         },
         completion = {
           callSnippet = "Replace",
         },
-        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-        -- diagnostics = { disable = { 'missing-fields' } },
       },
     },
   },
@@ -44,8 +72,6 @@ return {
   tsserver = {},
   gopls = {},
   pyright = {},
-  -- golangci_lint_ls = {},
-
   solidity_ls_nomicfoundation = {},
   yamlls = {
     cmd = { "yaml-language-server", "--stdio" },
