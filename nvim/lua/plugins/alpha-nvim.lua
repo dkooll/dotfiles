@@ -3,6 +3,9 @@ return {
   enabled = true,
   event = "VimEnter",
   lazy = true,
+    keys = {
+    { ";", "<cmd>Alpha<CR>", desc = "Dashboard: Alpha Menu" },
+  },
   opts = function()
     local dashboard = require("alpha.themes.dashboard")
 

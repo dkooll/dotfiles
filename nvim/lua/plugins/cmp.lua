@@ -1,52 +1,51 @@
 return {
-  -- Autocompletion
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
+  performance = {
+    debounce = 60,
+    throttle = 30,
+    fetching_timeout = 500,
+  },
   dependencies = {
-    -- Snippet Engine & its associated nvim-cmp source
     "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
-
-    -- Adds LSP completion capabilities
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-path",
-
-    -- Adds vscode-like pictograms
     "onsails/lspkind.nvim",
   },
   config = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
-    -- local lspkind = require("lspkind")
 
+    -- cache icons for better performance
     local kind_icons = {
-      Text = "",
+      Text = "",
       Method = "󰆧",
       Function = "󰊕",
-      Constructor = "",
+      Constructor = "",
       Field = "󰇽",
       Variable = "󰂡",
       Class = "󰠱",
-      Interface = "",
-      Module = "",
+      Interface = "",
+      Module = "",
       Property = "󰜢",
-      Unit = "",
+      Unit = "",
       Value = "󰎠",
-      Enum = "",
+      Enum = "",
       Keyword = "󰌋",
-      Snippet = "",
+      Snippet = "",
       Color = "󰏘",
       File = "󰈙",
-      Reference = "",
+      Reference = "",
       Folder = "󰉋",
-      EnumMember = "",
+      EnumMember = "",
       Constant = "󰏿",
-      Struct = "",
-      Event = "",
+      Struct = "",
+      Event = "",
       Operator = "󰆕",
       TypeParameter = "󰅲",
     }
-    require("luasnip.loaders.from_vscode").lazy_load()
+
     luasnip.config.setup({})
 
     cmp.setup({
@@ -57,13 +56,14 @@ return {
       },
       completion = {
         completeopt = "menu,menuone,noinsert",
+        keyword_length = 2,
       },
       mapping = cmp.mapping.preset.insert({
         ["<C-n>"] = cmp.mapping.select_next_item(),
         ["<C-p>"] = cmp.mapping.select_prev_item(),
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete({}),
+        ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-y>"] = cmp.mapping.confirm({ select = true }),
         ["<CR>"] = cmp.mapping.confirm({
           behavior = cmp.ConfirmBehavior.Replace,
@@ -88,43 +88,30 @@ return {
           end
         end, { "i", "s" }),
       }),
-      window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
+      view = {
+        entries = { name = 'custom', selection_order = 'near_cursor' }
+      },
+      experimental = {
+        ghost_text = false,
       },
       sources = {
-        { name = "copilot" },
-        { name = "nvim_lsp" },
-        { name = "nvim_lua" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "path" },
-        { name = "calc" },
-        { name = "emoji" },
-        { name = "treesitter" },
-        { name = "crates" },
-        { name = "tmux" },
+        { name = "copilot",  priority = 1000 },
+        { name = "nvim_lsp", priority = 900 },
+        { name = "luasnip",  priority = 800 },
+        { name = "path",     priority = 700 },
+        { name = "buffer",   priority = 500, keyword_length = 4, max_item_count = 10 },
       },
       formatting = {
         format = function(entry, vim_item)
-          local lspkind_ok, lspkind = pcall(require, "lspkind")
-          if not lspkind_ok then
-            -- From kind_icons array
-            vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
-            -- Source
-            vim_item.menu = ({
-              copilot = "[Copilot]",
-              nvim_lsp = "[LSP]",
-              nvim_lua = "[Lua]",
-              luasnip = "[LuaSnip]",
-              buffer = "[Buffer]",
-              latex_symbols = "[LaTeX]",
-            })[entry.source.name]
-            return vim_item
-          else
-            -- From lspkind
-            return lspkind.cmp_format()(entry, vim_item)
-          end
+          vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+          vim_item.menu = ({
+            copilot = "[Copilot]",
+            nvim_lsp = "[LSP]",
+            nvim_lua = "[Lua]",
+            luasnip = "[Snip]",
+            buffer = "[Buf]",
+          })[entry.source.name]
+          return vim_item
         end,
       },
     })

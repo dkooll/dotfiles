@@ -9,6 +9,16 @@ local navigation_keys = {
 
 local map = vim.keymap.set
 
+-- TODO: add different keymap
+
+-- Keep cursor centered when scrolling
+--vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
+--vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
+
+-- Move selected line / block of text in visual mode
+vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
+
 -- map("n", "<C-Space>", ":WhichKey \\<space><cr>", opts)
 map("n", "<C-d>", "<C-d>zz", opts)
 map("n", "<C-u>", "<C-u>zz", opts)
@@ -30,8 +40,6 @@ map("v", "p", '"_dp')
 map("v", "P", '"_dP')
 
 -- Fast saving
---vim.keymap.set('n', '<Leader>w', ':write!<CR>')
---vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
 vim.keymap.set('n', 'w', ':write!<CR>')
 vim.keymap.set('n', 'q', ':q!<CR>', { silent = true })
 

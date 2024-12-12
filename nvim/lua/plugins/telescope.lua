@@ -5,7 +5,17 @@ return {
     version = false,
     lazy = true,
     keys = {
-      { "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Show buffers" },
+      { "<leader>sf",       "<cmd>Telescope find_files<cr>",                desc = "Telescope: Find Files" },
+      { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
+      { "<leader><leader>", "<cmd>Telescope buffers<cr>",                   desc = "Telescope: Buffers" },
+      { "<leader>sh",       "<cmd>Telescope help_tags<cr>",                 desc = "Telescope: Help Tags" },
+      { "<leader>sH",       "<cmd>Telescope highlights<cr>",                desc = "Telescope: Find HighLight Groups" },
+      { "<leader>so",       "<cmd>Telescope oldfiles<cr>",                  desc = "Telescope: Recent Files" },
+      { "<leader>sR",       "<cmd>Telescope registers<cr>",                 desc = "Telescope: Registers" },
+      { "<leader>sF",       "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Telescope: Current Buffer fuzzy Find" },
+      { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
+      { "<leader>sz",       "<cmd>Telescope zoxide list<cr>",               desc = "Telescope: Zoxide List" },
+      { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -24,7 +34,6 @@ return {
       local previewers = require("telescope.previewers")
       local sorters = require("telescope.sorters")
 
-      -- Optimized file previewer
       local new_maker = function(filepath, bufnr, opts)
         opts = opts or {}
         filepath = vim.fn.expand(filepath)
@@ -208,6 +217,13 @@ return {
               },
             },
           },
+          current_buffer_fuzzy_find = {
+            previewer = false,
+            layout_config = {
+              prompt_position = "top",
+              preview_cutoff = 120,
+            },
+          },
           lsp_references = {
             show_line = false,
             layout_config = {
@@ -259,12 +275,12 @@ return {
               preview_width = 0.6,
             },
           },
-          ["advanced-git-search"] = {
-            diff_plugin = "fugitive",
-            git_flags = { "--no-pager" },
-            git_diff_flags = {},
-            show_builtin_git_pickers = false,
-          },
+          --["advanced-git-search"] = {
+          --diff_plugin = "fugitive",
+          --git_flags = { "--no-pager" },
+          --git_diff_flags = {},
+          --show_builtin_git_pickers = false,
+          --},
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
               previewer = false,
@@ -283,13 +299,12 @@ return {
         }
       }
 
-      -- Load extensions efficiently
       local extensions = {
         'fzf',
         'ui-select',
         'zoxide',
         'undo',
-        'advanced_git_search'
+        --'advanced_git_search'
       }
 
       for _, ext in ipairs(extensions) do

@@ -1,12 +1,11 @@
 return {
-  'VonHeikemen/searchbox.nvim',
-  requires = {
-    'MunifTanjim/nui.nvim'
+  "VonHeikemen/searchbox.nvim",
+  dependencies = { "MunifTanjim/nui.nvim" },
+  lazy = true,
+  keys = {
+    { "<leader>si", ":SearchBoxIncSearch<CR>", desc = "Searchbox: Incremental Search" },
+    { "<leader>sa", ":SearchBoxMatchAll<CR>",  desc = "Searchbox: Match All" },
+    { "<leader>ss", ":SearchBoxSimple<CR>",    desc = "Searchbox: Simple Search" },
+    { "<leader>sr", ":SearchBoxReplace<CR>",   desc = "Searchbox: Replace" },
   },
-  config = function()
-    vim.api.nvim_set_keymap('n', 'si', ':SearchBoxIncSearch<CR>', { noremap = true })
-    vim.api.nvim_set_keymap('n', 'S', ':SearchBoxMatchAll<CR>', { noremap = true })
-    vim.api.nvim_set_keymap('n', 's', ':SearchBoxSimple<CR>', { noremap = true })
-    vim.api.nvim_set_keymap('n', 'r', ':SearchBoxReplace<CR>', { noremap = true })
-  end
 }

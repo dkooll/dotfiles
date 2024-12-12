@@ -7,68 +7,59 @@ return {
       "nvim-lua/plenary.nvim",
       "mfussenegger/nvim-dap",
     },
-    config = function()
-      local rt = require("rust-tools")
-      rt.setup({
-        server = {
-          on_attach = function(_, bufnr)
-            -- Hover actions
-            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-          end,
-          settings = {
-            ["rust-analyzer"] = {
-              checkOnSave = {
-                command = "clippy",
-              },
-              cargo = {
-                loadOutDirsFromCheck = true,
-              },
-              procMacro = {
-                enable = true,
-              },
-              lens = {
-                enable = true,
-              },
+    opts = {
+      server = {
+        on_attach = function(_, bufnr)
+          local opts = { buffer = bufnr, silent = true }
+          vim.keymap.set("n", "<C-space>", function()
+            require("rust-tools").hover_actions.hover_actions()
+          end, opts)
+          vim.keymap.set("n", "<Leader>a", function()
+            require("rust-tools").code_action_group.code_action_group()
+          end, opts)
+        end,
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+              extraArgs = { "--all-features" }
+            },
+            cargo = {
+              loadOutDirsFromCheck = true,
+              allFeatures = true,
+            },
+            procMacro = { enable = true },
+            lens = { enable = true },
+            diagnostics = {
+              disabled = { "unresolved-proc-macro" },
+              enableExperimental = false,
+            },
+            completion = {
+              privateEditable = { enable = false },
+              fullFunctionSignatures = { enable = false },
             },
           },
         },
-        tools = {
-          executor = require("rust-tools/executors").termopen,
-          reload_workspace_from_cargo_toml = true,
-          inlay_hints = {
-            auto = true,
-            only_current_line = false,
-            show_parameter_hints = true,
-            parameter_hints_prefix = "<- ",
-            other_hints_prefix = "=> ",
-            max_len_align = false,
-            max_len_align_padding = 1,
-            right_align = false,
-            right_align_padding = 7,
-            highlight = "Comment",
-          },
-          hover_actions = {
-            border = "rounded",
-          },
+      },
+      tools = {
+        reload_workspace_from_cargo_toml = true,
+        inlay_hints = {
+          auto = false,
+          only_current_line = true,
+          show_parameter_hints = true,
+          parameter_hints_prefix = "<- ",
+          other_hints_prefix = "=> ",
+          max_len_align = false,
+          highlight = "Comment",
         },
-      })
-    end,
-  },
-  {
-    "saecki/crates.nvim",
-    ft = { "rust", "toml" },
-    config = function()
-      require("crates").setup({
-        null_ls = {
-          enabled = true,
-          name = "crates.nvim",
-        },
-        popup = {
+        hover_actions = {
           border = "rounded",
+          auto_focus = false,
         },
-      })
+      },
+    },
+    config = function(_, opts)
+      require("rust-tools").setup(opts)
     end,
   },
 }
