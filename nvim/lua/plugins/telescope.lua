@@ -5,7 +5,8 @@ return {
     version = false,
     lazy = true,
     keys = {
-      { "<leader>sf",       "<cmd>Telescope find_files<cr>",                desc = "Telescope: Find Files" },
+      -- { "<leader>sf",       "<cmd>Telescope find_files<cr>",                desc = "Telescope: Find Files" },
+      { "<leader>sf",       "<cmd>Telescope fd<cr>",                        desc = "Telescope: Find Files" },
       { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
       { "<leader><leader>", "<cmd>Telescope buffers<cr>",                   desc = "Telescope: Buffers" },
       { "<leader>sh",       "<cmd>Telescope help_tags<cr>",                 desc = "Telescope: Help Tags" },
@@ -132,25 +133,23 @@ return {
           },
         },
         pickers = {
-          find_files = {
+          fd = {
+            hidden = true,
+            follow = true,
             find_command = {
               "fd",
               "--type", "f",
-              "--strip-cwd-prefix",
               "--hidden",
               "--follow",
               "--exclude", ".git",
               "--exclude", "node_modules",
               "-E", "*.lock",
             },
-            hidden = true,
-            no_ignore = false,
             previewer = false,
             layout_config = {
               horizontal = {
                 width = 0.5,
                 height = 0.4,
-                preview_width = 0.6,
               },
             },
           },
