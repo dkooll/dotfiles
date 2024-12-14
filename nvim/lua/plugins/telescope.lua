@@ -5,7 +5,6 @@ return {
     version = false,
     lazy = true,
     keys = {
-      -- { "<leader>sf",       "<cmd>Telescope find_files<cr>",                desc = "Telescope: Find Files" },
       { "<leader>sf",       "<cmd>Telescope fd<cr>",                        desc = "Telescope: Find Files" },
       { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
       { "<leader><leader>", "<cmd>Telescope buffers<cr>",                   desc = "Telescope: Buffers" },
@@ -274,12 +273,6 @@ return {
               preview_width = 0.6,
             },
           },
-          --["advanced-git-search"] = {
-          --diff_plugin = "fugitive",
-          --git_flags = { "--no-pager" },
-          --git_diff_flags = {},
-          --show_builtin_git_pickers = false,
-          --},
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
               previewer = false,
@@ -303,7 +296,6 @@ return {
         'ui-select',
         'zoxide',
         'undo',
-        --'advanced_git_search'
       }
 
       for _, ext in ipairs(extensions) do
