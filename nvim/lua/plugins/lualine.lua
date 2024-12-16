@@ -3,6 +3,7 @@ return {
   dependencies = {
     "nvim-tree/nvim-web-devicons",
     "meuter/lualine-so-fancy.nvim",
+    -- "arkav/lualine-lsp-progress",
   },
   event = "VeryLazy",
   opts = {
@@ -55,10 +56,7 @@ return {
           color = { fg = "#7DAEA3", gui = "bold" },
         },
         { "fancy_lsp_servers", color = { fg = "#D3869B" } },
-        {
-          "progress",
-          color = { fg = "#D3869B", gui = "bold" },
-        },
+        -- { "lsp_progress",      color = { fg = "#D3869B", gui = "bold" } },
       },
       lualine_y = {},
       lualine_z = {},
