@@ -1,7 +1,6 @@
 return {
   "dkooll/bouncer.nvim",
-  dependencies = { "folke/snacks.nvim" },
-
+  dependencies = { "nvim-lua/plenary.nvim" },
   lazy = true,
   cmd = { "BounceModuleToLocal", "BounceModuleToRegistry", "BounceModulesToRegistry" },
   keys = {
@@ -11,7 +10,11 @@ return {
   },
   config = function()
     require("bouncer").setup({
-      namespace = "cloudnationhq",
+      -- namespace = "cloudnationhq",
+
+      private_registry = {
+        organization = "aztfmods" --host defaults to app.terraform.io
+      }
     })
   end,
 }
