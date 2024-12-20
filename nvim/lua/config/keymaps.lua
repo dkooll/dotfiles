@@ -40,3 +40,6 @@ vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)
 -- Buffer management keymaps
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)
+
+-- Clear search highlight with Esc
+vim.keymap.set("n", "<Esc>", "<cmd>noh<CR><Esc>", { desc = "Clear hlsearch", silent = true })

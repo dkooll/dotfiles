@@ -3,17 +3,17 @@ return {
   --[";"] = { ":Alpha<CR>", "Dashboard" },
   -- w = { ":w!<CR>", "Save" },
   -- q = { ":confirm q<CR>", "Quit" },
-  c = { ":bd<CR>", "Close Buffer" },
-  h = { ":nohlsearch<CR>", "No Highlight" },
-  p = { "<cmd>Telescope treesitter<CR>", "List Symbols" },
-  f = { "<cmd>lua require('plugins.utils').telescope_git_or_file()<CR>", "Find Files" },
-  r = {
-    name = "Replace",
-    r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
-    w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
-    f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
-  },
-  b = {
+  -- c = { ":bd<CR>", "Close Buffer" },
+  -- h = { ":nohlsearch<CR>", "No Highlight" },
+  p = { "<cmd>Telescope treesitter<CR>", "List Symbols" }, -- FIX:
+  f = { "<cmd>lua require('plugins.utils').telescope_git_or_file()<CR>", "Find Files" }, -- FIX:
+  -- r = {
+  --   name = "Replace",
+  --   r = { "<cmd>lua require('spectre').open()<cr>", "Replace" },
+  --   w = { "<cmd>lua require('spectre').open_visual({select_word=true})<cr>", "Replace Word" },
+  --   f = { "<cmd>lua require('spectre').open_file_search()<cr>", "Replace Buffer" },
+  -- },
+  -- b = {
     -- name = "Buffers",
     -- j = { "<cmd>BufferLinePick<cr>", "Jump" },
     -- f = { "<cmd>Telescope buffers previewer=false<cr>", "Find" },
@@ -39,7 +39,7 @@ return {
     --},
     --p = { "<cmd>BufferLineTogglePin<CR>", "Toggle pin" },
     --P = { "<cmd>BufferLineGroupClose ungrouped<CR>", "Delete non-pinned buffers" },
-  },
+  -- },
   --G = {
     --name = "+Git",
     --j = { "<cmd>lua require 'gitsigns'.next_hunk({navigation_message = false})<cr>", "Next Hunk" },
@@ -65,7 +65,7 @@ return {
       --"Git Diff",
     --},
   --},
-  l = {
+  l = { -- FIX: this lsp code block
     name = "+LSP",
     a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
     A = { "<cmd>lua vim.lsp.buf.range_code_action()<cr>", "Range Code Actions" },
@@ -454,4 +454,4 @@ return {
     --u = { "<cmd>lua require'dapui'.toggle()<cr>", "UI" },
     --x = { "<cmd>lua require'dap'.terminate()<cr>", "Exit" },
   --}
---}
+-- }
