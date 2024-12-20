@@ -1,46 +1,42 @@
 local opts = { noremap = true, silent = true }
 
-local navigation_keys = {
-  Up = "k",
-  Down = "j",
-  Left = "h",
-  Right = "l",
-}
-
-local map = vim.keymap.set
+-- window movement with option key + arrow keys
+vim.keymap.set('n', '<M-Left>', '<C-w>h', opts)
+vim.keymap.set('n', '<M-Down>', '<C-w>j', opts)
+vim.keymap.set('n', '<M-Up>', '<C-w>k', opts)
+vim.keymap.set('n', '<M-Right>', '<C-w>l', opts)
 
 -- Move selected line / block of text in visual mode
 vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
 
 -- scrolls up and down half a page centered
-map("n", "<C-d>", "<C-d>zz", opts)
-map("n", "<C-u>", "<C-u>zz", opts)
+vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
+vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
 
 -- Remap for dealing with visual line wraps
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 
 -- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+vim.keymap.set("v", "<", "<gv", opts)
+vim.keymap.set("v", ">", ">gv", opts)
 
 -- paste over currently selected text without yanking it
-map("v", "p", '"_dp')
-map("v", "P", '"_dP')
+vim.keymap.set("v", "p", '"_dp', opts)
+vim.keymap.set("v", "P", '"_dP', opts)
 
-vim.keymap.set('n', 'w', ':write!<CR>')
-vim.keymap.set('n', 'q', ':q!<CR>', { silent = true })
-map("n", "m", "ciw", opts)
+-- quick save and quit
+vim.keymap.set('n', 'w', ':write!<CR>', opts)
+vim.keymap.set('n', 'q', ':q!<CR>', opts)
+
+-- quick change word under cursor
+vim.keymap.set("n", "m", "ciw", opts)
 
 -- Resize windows with Option/Alt + or -
-vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)  -- Option + = (plus)  -> increase by 10
-vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)  -- Option + - (minus) -> decrease by 10
+vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)
+vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)
 
-for key, cmd in pairs(navigation_keys) do
-  -- Navigate between windows in Normal mode
-  vim.keymap.set("n", "<Esc><" .. key .. ">", ":wincmd " .. cmd .. "<CR>", { noremap = true })
-
-  -- Use Option (Meta) + arrow keys to navigate between windows in Terminal mode
-  vim.keymap.set("t", "<M-" .. key .. ">", "<C-\\><C-n>:wincmd " .. cmd .. "<CR>", { noremap = true })
-end
+-- Buffer management keymaps
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)

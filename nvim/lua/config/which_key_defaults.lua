@@ -1,7 +1,7 @@
 return {
   mode = { "n", "v" },
   --[";"] = { ":Alpha<CR>", "Dashboard" },
-  w = { ":w!<CR>", "Save" },
+  -- w = { ":w!<CR>", "Save" },
   -- q = { ":confirm q<CR>", "Quit" },
   c = { ":bd<CR>", "Close Buffer" },
   h = { ":nohlsearch<CR>", "No Highlight" },
