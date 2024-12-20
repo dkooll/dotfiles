@@ -15,13 +15,6 @@ export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000
 export SAVEHIST=1000
 
-# Alias definitions
-alias tf='terraform'
-alias cd='z'
-alias t='tmux'
-alias nvim-dev='NVIM_APPNAME=nvim-dev nvim'
-alias ptask='TASKDATA=~/.task-personal task'
-
 # ZSH options
 setopt INC_APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_FIND_NO_DUPS HIST_IGNORE_SPACE HIST_VERIFY EXTENDED_HISTORY
 
@@ -55,3 +48,18 @@ fi
 for key in ~/.ssh/id_rsa_*; do
     [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
 done
+
+# Alias definitions
+alias tf='terraform'
+alias cd='z'
+alias t='tmux'
+alias nvim-dev='NVIM_APPNAME=nvim-dev nvim'
+alias ptask='TASKDATA=~/.task-personal task'
+
+alias ls='eza --color=auto --icons'
+alias ll='eza -la --color=auto --icons'
+alias lt='eza --tree --color=auto --icons'
+alias lh='eza -ld .* --color=auto --icons'
+alias lg='eza -l --git --color=auto --icons'
+alias l='eza --color=auto'
+alias lrs='eza --tree --long --level=2 --color=auto --icons'
