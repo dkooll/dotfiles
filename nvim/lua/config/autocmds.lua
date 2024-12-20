@@ -55,7 +55,7 @@ end)
 
 -- Enable spell checking for certain file types
 autocmd({ "BufRead", "BufNewFile" }, { "*.txt", "*.md", "*.tex" }, function()
-  opt.spell = true
+  opt.spell = false
   opt.spelllang = { "en", "de" }
 end)
 
