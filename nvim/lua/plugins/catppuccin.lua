@@ -1,14 +1,9 @@
 return {
   "catppuccin/nvim",
-  enabled = true,
   lazy = false,
   priority = 150,
   name = "catppuccin",
   opts = {
-    background = {
-      light = "latte",
-      dark = "mocha",
-    },
     color_overrides = {
       mocha = {
         rosewater = "#EA6962",
@@ -38,49 +33,8 @@ return {
         mantle = "#191C1D",
         crust = "#151819",
       },
-      latte = {
-        rosewater = "#c14a4a",
-        flamingo = "#c14a4a",
-        pink = "#945e80",
-        mauve = "#945e80",
-        red = "#c14a4a",
-        maroon = "#c14a4a",
-        peach = "#c35e0a",
-        yellow = "#a96b2c",
-        green = "#6c782e",
-        teal = "#4c7a5d",
-        sky = "#4c7a5d",
-        sapphire = "#4c7a5d",
-        blue = "#45707a",
-        lavender = "#45707a",
-        text = "#654735",
-        subtext1 = "#7b5d44",
-        subtext0 = "#8f6f56",
-        overlay2 = "#a28368",
-        overlay1 = "#b6977a",
-        overlay0 = "#c9aa8c",
-        surface2 = "#A79C86",
-        surface1 = "#C9C19F",
-        surface0 = "#DFD6B1",
-        base = "#fbf1c7",
-        mantle = "#F3EAC1",
-        crust = "#E7DEB7",
-      },
     },
-    styles = {
-      comments = { "italic" },
-      conditionals = {},
-      loops = {},
-      functions = {},
-      keywords = {},
-      strings = {},
-      variables = {},
-      numbers = {},
-      booleans = {},
-      properties = {},
-      types = {},
-      operators = {},
-    },
+    styles = { comments = { "italic" } },
     transparent_background = true,
     show_end_of_buffer = false,
     custom_highlights = function(colors)
@@ -99,11 +53,11 @@ return {
   },
   config = function(_, opts)
     require("catppuccin").setup(opts)
-    vim.cmd [[
+    vim.cmd([[
       set guicursor=n-v-c:block-CursorInsert,i-ci-ve:hor20-CursorInsert,r-cr:hor20-CursorInsert,o:hor50-CursorInsert
       highlight CursorInsert guifg=NONE guibg=#9E8069
       highlight Cursor guifg=NONE guibg=#9E8069
-    ]]
-    vim.api.nvim_command("colorscheme catppuccin")
+      colorscheme catppuccin
+    ]])
   end,
 }
