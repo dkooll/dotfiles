@@ -16,6 +16,8 @@ return {
       { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
       { "<leader>sz",       "<cmd>Telescope zoxide list<cr>",               desc = "Telescope: Zoxide List" },
       { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
+      { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
+      { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -24,7 +26,6 @@ return {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
       'debugloop/telescope-undo.nvim',
-      'aaronhallaert/advanced-git-search.nvim',
       'tpope/vim-fugitive',
       'tpope/vim-rhubarb',
     },
