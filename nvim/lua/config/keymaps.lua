@@ -33,11 +33,9 @@ vim.keymap.set('n', 'w', ':write!<CR>')
 vim.keymap.set('n', 'q', ':q!<CR>', { silent = true })
 map("n", "m", "ciw", opts)
 
--- Left Option/Alt + numbers for percentage-based window sizing vertically
-map("n", "¡", "<cmd>vertical resize 90<CR>", opts)     -- Option + 1 -> 25%
-map("n", "€", "<cmd>vertical resize 135<CR>", opts)    -- Option + 2 -> 35%
-map("n", "£", "<cmd>vertical resize 180<CR>", opts)    -- Option + 3 -> 50%
-map("n", "¢", "<cmd>vertical resize 360<CR>", opts)    -- Option + 4 -> 100%
+-- Resize windows with Option/Alt + or -
+vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)  -- Option + = (plus)  -> increase by 10
+vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)  -- Option + - (minus) -> decrease by 10
 
 for key, cmd in pairs(navigation_keys) do
   -- Navigate between windows in Normal mode
