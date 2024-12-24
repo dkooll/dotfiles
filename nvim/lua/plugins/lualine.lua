@@ -19,7 +19,7 @@ return {
     sections = {
       lualine_a = {},
       lualine_b = {
-        { "fancy_branch", color = { fg = "#7DAEA3", bg = nil } },
+        { "fancy_branch", color = { fg = "#7DAEA3", bg = "NONE" } },
       },
       lualine_c = {
         {
