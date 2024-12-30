@@ -95,7 +95,7 @@
       loop:
         - { src: 'starship.toml', dest: '.config/starship.toml' }
         - { src: '.zshrc', dest: '.zshrc' }
-        - { src: '.tmux.conf', dest: '.tmux.conf' }
+        - { src: 'tmux/.tmux.conf', dest: '.tmux.conf' }
         - { src: 'nvim', dest: '.config/nvim' }
         - { src: 'nvim-dev', dest: '.config/nvim-dev' }
         - { src: '.alacritty.toml', dest: '.alacritty.toml' }
