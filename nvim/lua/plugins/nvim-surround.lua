@@ -2,7 +2,7 @@ return {
   "kylechui/nvim-surround",
   version = "*",
   event = "InsertEnter",
-  opts = {}
+  opts = {}                -- More efficient than empty config function
 }
 
 -- return {

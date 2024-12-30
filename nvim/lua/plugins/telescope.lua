@@ -19,6 +19,7 @@ return {
       { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
       { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
       { "<leader>p",        "<cmd>Telescope treesitter<cr>",                desc = "Telescope: Treesitter List Symbols" },
+      -- add telescope marks
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
