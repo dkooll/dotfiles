@@ -43,9 +43,17 @@
         - repgrep
 
     - name: Install homebrew cask packages
-      homebrew_cask:
-        name: alacritty
+      ansible.builtin.homebrew_cask:
+        name: "{{ item }}"
         state: present
+      loop:
+        - alacritty
+        - ghostty
+
+    # - name: Install homebrew cask packages
+    #   homebrew_cask:
+    #     name: alacritty
+    #     state: present
 
     - name: Install neovim node.js dependencies
       ansible.builtin.command:
