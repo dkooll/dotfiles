@@ -34,9 +34,12 @@
         - { name: tokei, state: present }
         - { name: task, state: present }
 
-    - name: Install serpl using Cargo
+    - name: Install multiple Cargo packages
       ansible.builtin.command:
-        cmd: cargo install serpl
+        cmd: cargo install {{ item }}
+      loop:
+        - serpl
+        - repgrep
 
     - name: Install homebrew cask packages
       homebrew_cask:
