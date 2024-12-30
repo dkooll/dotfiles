@@ -1,0 +1,23 @@
+# By default Reload config with shft + cmd + ,
+background = "#000000"
+background-opacity = 0.40
+background-blur-radius = 35
+
+font-family = MesloLGS NF
+font-size = 12
+cursor-style = block
+cursor-style-blink = false
+shell-integration-features = no-cursor
+
+macos-titlebar-style = hidden
+mouse-hide-while-typing = true
+window-colorspace = "display-p3"
+
+confirm-close-surface = false
+window-decoration = true
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+auto-update = check
+
+adjust-cell-height = 15%
