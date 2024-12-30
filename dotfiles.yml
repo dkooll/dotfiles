@@ -33,6 +33,7 @@
         - { name: tmux, state: present }
         - { name: tokei, state: present }
         - { name: task, state: present }
+      ignore_errors: yes
 
     - name: Install multiple Cargo packages
       ansible.builtin.command:
