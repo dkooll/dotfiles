@@ -61,20 +61,21 @@
         update: yes
         force: yes
 
-    - name: Check if nvim and nvim-dev configuration directories exist
+    - name: Check if configuration directories exist
       ansible.builtin.stat:
         path: "{{ lookup('env', 'HOME') }}/.config/{{ item }}"
-      register: nvim_config_dirs
+      register: config_dirs
       loop:
         - nvim
         - nvim-dev
+        - ghostty
 
-    - name: Create nvim and nvim-dev configuration directories if they do not exist
+    - name: Create configuration directories if they do not exist
       ansible.builtin.file:
         path: "{{ lookup('env', 'HOME') }}/.config/{{ item.item }}"
         state: directory
       when: not item.stat.exists
-      loop: "{{ nvim_config_dirs.results }}"
+      loop: "{{ config_dirs.results }}"
 
     - name: Ensure .tmux/plugins directory exists
       ansible.builtin.file:
