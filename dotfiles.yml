@@ -50,11 +50,6 @@
         - alacritty
         - ghostty
 
-    # - name: Install homebrew cask packages
-    #   homebrew_cask:
-    #     name: alacritty
-    #     state: present
-
     - name: Install neovim node.js dependencies
       ansible.builtin.command:
         cmd: npm install -g neovim
