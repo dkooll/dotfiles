@@ -27,11 +27,10 @@ return {
       button.opts.hl_shortcut = "AlphaShortcut"
       return button
     end, {
-      { "f", "", "Find file", ":Telescope find_files <CR>" },
+      { "f", "", "Find file", ":Telescope fd <CR>" },
       { "n", "", "New file", ":ene <BAR> startinsert <CR>" },
       { "r", "", "Recent files", ":Telescope oldfiles <CR>" },
       { "g", "", "Find text", ":Telescope live_grep <CR>" },
-      { "c", "", "Config", ":e ~/.config/nvim/init.lua <CR>" },
       { "l", "󰒲", "Lazy", ":Lazy<CR>" },
       { "q", "", "Quit", ":qa<CR>" }
     })
@@ -40,7 +39,7 @@ return {
       vim.api.nvim_set_hl(0, group, { foreground = color })
     end
 
-    set_highlight("AlphaHeader", 0xB87333)
+    -- set_highlight("AlphaHeader", 0xB87333)
     set_highlight("AlphaFooter", 0x808080)
     set_highlight("AlphaShortcut", 0x808080)
     set_highlight("AlphaButtons", 0x808080)
