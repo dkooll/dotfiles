@@ -19,6 +19,7 @@ return {
          ███████████ ███    ███ █████████ █████ █████ ████ █████
         ██████  █████████████████████ ████ █████ █████ ████ ██████
 
+                              stable config
      ]]
     dashboard.section.header.val = vim.split(logo, "\n")
     dashboard.section.buttons.val = vim.tbl_map(function(btn)
@@ -39,7 +40,7 @@ return {
       vim.api.nvim_set_hl(0, group, { foreground = color })
     end
 
-    -- set_highlight("AlphaHeader", 0xB87333)
+    set_highlight("AlphaHeader", 0xB87333)
     set_highlight("AlphaFooter", 0x808080)
     set_highlight("AlphaShortcut", 0x808080)
     set_highlight("AlphaButtons", 0x808080)
