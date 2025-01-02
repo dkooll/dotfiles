@@ -3,54 +3,53 @@ return {
     "dnlhc/glance.nvim",
     cmd = "Glance",
     config = function()
-      require("glance").setup({
-        -- Height of the Glance window
-        height = 30,
+      local hi = vim.api.nvim_set_hl
 
-        -- Border style
+      hi(0, "GlanceListFilepath", { fg = "#9E8069" })
+      hi(0, "GlanceWinBarFilename", { fg = "#9E8069" })
+      hi(0, "GlanceWinBarFilepath", { fg = "#9E8069" })
+      hi(0, "GlanceListCursorLine", { bg = "NONE" })
+      hi(0, "GlancePreviewMatch", { fg = "#9E8069", bg = "NONE" }) --
+      hi(0, "GlancePreviewCursorLine", { bg = "NONE" })
+      hi(0, "GlanceMatch", { fg = "NONE", bg = "NONE" })
+      hi(0, "GlanceListMatch", { fg = "#9E8069", bg = "NONE" })
+      hi(0, "GlancePreviewNormal", { fg = "NONE", bg = "NONE" })
+      hi(0, "GlancePreview", { fg = "NONE", bg = "NONE" })
+      hi(0, "GlanceNormal", { fg = "NONE", bg = "NONE" })
+      hi(0, "GlancePreviewLineNr", { fg = "NONE", bg = "NONE" })
+      hi(0, "GlancePreviewKeyword", { fg = "#808080", bg = "#808080" })
+
+      require("glance").setup({
+        height = 30,
         border = {
           enable = true,
           characters = {
             '╭', '─', '╮',
-            '│',      '│',
+            '│', '│',
             '╰', '─', '╯'
           },
-          highlight = "Comment",
         },
-
-        -- Preview window options
         preview_win_opts = {
-          cursorline = true,    -- Highlight current line
-          number = false,        -- Show line numbers
-          wrap = true,          -- Wrap long lines
+          cursorline = true,
+          number = false,
+          wrap = true,
         },
-
-        -- List window position and size
         list = {
-          position = 'right',   -- 'left' or 'right'
-          width = 0.33,        -- Width as percentage (0.1 to 0.5)
+          position = 'right',
+          width = 0.33,
         },
-
-        -- Theme settings
         theme = {
-          enable = true,        -- Use your colorscheme colors
-          mode = 'auto',       -- 'brighten', 'darken', or 'auto'
+          enable = false,
         },
-
-        -- Indent settings
         indent_lines = {
-          enable = true,       -- Show indent guides
-          icon = '│',         -- Indent guide character
+          enable = true,
+          icon = '│',
         },
-
-        -- Fold settings
         folds = {
-          fold_closed = '',   -- Icon for closed folds
-          fold_open = '',    -- Icon for open folds
-          folded = true,      -- Auto-fold on startup
+          fold_closed = '',
+          fold_open = '',
+          folded = true,
         },
-
-        -- Window bar (requires Neovim 0.8+)
         winbar = {
           enable = true,
         }
@@ -58,32 +57,3 @@ return {
     end
   }
 }
-
--- return {
---   {
---     "dnlhc/glance.nvim",
---     cmd = "Glance",
---     config = function()
---       require("glance").setup({
---         border = {
---           enable = true,
---           top_char = '─',
---           bottom_char = '─',
---           characters = {
---             '╭', '─', '╮',
---             '│',      '│',
---             '╰', '─', '╯'
---           },
---           highlight = "Comment", -- or "#555555" for a specific grey
---         },
---       })
---     end
---   }
--- }
-
--- return {
---   {
---     'dnlhc/glance.nvim',
---     cmd = 'Glance'
---   }
--- }
