@@ -1,15 +1,20 @@
 return {
   {
     "dnlhc/glance.nvim",
+    keys = {
+      { "gd", "<CMD>Glance definitions<CR>",      desc = "Glance: Go to definition" },
+      { "gr", "<CMD>Glance references<CR>",       desc = "Glance: Show references" },
+      { "gy", "<CMD>Glance type_definitions<CR>", desc = "Glance: Go to type definition" },
+      { "gi", "<CMD>Glance implementations<CR>",  desc = "Glance: Go to implementation" },
+    },
     cmd = "Glance",
     config = function()
       local hi = vim.api.nvim_set_hl
-
       hi(0, "GlanceListFilepath", { fg = "#9E8069" })
       hi(0, "GlanceWinBarFilename", { fg = "#9E8069" })
       hi(0, "GlanceWinBarFilepath", { fg = "#9E8069" })
       hi(0, "GlanceListCursorLine", { bg = "NONE" })
-      hi(0, "GlancePreviewMatch", { fg = "#9E8069", bg = "NONE" }) --
+      hi(0, "GlancePreviewMatch", { fg = "#9E8069", bg = "NONE" }) --need to be adjusted to the right color
       hi(0, "GlancePreviewCursorLine", { bg = "NONE" })
       hi(0, "GlanceMatch", { fg = "NONE", bg = "NONE" })
       hi(0, "GlanceListMatch", { fg = "#9E8069", bg = "NONE" })

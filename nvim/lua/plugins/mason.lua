@@ -134,15 +134,6 @@ return {
       end
     end,
     keys = {
-      -- LSP Navigation
-      { "gd",         vim.lsp.buf.definition,                                                        desc = "Go to definition" },
-      { "gD",         vim.lsp.buf.declaration,                                                       desc = "Go to declaration" },
-      { "gi",         vim.lsp.buf.implementation,                                                    desc = "Go to implementation" },
-      { "go",         vim.lsp.buf.type_definition,                                                   desc = "Go to type definition" },
-      { "gr",         vim.lsp.buf.references,                                                        desc = "Show references" },
-      { "K",          vim.lsp.buf.hover,                                                             desc = "Show hover documentation" },
-      { "gl",         vim.diagnostic.open_float,                                                     desc = "Show line diagnostics" },
-
       -- LSP Actions
       { "<leader>la", vim.lsp.buf.code_action,                                                       desc = "Code actions" },
       { "<leader>lA", vim.lsp.buf.range_code_action,                                                 mode = "v",                              desc = "Range code actions" },
