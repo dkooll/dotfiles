@@ -3,6 +3,9 @@ return {
   enabled = true,
   event = "VimEnter",
   lazy = true,
+  keys = {
+    { ";", "<cmd>Alpha<CR>", desc = "Dashboard: Alpha Menu" },
+  },
   opts = function()
     local dashboard = require("alpha.themes.dashboard")
 
@@ -25,11 +28,10 @@ return {
       button.opts.hl_shortcut = "AlphaShortcut"
       return button
     end, {
-      { "f", "", "Find file", ":Telescope find_files <CR>" },
+      { "f", "", "Find file", ":Telescope fd <CR>" },
       { "n", "", "New file", ":ene <BAR> startinsert <CR>" },
       { "r", "", "Recent files", ":Telescope oldfiles <CR>" },
       { "g", "", "Find text", ":Telescope live_grep <CR>" },
-      { "c", "", "Config", ":e ~/.config/nvim/init.lua <CR>" },
       { "l", "󰒲", "Lazy", ":Lazy<CR>" },
       { "q", "", "Quit", ":qa<CR>" }
     })
