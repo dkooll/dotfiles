@@ -1,12 +1,15 @@
 local api = vim.api
 local opt = vim.opt
 
+-- Create a general augroup
+local myGroup = api.nvim_create_augroup("MyAutocmds", { clear = true })
+
 -- Helper function for creating autocommands
-local function autocmd(event, pattern, callback, group)
+local function autocmd(event, pattern, callback)
   api.nvim_create_autocmd(event, {
     pattern = pattern,
     callback = callback,
-    group = group
+    group = myGroup,
   })
 end
 
@@ -14,20 +17,14 @@ end
 opt.formatoptions:remove({ 'c', 'r', 'o' })
 
 -- Remove all trailing whitespace on save
-local TrimWhiteSpaceGrp = api.nvim_create_augroup("TrimWhiteSpaceGrp", { clear = true })
 autocmd("BufWritePre", "*", function()
-  local save_cursor = api.nvim_win_get_cursor(0)
-  vim.cmd([[%s/\s\+$//e]])
-  api.nvim_win_set_cursor(0, save_cursor)
-end, TrimWhiteSpaceGrp)
+  vim.cmd([[keeppatterns %s/\s\+$//e]])
+end)
 
--- Wrap words "softly" (no carriage return) in mail buffer
+-- Wrap words "softly" in mail buffers
 autocmd("FileType", "mail", function()
-  opt.textwidth = 0
-  opt.wrapmargin = 0
   opt.wrap = true
   opt.linebreak = true
-  opt.columns = 80
   opt.colorcolumn = "80"
 end)
 
@@ -51,22 +48,23 @@ autocmd("FileType", "man", function()
   vim.keymap.set('n', 'q', ':quit<CR>', { buffer = true, silent = true })
 end)
 
--- Apply the cursor line highlight setting after any color scheme is loaded
-local myGroup = api.nvim_create_augroup("MyColorSchemeFixes", { clear = true })
+-- Apply the cursor line highlight after any colorscheme is loaded
 autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
-end, myGroup)
+end)
 
 -- Enable spell checking for certain file types
 autocmd({ "BufRead", "BufNewFile" }, { "*.txt", "*.md", "*.tex" }, function()
   opt.spell = false
-  opt.spelllang = "en,de"
+  opt.spelllang = { "en", "de" }
 end)
 
--- Use LspAttach autocommand to only map the following keys
--- after the language server attaches to the current buffer
+-- Map keys after LSP attaches to the buffer
 autocmd('LspAttach', '*', function(ev)
-  vim.keymap.set('n', '<leader>v', "<cmd>vsplit | lua vim.lsp.buf.definition()<CR>", { buffer = ev.buf })
+  vim.keymap.set('n', '<leader>v', function()
+    vim.cmd('vsplit')
+    vim.lsp.buf.definition()
+  end, { buffer = ev.buf })
 end)
 
 -- Set filetype for Terraform files

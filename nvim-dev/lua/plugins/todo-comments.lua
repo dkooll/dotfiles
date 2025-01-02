@@ -4,6 +4,12 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   cmd = { "TodoTrouble", "TodoTelescope" },
   event = { "BufReadPost", "BufNewFile" },
+  keys = {
+    { "<leader>tt", "<cmd>TodoTelescope<cr>", desc = "Todo: Open Todo List" },
+    { "<leader>tq", "<cmd>TodoQuickFix<cr>",  desc = "Todo: Add to Quickfix" },
+    { "<leader>tl", "<cmd>TodoLocList<cr>",   desc = "Todo: Add to Location List" },
+    { "<leader>tT", "<cmd>TodoTrouble<cr>",   desc = "Todo: Open Trouble" },
+  },
   config = function()
     require("todo-comments").setup({
       keywords = {

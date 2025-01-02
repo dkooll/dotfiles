@@ -1,48 +1,45 @@
 local opts = { noremap = true, silent = true }
 
-local navigation_keys = {
-  Up = "k",
-  Down = "j",
-  Left = "h",
-  Right = "l",
-}
+-- Use Ctrl+hjkl for window movement
+vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
 
-local map = vim.keymap.set
+-- Move selected line / block of text in visual mode
+vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
 
--- map("n", "<C-Space>", ":WhichKey \\<space><cr>", opts)
-map("n", "<C-d>", "<C-d>zz", opts)
-map("n", "<C-u>", "<C-u>zz", opts)
-map("v", "J", ":m '>+1<CR>gv=gv", opts)
-map("v", "K", ":m '<-2<CR>gv=gv", opts)
-map("n", "<leader><leader>", ":Telescope buffers<CR>", opts)
-map("n", "m", "ciw", opts)
+-- scrolls up and down half a page centered
+vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
+vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)
 
 -- Remap for dealing with visual line wraps
-map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
-map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 
 -- better indenting
-map("v", "<", "<gv")
-map("v", ">", ">gv")
+vim.keymap.set("v", "<", "<gv", opts)
+vim.keymap.set("v", ">", ">gv", opts)
 
 -- paste over currently selected text without yanking it
-map("v", "p", '"_dp')
-map("v", "P", '"_dP')
+vim.keymap.set("v", "p", '"_dp', opts)
+vim.keymap.set("v", "P", '"_dP', opts)
 
--- Fast saving
---vim.keymap.set('n', '<Leader>w', ':write!<CR>')
---vim.keymap.set('n', '<Leader>q', ':q!<CR>', { silent = true })
-vim.keymap.set('n', 'w', ':write!<CR>')
-vim.keymap.set('n', 'q', ':q!<CR>', { silent = true })
+-- quick save and quit
+vim.keymap.set('n', 'w', ':write!<CR>', opts)
+vim.keymap.set('n', 'q', ':q!<CR>', opts)
 
--- Exit on jj and jk
-vim.keymap.set('i', 'jj', '<ESC>')
-vim.keymap.set('i', 'jk', '<ESC>')
+-- quick change word under cursor
+vim.keymap.set("n", "m", "ciw", opts)
 
-for key, cmd in pairs(navigation_keys) do
-  -- Navigate between windows in Normal mode
-  vim.keymap.set("n", "<Esc><" .. key .. ">", ":wincmd " .. cmd .. "<CR>", { noremap = true })
+-- Resize windows with Option/Alt + or -
+vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)
+vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)
 
-  -- Use Option (Meta) + arrow keys to navigate between windows in Terminal mode
-  vim.keymap.set("t", "<M-" .. key .. ">", "<C-\\><C-n>:wincmd " .. cmd .. "<CR>", { noremap = true })
-end
+-- Buffer management keymaps
+vim.keymap.set("n", "<Tab>", ":bnext<CR>", opts)
+vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", opts)
+
+-- Clear search highlight with Esc
+vim.keymap.set("n", "<Esc>", "<cmd>noh<CR><Esc>", { desc = "Clear hlsearch", silent = true })

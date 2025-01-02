@@ -5,7 +5,21 @@ return {
     version = false,
     lazy = true,
     keys = {
-      { "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "Show buffers" },
+      { "<leader>sf",       "<cmd>Telescope fd<cr>",                        desc = "Telescope: Find Files" },
+      { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
+      { "<leader><leader>", "<cmd>Telescope buffers<cr>",                   desc = "Telescope: Buffers" },
+      { "<leader>sh",       "<cmd>Telescope help_tags<cr>",                 desc = "Telescope: Help Tags" },
+      { "<leader>sH",       "<cmd>Telescope highlights<cr>",                desc = "Telescope: Find HighLight Groups" },
+      { "<leader>so",       "<cmd>Telescope oldfiles<cr>",                  desc = "Telescope: Recent Files" },
+      { "<leader>sR",       "<cmd>Telescope registers<cr>",                 desc = "Telescope: Registers" },
+      { "<leader>sF",       "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Telescope: Current Buffer fuzzy Find" },
+      { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
+      { "<leader>sz",       "<cmd>Telescope zoxide list<cr>",               desc = "Telescope: Zoxide List" },
+      { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
+      { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
+      { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
+      { "<leader>p",        "<cmd>Telescope treesitter<cr>",                desc = "Telescope: Treesitter List Symbols" },
+      -- add telescope marks
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
@@ -14,7 +28,6 @@ return {
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
       'debugloop/telescope-undo.nvim',
-      'aaronhallaert/advanced-git-search.nvim',
       'tpope/vim-fugitive',
       'tpope/vim-rhubarb',
     },
@@ -24,7 +37,6 @@ return {
       local previewers = require("telescope.previewers")
       local sorters = require("telescope.sorters")
 
-      -- Optimized file previewer
       local new_maker = function(filepath, bufnr, opts)
         opts = opts or {}
         filepath = vim.fn.expand(filepath)
@@ -123,25 +135,23 @@ return {
           },
         },
         pickers = {
-          find_files = {
+          fd = {
+            hidden = true,
+            follow = true,
             find_command = {
               "fd",
               "--type", "f",
-              "--strip-cwd-prefix",
               "--hidden",
               "--follow",
               "--exclude", ".git",
               "--exclude", "node_modules",
               "-E", "*.lock",
             },
-            hidden = true,
-            no_ignore = false,
             previewer = false,
             layout_config = {
               horizontal = {
                 width = 0.5,
                 height = 0.4,
-                preview_width = 0.6,
               },
             },
           },
@@ -208,6 +218,15 @@ return {
               },
             },
           },
+          current_buffer_fuzzy_find = {
+            previewer = false,
+            layout_config = {
+              prompt_position = "top",
+              preview_cutoff = 120,
+              width = 0.5,
+              height = 0.4,
+            },
+          },
           lsp_references = {
             show_line = false,
             layout_config = {
@@ -259,37 +278,26 @@ return {
               preview_width = 0.6,
             },
           },
-          ["advanced-git-search"] = {
-            diff_plugin = "fugitive",
-            git_flags = { "--no-pager" },
-            git_diff_flags = {},
-            show_builtin_git_pickers = false,
-          },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
+              layout_config = {
+                height = 15, -- workaround legendary
+                width = 80,
+              },
+              border = true,
+              prompt_title = false,
               previewer = false,
               initial_mode = "normal",
-              sorting_strategy = 'ascending',
-              layout_strategy = 'horizontal',
-              layout_config = {
-                horizontal = {
-                  width = 0.5,
-                  height = 0.4,
-                  preview_width = 0.6,
-                },
-              },
             })
-          },
+          }
         }
       }
 
-      -- Load extensions efficiently
       local extensions = {
         'fzf',
         'ui-select',
         'zoxide',
         'undo',
-        'advanced_git_search'
       }
 
       for _, ext in ipairs(extensions) do
