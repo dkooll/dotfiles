@@ -223,6 +223,8 @@ return {
             layout_config = {
               prompt_position = "top",
               preview_cutoff = 120,
+              width = 0.5,
+              height = 0.4,
             },
           },
           lsp_references = {
@@ -278,19 +280,16 @@ return {
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown({
+              layout_config = {
+                height = 15, -- workaround legendary
+                width = 80,
+              },
+              border = true,
+              prompt_title = false,
               previewer = false,
               initial_mode = "normal",
-              sorting_strategy = 'ascending',
-              layout_strategy = 'horizontal',
-              layout_config = {
-                horizontal = {
-                  width = 0.5,
-                  height = 0.4,
-                  preview_width = 0.6,
-                },
-              },
             })
-          },
+          }
         }
       }
 
