@@ -31,19 +31,19 @@ return {
       },
       keymaps = {
         {
-          itemgroup = "Core Reference",
-          description = "Custom Key Mapping Reference",
+          itemgroup = "Core",
+          description = "Custom keybindings",
           keymaps = {
-            -- Window navigation
-            { "<C-w> Left",  "Move to left window",  mode = { "n" }, description = "Move to left window" },
-            { "<C-w> Down",  "Move to window below", mode = { "n" }, description = "Move to window below" },
-            { "<C-w> Up",    "Move to window above", mode = { "n" }, description = "Move to window above" },
-            { "<C-w> Right", "Move to right window", mode = { "n" }, description = "Move to right window" },
+            -- window navigation - showing intuitive keys but executing vim commands
+            { "<C-w> Left",  "<C-w>h", description = "Move to left window" },
+            { "<C-w> Down",  "<C-w>j", description = "Move to window below" },
+            { "<C-w> Up",    "<C-w>k", description = "Move to window above" },
+            { "<C-w> Right", "<C-w>l", description = "Move to right window" },
           }
         },
         {
-          itemgroup = "Tmux Reference",
-          description = "Tmux Key Mapping Reference",
+          itemgroup = "Tmux",
+          description = "Tmux Key Mapping Reference Only",
           keymaps = {
             { "<C-a> o",          "Cycle through panes",       mode = { "n" }, description = "Tmux: cycle through panes" },
             { "<C-a> Left",       "Move to left pane",         mode = { "n" }, description = "Tmux: move to left pane" },
