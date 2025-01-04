@@ -17,7 +17,7 @@ return {
       hi(0, "GlancePreviewMatch", { fg = "#9E8069", bg = "#383838" })
       hi(0, "GlancePreviewCursorLine", { bg = "NONE" })
       hi(0, "GlanceMatch", { fg = "NONE", bg = "NONE" })
-      hi(0, "GlanceListMatch", { fg = "#9E8069", bg = "NONE" })
+      hi(0, "GlanceListMatch", { fg = "#9E8069", bg = "#383838" })
       hi(0, "GlancePreviewNormal", { fg = "NONE", bg = "NONE" })
       hi(0, "GlancePreview", { fg = "NONE", bg = "NONE" })
       hi(0, "GlanceNormal", { fg = "NONE", bg = "NONE" })
