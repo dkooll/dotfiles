@@ -1,10 +1,10 @@
 local opts = { noremap = true, silent = true }
 
--- Use Ctrl+hjkl for window movement
-vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
-vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
-vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
-vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+-- Window movement with Ctrl+w followed by arrows
+vim.keymap.set('n', '<C-w><Left>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-w><Down>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-w><Up>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-w><Right>', '<C-w>l', opts)
 
 -- Move selected line / block of text in visual mode
 vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
