@@ -35,10 +35,16 @@ return {
           description = "Custom keybindings",
           keymaps = {
             -- window navigation - showing intuitive keys but executing vim commands
-            { "<C-w> Left",  "<C-w>h", description = "Move to left window" },
-            { "<C-w> Down",  "<C-w>j", description = "Move to window below" },
-            { "<C-w> Up",    "<C-w>k", description = "Move to window above" },
-            { "<C-w> Right", "<C-w>l", description = "Move to right window" },
+            { "<C-w> Left",  "<C-w>h",       description = "Move to left window" },
+            { "<C-w> Down",  "<C-w>j",       description = "Move to window below" },
+            { "<C-w> Up",    "<C-w>k",       description = "Move to window above" },
+            { "<C-w> Right", "<C-w>l",       description = "Move to right window" },
+            -- move text up and down in visual mode
+            { "<S-k>",       mode = { "v" }, description = "Move selected line up" },
+            { "<S-j>",       mode = { "v" }, description = "Move selected line down" },
+            -- centered scrolling
+            { "<C-d>",       "<C-d>zz",      description = "Scroll down half page centered" },
+            { "<C-u>",       "<C-u>zz",      description = "Scroll up half page centered" },
           }
         },
         {
@@ -46,8 +52,6 @@ return {
           description = "Tmux Key Mapping Reference Only",
           keymaps = {
             { "<C-a> o",          "Cycle through panes",       mode = { "n" }, description = "Tmux: cycle through panes" },
-            { "<C-a> Left",       "Move to left pane",         mode = { "n" }, description = "Tmux: move to left pane" },
-            { "<C-a> Right",      "Move to right pane",        mode = { "n" }, description = "Tmux: move to right pane" },
             { "<C-a> Up",         "Move to pane above",        mode = { "n" }, description = "Tmux: move to pane above" },
             { "<C-a> Down",       "Move to pane below",        mode = { "n" }, description = "Tmux: move to pane below" },
             { "<C-a> Left/Right", "Switch tmux sessions",      mode = { "n" }, description = "Tmux: switch between sessions" },
