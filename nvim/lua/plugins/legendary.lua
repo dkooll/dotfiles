@@ -32,7 +32,7 @@ return {
       keymaps = {
         {
           itemgroup = "Core Reference",
-          description = "Custom keybindings",
+          description = "Custom Key Mapping Reference",
           keymaps = {
             -- Window navigation
             { "<C-w> Left",  "Move to left window",  mode = { "n" }, description = "Move to left window" },
@@ -43,7 +43,7 @@ return {
         },
         {
           itemgroup = "Tmux Reference",
-          description = "Tmux key bindings",
+          description = "Tmux Key Mapping Reference",
           keymaps = {
             { "<C-a> o",          "Cycle through panes",       mode = { "n" }, description = "Tmux: cycle through panes" },
             { "<C-a> Left",       "Move to left pane",         mode = { "n" }, description = "Tmux: move to left pane" },
