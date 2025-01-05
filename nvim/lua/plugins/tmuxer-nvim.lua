@@ -1,6 +1,12 @@
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
+  opts = {
+    layout_config = {
+      height = 15,
+      width = 80,
+    }
+  },
   keys = {
     {
       "<leader>tc",
