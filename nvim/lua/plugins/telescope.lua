@@ -285,7 +285,6 @@ return {
                 width = 80,
               },
               border = true,
-              prompt_title = false,
               previewer = false,
               initial_mode = "normal",
             })
