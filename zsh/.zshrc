@@ -26,6 +26,7 @@ eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/fzf-git.sh/fzf-git.sh
+source ~/.ai
 
 # FZF setup
 eval "$(fzf --zsh)"
