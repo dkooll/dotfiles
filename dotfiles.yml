@@ -33,6 +33,7 @@
         - { name: tmux, state: present }
         - { name: tokei, state: present }
         - { name: task, state: present }
+        - { name: imagemagick, state: present }
       ignore_errors: yes
 
     - name: Install multiple Cargo packages
@@ -49,6 +50,7 @@
       loop:
         - alacritty
         - ghostty
+        - kitty
 
     - name: Install neovim node.js dependencies
       ansible.builtin.command:
