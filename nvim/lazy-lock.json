@@ -49,7 +49,7 @@
   "remote-nvim.nvim": { "branch": "main", "commit": "66fc20fd259401c7bb6ac5189ecb6283c2eb65d2" },
   "render-markdown.nvim": { "branch": "main", "commit": "d7b646f2e6136d963e1bd3abbb9e2ac3fa90837a" },
   "rust-tools.nvim": { "branch": "master", "commit": "676187908a1ce35ffcd727c654ed68d851299d3e" },
-  "schema": { "branch": "main", "commit": "e3ccebc9d484fdaabb70301c64ca5376686641ef" },
+  "schema": { "branch": "main", "commit": "d00f55ea53648bc4eef93ebc2b01e790ca482bd8" },
   "schemastore.nvim": { "branch": "main", "commit": "b992bb1821fabb11db7fea4ecc7f769b11678cb2" },
   "searchbox.nvim": { "branch": "main", "commit": "ed230583c78795526b3d4585ac1460c108e26213" },
   "snacks.nvim": { "branch": "main", "commit": "d2b2b7bcbf9814d61f2e8049affed750509f44e3" },
