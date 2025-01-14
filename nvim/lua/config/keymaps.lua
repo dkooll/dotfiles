@@ -1,5 +1,9 @@
 local opts = { noremap = true, silent = true }
 
+-- Change window layout
+vim.keymap.set('n', ',h', '<C-w>H', opts)  -- ,h moves window left
+vim.keymap.set('n', ',l', '<C-w>L', opts)  -- ,l moves window right
+
 -- Window movement with Ctrl+w followed by arrows
 vim.keymap.set('n', '<C-w><Left>', '<C-w>h', opts)
 vim.keymap.set('n', '<C-w><Down>', '<C-w>j', opts)
