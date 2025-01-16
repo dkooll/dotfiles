@@ -22,3 +22,5 @@ auto-update = check
 
 # adjust-cell-height = 15%
 adjust-cell-height = 10%
+
+unfocused-split-opacity = 1
