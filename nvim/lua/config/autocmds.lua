@@ -67,14 +67,6 @@ create_autocmd({ "BufRead", "BufNewFile" }, { "*.txt", "*.md", "*.tex" }, functi
   opt.spelllang = { "en", "de" }
 end)
 
--- Keymaps when LSP attaches
-create_autocmd("LspAttach", "*", function(ev)
-  vim.keymap.set('n', '<leader>v', function()
-    vim.cmd('vsplit')
-    vim.lsp.buf.definition()
-  end, { buffer = ev.buf })
-end)
-
 -- Set Terraform filetype
 create_autocmd({ "BufRead", "BufNewFile" }, { "*.tf", "*.tfvars", "*.tfstate" }, function()
   vim.bo.filetype = "terraform"

@@ -31,7 +31,7 @@ return {
       },
       keymaps = {
         {
-          itemgroup = "Core",
+          itemgroup = "Custom",
           description = "Custom keybindings",
           keymaps = {
             -- window navigation - showing intuitive keys but executing vim commands
@@ -48,8 +48,17 @@ return {
           }
         },
         {
+          itemgroup = "Builtin",
+          description = "Builtin keybindings",
+          keymaps = {
+            { "<C-w>s", ":split<CR>",    description = "Horizontal split" },
+            { "<C-w>v", ":vsplit<CR>",   description = "Vertical split" },
+            { "<C-w>=", ":wincmd =<CR>", description = "Equalize window sizes" },
+          }
+        },
+        {
           itemgroup = "Tmux",
-          description = "Tmux Key Mapping Reference Only",
+          description = "Tmux keybindings reference only",
           keymaps = {
             { "<C-a> o",          "Cycle through panes",       mode = { "n" }, description = "Tmux: cycle through panes" },
             { "<C-a> Up",         "Move to pane above",        mode = { "n" }, description = "Tmux: move to pane above" },
