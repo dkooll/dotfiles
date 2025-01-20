@@ -4,7 +4,7 @@ return {
   ft = { "terraform", "hcl", "tf" },
   keys = {
     {
-      "<leader>td",
+      "<leader>vs",
       function()
         require("diffy").validate_resources()
       end,
