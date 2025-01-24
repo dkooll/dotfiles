@@ -73,7 +73,7 @@ return {
     },
     cmd = "Neogit",
     keys = {
-      { "<leader>gg", "<cmd>Neogit<CR>", desc = "Open Neogit" },
+      { "<leader>gg", "<cmd>Neogit<CR>", desc = "Neogit: Open Neogit" },
     },
     opts = {
       -- Add any Neogit-specific options here
