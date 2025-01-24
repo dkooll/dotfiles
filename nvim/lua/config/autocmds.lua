@@ -29,13 +29,6 @@ create_autocmd("BufWritePre", "*", function()
   end
 end)
 
--- Wrap words in mail buffers
-create_autocmd("FileType", "mail", function()
-  opt.wrap = true
-  opt.linebreak = true
-  opt.colorcolumn = '80'
-end)
-
 -- Highlight on yank
 api.nvim_set_hl(0, 'YankHighlight', { fg = '#9E8069', bg = 'NONE' })
 create_autocmd("TextYankPost", "*", function()
@@ -59,12 +52,6 @@ end)
 -- Clear cursor line after colorscheme load
 create_autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
-end)
-
--- Enable spell checking for text-like files
-create_autocmd({ "BufRead", "BufNewFile" }, { "*.txt", "*.md", "*.tex" }, function()
-  opt.spell = false
-  opt.spelllang = { "en", "de" }
 end)
 
 -- Set Terraform filetype
