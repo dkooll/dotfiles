@@ -35,7 +35,8 @@ return {
           -- model = "deepseek-chat",
           model = "deepseek-reasoner",
           parameters = {
-            temperature = 0.7,
+            --temperature = 0.7,
+            temperature = 0.0, --code, math specific
             max_tokens = 2048
           }
         },
