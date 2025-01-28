@@ -2,6 +2,7 @@ return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
   opts = {
+    max_depth = 2,
     layout_config = {
       height = 15,
       width = 80,
