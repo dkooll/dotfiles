@@ -32,13 +32,13 @@ return {
           cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
           color = { fg = "#7DAEA3", bg = "NONE" }
         },
-        -- {
-        --   "filename",
-        --   cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
-        --   color = { fg = "#D3869B", bg = "NONE" },
-        --   path = 1,
-        --   symbols = { modified = "  " }
-        -- },
+        {
+          "filename",
+          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
+          color = { fg = "#D3869B", bg = "NONE" },
+          path = 1,
+          symbols = { modified = "  " }
+        },
         {
           "fancy_lsp_servers",
           cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
