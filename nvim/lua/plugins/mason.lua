@@ -55,17 +55,17 @@ return {
           filetypes = { "terraform", "tf", "terraform-vars" },
           root_dir = lspconfig.util.root_pattern(".terraform", ".git") or vim.fs.dirname
         },
-        yamlls = {
-          settings = {
-            yaml = {
-              schemas = {
-                ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-                ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
-                "docker-compose*.yml"
-              }
-            }
-          }
-        },
+        -- yamlls = {
+        --   settings = {
+        --     yaml = {
+        --       schemas = {
+        --         ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+        --         ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] =
+        --         "docker-compose*.yml"
+        --       }
+        --     }
+        --   }
+        -- },
         jsonls = {
           settings = {
             json = {
