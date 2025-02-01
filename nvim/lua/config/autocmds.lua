@@ -47,3 +47,13 @@ end)
 create_autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
 end)
+
+-- Fold column colors
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    vim.cmd([[
+      highlight FoldColumn guifg=#9E8069 guibg=NONE
+      highlight Folded guifg=#9E8069 guibg=NONE
+    ]])
+  end,
+})
