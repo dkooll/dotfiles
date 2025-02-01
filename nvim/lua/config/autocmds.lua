@@ -29,12 +29,6 @@ create_autocmd("BufWritePre", "*", function()
   end
 end)
 
--- Highlight on yank
-api.nvim_set_hl(0, 'YankHighlight', { fg = '#9E8069', bg = 'NONE' })
-create_autocmd("TextYankPost", "*", function()
-  vim.highlight.on_yank({ higroup = 'YankHighlight', timeout = 300 })
-end)
-
 -- Go to last location when opening a file
 create_autocmd("BufReadPost", "*", function()
   local mark = api.nvim_buf_get_mark(0, '"')
@@ -52,9 +46,4 @@ end)
 -- Clear cursor line after colorscheme load
 create_autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
-end)
-
--- Set Terraform filetype
-create_autocmd({ "BufRead", "BufNewFile" }, { "*.tf", "*.tfvars", "*.tfstate" }, function()
-  vim.bo.filetype = "terraform"
 end)

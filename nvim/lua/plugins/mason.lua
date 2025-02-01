@@ -52,7 +52,7 @@ return {
         },
         terraformls = {
           cmd = { vim.fn.expand("~/.local/share/nvim/mason/bin/terraform-ls"), "serve" },
-          filetypes = { "terraform", "tf", "terraform-vars" },
+          filetypes = { "terraform", "tf", "terraform-vars", "terraform-stack", "terraform-deploy" },
           root_dir = lspconfig.util.root_pattern(".terraform", ".git") or vim.fs.dirname
         },
         -- yamlls = {
