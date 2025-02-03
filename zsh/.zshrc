@@ -23,7 +23,6 @@ source $ZSH/oh-my-zsh.sh
 [[ -s "/Users/dkool/.gvm/scripts/gvm" ]] && source "/Users/dkool/.gvm/scripts/gvm"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-eval "$(atuin init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/fzf-git.sh/fzf-git.sh
 source ~/.ai
