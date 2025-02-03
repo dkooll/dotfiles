@@ -29,7 +29,6 @@
         - { name: dive, state: present }
         - { name: otree, state: present }
         - { name: rust, state: present }
-        - { name: atuin, state: present }
         - { name: tmux, state: present }
         - { name: tokei, state: present }
         - { name: task, state: present }
