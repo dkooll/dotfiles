@@ -48,12 +48,12 @@ create_autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
 end)
 
--- Fold column colors
-vim.api.nvim_create_autocmd("ColorScheme", {
-  callback = function()
-    vim.cmd([[
-      highlight FoldColumn guifg=#9E8069 guibg=NONE
-      highlight Folded guifg=#9E8069 guibg=NONE
-    ]])
-  end,
-})
+-- Configure fold column colors using Lua API
+local function setup_fold_colors()
+  api.nvim_set_hl(0, 'FoldColumn', { fg = '#9E8069', bg = 'NONE' })
+  api.nvim_set_hl(0, 'Folded', { fg = '#9E8069', bg = 'NONE' })
+end
+
+create_autocmd("ColorScheme", "*", setup_fold_colors)
+-- Run immediately in case colorscheme is already loaded
+setup_fold_colors()

@@ -54,6 +54,10 @@ return {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {
           file_types = { "markdown", "Avante" },
+          config = {
+            disable_background = true,
+            border = 'none',
+          },
           code = {
             disable_background = true,
             border = 'none',
