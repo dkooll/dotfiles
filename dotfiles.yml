@@ -24,7 +24,7 @@
         - { name: mingw-w64, state: present }
         - { name: zsh-autosuggestions, state: present }
         - { name: zoxide, state: present }
-        # - { name: tenv, state: present }
+        - { name: tfenv, state: present }
         - { name: eza, state: present }
         - { name: dive, state: present }
         - { name: otree, state: present }
@@ -33,6 +33,11 @@
         - { name: tokei, state: present }
         - { name: task, state: present }
         - { name: imagemagick, state: present }
+        - { name: fzf, state: present }
+        - { name: gh, state: present }
+        - { name: az, state: present }
+        - { name: lazygit, state: present }
+
       ignore_errors: yes
 
     - name: Install multiple Cargo packages

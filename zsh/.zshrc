@@ -19,13 +19,14 @@ export SAVEHIST=1000
 setopt INC_APPEND_HISTORY SHARE_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_IGNORE_DUPS HIST_FIND_NO_DUPS HIST_IGNORE_SPACE HIST_VERIFY EXTENDED_HISTORY
 
 # Source scripts and initialize tools
-source $ZSH/oh-my-zsh.sh
 [[ -s "/Users/dkool/.gvm/scripts/gvm" ]] && source "/Users/dkool/.gvm/scripts/gvm"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/fzf-git.sh/fzf-git.sh
 source ~/.ai
+
+# autocomplete
+autoload -Uz compinit && compinit
 
 # FZF setup
 eval "$(fzf --zsh)"
@@ -42,12 +43,12 @@ _fzf_compgen_dir() {
 }
 
 # SSH agent and keys
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    eval "$(ssh-agent -s)"
-fi
-for key in ~/.ssh/id_rsa_*; do
-    [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
-done
+# if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+#     eval "$(ssh-agent -s)"
+# fi
+# for key in ~/.ssh/id_rsa_*; do
+#     [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
+# done
 
 # Alias definitions
 alias tf='terraform'

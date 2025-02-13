@@ -57,3 +57,10 @@ end
 create_autocmd("ColorScheme", "*", setup_fold_colors)
 -- Run immediately in case colorscheme is already loaded
 setup_fold_colors()
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "*.tf", "*.tfvars", "*.tfstate" },
+  callback = function()
+    vim.bo.filetype = "terraform"
+  end,
+})
