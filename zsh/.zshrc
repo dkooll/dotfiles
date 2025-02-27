@@ -43,12 +43,12 @@ _fzf_compgen_dir() {
 }
 
 # SSH agent and keys
-# if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-#     eval "$(ssh-agent -s)"
-# fi
-# for key in ~/.ssh/id_rsa_*; do
-#     [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
-# done
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    eval "$(ssh-agent -s)"
+fi
+for key in ~/.ssh/id_rsa_*; do
+    [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
+done
 
 # Alias definitions
 alias tf='terraform'
