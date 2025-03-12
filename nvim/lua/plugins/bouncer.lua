@@ -10,11 +10,7 @@ return {
   },
   config = function()
     require("bouncer").setup({
-      namespace = "cloudnationhq",
-
-      -- private_registry = {
-      --   organization = "azyphon" --host defaults to app.terraform.io
-      -- }
+      namespace = "cloudnationhq"
     })
   end,
 }
