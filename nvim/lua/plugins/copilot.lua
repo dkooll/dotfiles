@@ -72,12 +72,49 @@ return {
       { "<leader>ck", "<cmd>CopilotChatCommit<cr>",    desc = "CopilotChat: Generate commit" },
     },
     opts = {
+      model = "gpt-4o",
       show_help = false,
       separator = "",
       show_folds = false,
       window = {
         layout = 'vertical',
         border = 'none',
+      },
+      mappings = {
+        complete = {
+          insert = '<Tab>',
+        },
+        close = {
+          normal = 'q',
+          insert = '<C-c>',
+        },
+        reset = {
+          normal = '<C-l><C-l>',
+          insert = '<C-x>',
+        },
+        submit_prompt = {
+          normal = '<CR>',   -- Changed to Enter key for normal mode
+          insert = '<C-CR>', -- Changed to Ctrl+Enter for insert mode
+        },
+        accept_diff = {
+          normal = '<C-y>',
+          insert = '<C-y>',
+        },
+        yank_diff = {
+          normal = 'gy',
+        },
+        show_diff = {
+          normal = 'gd',
+        },
+        show_system_prompt = {
+          normal = 'gc',
+        },
+        show_info = {
+          normal = 'gi',
+        },
+        show_context = {
+          normal = 'gs',
+        },
       }
     },
   }

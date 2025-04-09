@@ -3,9 +3,12 @@ return {
   dependencies = { "nvim-telescope/telescope.nvim" },
   opts = {
     max_depth = 2,
+    theme = "ivy",
+    previewer = false,
+    border = true,
     layout_config = {
-      height = 15,
-      width = 80,
+      width = 0.5,
+      height = 0.31,
     }
   },
   keys = {

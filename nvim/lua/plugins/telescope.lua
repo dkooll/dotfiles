@@ -14,7 +14,6 @@ return {
       { "<leader>sR",       "<cmd>Telescope registers<cr>",                 desc = "Telescope: Registers" },
       { "<leader>sF",       "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Telescope: Current Buffer fuzzy Find" },
       { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
-      { "<leader>sz",       "<cmd>Telescope zoxide list<cr>",               desc = "Telescope: Zoxide List" },
       { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
       { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
       { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
@@ -23,7 +22,6 @@ return {
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'jvgrootveld/telescope-zoxide',
       'nvim-tree/nvim-web-devicons',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
@@ -135,9 +133,57 @@ return {
           },
         },
         pickers = {
+          marks = {
+            theme = "ivy",
+            previewer = false,
+            layout_config = {
+              horizontal = {
+                width = 0.5,
+                height = 0.4,
+                preview_width = 0.6,
+              },
+            },
+          },
+
+          commands = {
+            theme = "ivy",
+            previewer = false,
+            layout_config = {
+              horizontal = {
+                width = 0.5,
+                height = 0.4,
+                preview_width = 0.6,
+              },
+            },
+          },
+
+          quickfix = {
+            theme = "ivy",
+            previewer = false,
+            layout_config = {
+              horizontal = {
+                width = 0.5,
+                height = 0.4,
+                preview_width = 0.6,
+              },
+            },
+          },
+
+          quickfixhistory = {
+            theme = "ivy",
+            previewer = false,
+            layout_config = {
+              horizontal = {
+                width = 0.5,
+                height = 0.4,
+                preview_width = 0.6,
+              },
+            },
+          },
           fd = {
             hidden = true,
             follow = true,
+            theme = "ivy",
             find_command = {
               "fd",
               "--type", "f",
@@ -156,6 +202,7 @@ return {
             },
           },
           git_files = {
+            theme = "ivy",
             hidden = true,
             previewer = false,
             show_untracked = true,
@@ -179,6 +226,7 @@ return {
             },
           },
           oldfiles = {
+            theme = "ivy",
             previewer = false,
             path_display = { "smart" },
             layout_config = {
@@ -190,6 +238,7 @@ return {
             },
           },
           grep_string = {
+            theme = "ivy",
             only_sort_text = true,
             previewer = true,
             word_match = "-w",
@@ -202,6 +251,7 @@ return {
             },
           },
           buffers = {
+            theme = "ivy",
             previewer = false,
             show_all_buffers = true,
             sort_mru = true,
@@ -219,12 +269,13 @@ return {
             },
           },
           current_buffer_fuzzy_find = {
+            theme = "ivy",
             previewer = false,
             layout_config = {
               prompt_position = "top",
               preview_cutoff = 120,
               width = 0.5,
-              height = 0.4,
+              height = 0.3
             },
           },
           lsp_references = {
@@ -279,14 +330,26 @@ return {
             },
           },
           ["ui-select"] = {
-            require("telescope.themes").get_dropdown({
+            require("telescope.themes").get_ivy({
               layout_config = {
-                height = 15, -- workaround legendary
-                width = 80,
+                height = 0.3,
+                width = 0.5,
               },
-              border = true,
               previewer = false,
-              initial_mode = "normal",
+              initial_mode = "insert",
+              attach_mappings = function(prompt_bufnr)
+                -- Clear the prompt when opening
+                vim.schedule(function()
+                  if vim.api.nvim_buf_is_valid(prompt_bufnr) then
+                    local prompt = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
+                    if prompt:match("^.") then
+                      local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+                      picker:reset_prompt("")
+                    end
+                  end
+                end)
+                return true
+              end
             })
           }
         }
@@ -295,7 +358,6 @@ return {
       local extensions = {
         'fzf',
         'ui-select',
-        'zoxide',
         'undo',
       }
 
