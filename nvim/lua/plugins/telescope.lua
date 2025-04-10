@@ -137,9 +137,9 @@ return {
             theme = "ivy",
             previewer = false,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -149,9 +149,9 @@ return {
             theme = "ivy",
             previewer = false,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -161,9 +161,9 @@ return {
             theme = "ivy",
             previewer = false,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -173,9 +173,9 @@ return {
             theme = "ivy",
             previewer = false,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -195,9 +195,9 @@ return {
             },
             previewer = false,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
               },
             },
           },
@@ -207,9 +207,9 @@ return {
             previewer = false,
             show_untracked = true,
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -218,9 +218,9 @@ return {
             only_sort_text = true,
             previewer = true,
             layout_config = {
+              width = 0.9,
+              height = 0.75,
               horizontal = {
-                width = 0.9,
-                height = 0.75,
                 preview_width = 0.6,
               },
             },
@@ -230,9 +230,9 @@ return {
             previewer = false,
             path_display = { "smart" },
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -243,9 +243,9 @@ return {
             previewer = true,
             word_match = "-w",
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.9,
-                height = 0.75,
                 preview_width = 0.6,
               },
             },
@@ -261,9 +261,9 @@ return {
               },
             },
             layout_config = {
+              width = 0.5,
+              height = 0.31,
               horizontal = {
-                width = 0.5,
-                height = 0.4,
                 preview_width = 0.6,
               },
             },
@@ -275,7 +275,7 @@ return {
               prompt_position = "top",
               preview_cutoff = 120,
               width = 0.5,
-              height = 0.3
+              height = 0.31
             },
           },
           lsp_references = {
@@ -332,7 +332,7 @@ return {
           ["ui-select"] = {
             require("telescope.themes").get_ivy({
               layout_config = {
-                height = 0.3,
+                height = 0.31,
                 width = 0.5,
               },
               previewer = false,
