@@ -6,6 +6,9 @@ return {
     theme = "ivy",
     previewer = false,
     border = true,
+    parent_highlight = {
+      fg = "#9E8069",
+    },
     layout_config = {
       width = 0.5,
       height = 0.31,
@@ -15,9 +18,10 @@ return {
     {
       "<leader>tc",
       function()
-        require("tmuxer").open_workspace_popup(
-          { name = "workspaces", path = "~/Documents/workspaces" }
-        )
+        require("tmuxer").open_workspace_popup({
+          name = "workspaces",
+          path = "~/Documents/workspaces"
+        })
       end,
       desc = "Tmuxer: Create Tmux Session"
     },

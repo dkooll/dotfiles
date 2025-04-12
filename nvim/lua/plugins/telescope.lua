@@ -3,7 +3,7 @@ return {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     version = false,
-    lazy = true,
+    lazy = false,
     keys = {
       { "<leader>sf",       "<cmd>Telescope fd<cr>",                        desc = "Telescope: Find Files" },
       { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
@@ -354,6 +354,11 @@ return {
           }
         }
       }
+
+      vim.api.nvim_set_hl(0, 'TelescopeSelection', { fg = "#9E8069" })
+      vim.api.nvim_set_hl(0, 'TelescopeSelectionCaret', { fg = "#9E8069" })
+      vim.api.nvim_set_hl(0, 'TelescopePromptPrefix', { fg = "#9E8069" })
+      vim.api.nvim_set_hl(0, 'TelescopeMatching', { fg = "#7DAEA3" })
 
       local extensions = {
         'fzf',
