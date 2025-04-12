@@ -8,6 +8,7 @@ return {
     border = true,
     parent_highlight = {
       fg = "#9E8069",
+      bold = true,
     },
     layout_config = {
       width = 0.5,
