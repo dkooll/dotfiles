@@ -11,7 +11,8 @@ vim.keymap.set("n", "<leader>L", "<cmd>Lazy update<CR>", { desc = "Lazy: Update 
 
 require("lazy").setup("plugins", {
   defaults = {
-    lazy = true
+    lazy = true,
+    colorscheme = { "catppuccin" },
   },
   install = {
     missing = true

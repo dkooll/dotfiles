@@ -7,15 +7,20 @@ return {
   event = "VeryLazy",
   opts = {
     options = {
-      theme = "auto",
+      theme = "catppuccin",
       globalstatus = true,
       icons_enabled = true,
-      component_separators = { left = "", right = "" },
-      section_separators = { left = "", right = "" },
+      component_separators = "",
+      section_separators = "",
       disabled_filetypes = {
         statusline = { "help", "neo-tree", "toggleterm", "alpha" },
         tabline = { "alpha" },
       },
+      refresh = { -- Optimize refresh settings
+        statusline = 1000,
+        tabline = 1000,
+        winbar = 1000,
+      }
     },
     sections = {
       lualine_a = {},

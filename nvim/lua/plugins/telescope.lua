@@ -3,7 +3,7 @@ return {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
     version = false,
-    lazy = false,
+    lazy = true,
     keys = {
       { "<leader>sf",       "<cmd>Telescope fd<cr>",                        desc = "Telescope: Find Files" },
       { "<leader>sg",       "<cmd>Telescope live_grep<cr>",                 desc = "Telescope: Live Grep" },
@@ -22,12 +22,9 @@ return {
     },
     dependencies = {
       'nvim-lua/plenary.nvim',
-      'nvim-tree/nvim-web-devicons',
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
       'nvim-telescope/telescope-ui-select.nvim',
       'debugloop/telescope-undo.nvim',
-      'tpope/vim-fugitive',
-      'tpope/vim-rhubarb',
     },
     config = function()
       local telescope = require('telescope')
