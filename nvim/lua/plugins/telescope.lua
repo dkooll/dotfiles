@@ -31,6 +31,25 @@ return {
       local actions = require('telescope.actions')
       local previewers = require("telescope.previewers")
       local sorters = require("telescope.sorters")
+      -- Create a custom entry display for treesitter that shows "symbol/type" format
+      local ts_entry_display = function(entry)
+        local display = require("telescope.pickers.entry_display")
+
+        -- Create display with name/type separated by "/"
+        local displayer = display.create {
+          separator = "/",
+          items = {
+            { width = nil }, -- Symbol name
+            { width = nil }, -- Symbol type
+          },
+        }
+
+        -- Return formatted display with highlighted type
+        return displayer {
+          entry.text or "",
+          { entry.kind or "", "TelescopeBoldType" }
+        }
+      end
 
       local new_maker = function(filepath, bufnr, opts)
         opts = opts or {}
@@ -214,12 +233,18 @@ return {
           live_grep = {
             only_sort_text = true,
             previewer = true,
+            theme = "ivy",
             layout_config = {
-              width = 0.9,
-              height = 0.75,
+              width = 0.5,
+              height = 0.31,
               horizontal = {
                 preview_width = 0.6,
               },
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+              results = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           oldfiles = {
@@ -286,13 +311,39 @@ return {
             },
           },
           treesitter = {
+            theme = "ivy",
             show_line = false,
+            entry_maker = function(entry)
+              -- Get the default entry maker
+              local make_entry = require("telescope.make_entry")
+              local default_maker = make_entry.gen_from_treesitter({})
+              local result = default_maker(entry)
+
+              -- Store the original display function for fallback
+              local original_display = result.display
+
+              -- Override display function with our custom format
+              result.display = function(tbl)
+                if tbl.kind then
+                  return ts_entry_display(tbl)
+                else
+                  return original_display(tbl)
+                end
+              end
+
+              return result
+            end,
             layout_config = {
               horizontal = {
-                width = 0.9,
-                height = 0.75,
+                width = 0.5,
+                height = 0.31,
                 preview_width = 0.6,
               },
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+              results = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
             symbols = {
               "class",
@@ -320,10 +371,15 @@ return {
           },
           undo = {
             use_delta = true,
-            side_by_side = false,
-            layout_strategy = "horizontal",
+            side_by_side = true,
             layout_config = {
               preview_width = 0.6,
+            },
+            theme = "ivy",
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+              results = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           ["ui-select"] = {
@@ -356,6 +412,7 @@ return {
       vim.api.nvim_set_hl(0, 'TelescopeSelectionCaret', { fg = "#9E8069" })
       vim.api.nvim_set_hl(0, 'TelescopePromptPrefix', { fg = "#9E8069" })
       vim.api.nvim_set_hl(0, 'TelescopeMatching', { fg = "#7DAEA3" })
+      vim.api.nvim_set_hl(0, 'TelescopeBoldType', { fg = "#9E8069", bold = true })
 
       local extensions = {
         'fzf',
