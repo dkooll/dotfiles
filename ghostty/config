@@ -4,7 +4,7 @@ background-opacity = 0.40
 background-blur-radius = 35
 
 font-family = MesloLGS NF
-font-size = 13
+font-size = 14
 font-feature = -liga, -calt, -dlig, -hlig, -clig, -rlig
 cursor-style = block
 cursor-style-blink = false

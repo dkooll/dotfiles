@@ -1,6 +1,3 @@
--- references:
--- https://github.com/nvim-neo-tree/neo-tree.nvim
-
 return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "*",
@@ -23,6 +20,18 @@ return {
     use_popups_for_input = true,
     enable_refresh_on_write = false,
     git_status_async = true,
+    renderers = {
+      file = {
+        { "indent" },
+        { "icon" },
+        { "name",  use_git_status_colors = true },
+      },
+      directory = {
+        { "indent" },
+        { "icon" },
+        { "name",  use_git_status_colors = true },
+      },
+    },
     default_component_configs = {
       indent = {
         with_markers = false,
@@ -53,8 +62,7 @@ return {
       },
     },
     window = {
-      position = "left",
-      width = 35,
+      -- position = "left",
       mapping_options = {
         noremap = true,
         nowait = true,

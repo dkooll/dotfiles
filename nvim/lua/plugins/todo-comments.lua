@@ -5,10 +5,15 @@ return {
   cmd = { "TodoTrouble", "TodoTelescope" },
   event = { "BufReadPost", "BufNewFile" },
   keys = {
-    { "<leader>tt", "<cmd>TodoTelescope<cr>", desc = "Todo: Open Todo List" },
-    { "<leader>tq", "<cmd>TodoQuickFix<cr>",  desc = "Todo: Add to Quickfix" },
-    { "<leader>tl", "<cmd>TodoLocList<cr>",   desc = "Todo: Add to Location List" },
-    { "<leader>tT", "<cmd>TodoTrouble<cr>",   desc = "Todo: Open Trouble" },
+    { "<leader>tt", "<cmd>TodoTelescope previewer=false<cr>",                                    desc = "Todo: Open Todo List" },
+    { "<leader>tf", "<cmd>TodoTelescope keywords=FIX,FIXME,BUG,FIXIT,ISSUE previewer=false<cr>", desc = "Todo: Open Fix List" },
+    { "<leader>td", "<cmd>TodoTelescope keywords=TODO previewer=false<cr>",                      desc = "Todo: Open Todo List" },
+    { "<leader>tn", "<cmd>TodoTelescope keywords=NOTE,INFO previewer=false<cr>",                 desc = "Todo: Open Note List" },
+    { "<leader>th", "<cmd>TodoTelescope keywords=HACK previewer=false<cr>",                      desc = "Todo: Open hack List" },
+    { "<leader>tw", "<cmd>TodoTelescope keywords=WARN,WARNING,XXX previewer=false<cr>",          desc = "Todo: Open warn List" },
+    { "<leader>tq", "<cmd>TodoQuickFix<cr>",                                                     desc = "Todo: Add to Quickfix" },
+    { "<leader>tl", "<cmd>TodoLocList<cr>",                                                      desc = "Todo: Add to Location List" },
+    { "<leader>tT", "<cmd>TodoTrouble<cr>",                                                      desc = "Todo: Open Trouble" },
   },
   config = function()
     require("todo-comments").setup({
