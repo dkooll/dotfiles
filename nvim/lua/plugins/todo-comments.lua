@@ -27,21 +27,21 @@ return {
         TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
       },
       gui_style = {
-        fg = "NONE",                     -- The gui style to use for the fg highlight group.
-        bg = "BOLD",                     -- The gui style to use for the bg highlight group.
+        fg = "NONE",
+        bg = "BOLD",
       },
-      merge_keywords = true,             -- when true, custom keywords will be merged with the defaults
+      merge_keywords = true,
       highlight = {
-        multiline = true,                -- enable multine todo comments
-        multiline_pattern = "^.",        -- lua pattern to match the next multiline from the start of the matched keyword
-        multiline_context = 10,          -- extra lines that will be re-evaluated when changing a line
-        before = "",                     -- "fg" or "bg" or empty
-        keyword = "wide",                -- "fg", "bg", "wide", "wide_bg", "wide_fg" or empty.
-        after = "fg",                    -- "fg" or "bg" or empty
-        pattern = [[.*<(KEYWORDS)\s*:]], -- pattern or table of patterns, used for highlighting (vim regex)
-        comments_only = true,            -- uses treesitter to match keywords in comments only
-        max_line_len = 400,              -- ignore lines longer than this
-        exclude = {},                    -- list of file types to exclude highlighting
+        multiline = true,
+        multiline_pattern = "^.",
+        multiline_context = 10,
+        before = "",
+        keyword = "wide",
+        after = "fg",
+        pattern = [[.*<(KEYWORDS)\s*:]],
+        comments_only = true,
+        max_line_len = 400,
+        exclude = {},
       },
       -- list of highlight groups or use the hex color if hl not found as a fallback
       colors = {
