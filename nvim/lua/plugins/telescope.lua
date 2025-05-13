@@ -148,16 +148,22 @@ return {
             preview_cutoff = 120,
           },
         },
+
         pickers = {
           marks = {
             theme = "ivy",
-            previewer = false,
+            previewer = true,
             layout_config = {
               width = 0.5,
               height = 0.31,
               horizontal = {
                 preview_width = 0.6,
               },
+            },
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+              results = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
 
@@ -372,8 +378,12 @@ return {
           undo = {
             use_delta = true,
             side_by_side = true,
-            layout_config = {
-              preview_width = 0.6,
+              layout_config = {
+              width = 0.5,
+              height = 0.31,
+              horizontal = {
+                preview_width = 0.6,
+              },
             },
             theme = "ivy",
             borderchars = {

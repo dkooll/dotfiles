@@ -34,9 +34,6 @@ vim.keymap.set("v", "P", '"_dP', opts)
 vim.keymap.set('n', 'w', ':write!<CR>', opts)
 vim.keymap.set('n', 'q', ':q!<CR>', opts)
 
--- quick change word under cursor
-vim.keymap.set("n", "m", "ciw", opts)
-
 -- Resize windows with Option/Alt + or -
 vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)
 vim.keymap.set("n", "–", "<cmd>vertical resize -10<CR>", opts)
