@@ -64,22 +64,24 @@ return {
       }
     end
   },
-  {
-    "NeogitOrg/neogit",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
+{
+  "NeogitOrg/neogit",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "sindrets/diffview.nvim",
+    "nvim-telescope/telescope.nvim",
+  },
+  cmd = "Neogit",
+  keys = {
+    { "<leader>gg", "<cmd>Neogit kind=split_below<CR>", desc = "Neogit" },
+  },
+  opts = {
+    disable_signs = true,
+    disable_context_highlighting = true,
+    commit_view = {
+      kind = "tab",
+      position = "tab",
     },
-    cmd = "Neogit",
-    keys = {
-      { "<leader>gg", "<cmd>Neogit<CR>", desc = "Neogit: Open Neogit" },
-    },
-    opts = {
-      -- Add any Neogit-specific options here
-    },
-    config = function(_, opts)
-      require("neogit").setup(opts)
-    end,
-  }
+  },
+}
 }
