@@ -161,9 +161,7 @@ return {
               },
             },
             borderchars = {
-              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-              results = { " ", " ", " ", " ", " ", " ", " ", " " },
-              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
 
@@ -191,6 +189,7 @@ return {
             },
           },
 
+          --FIX: should be nonfloating and be able to go back to the history menu
           quickfixhistory = {
             theme = "ivy",
             previewer = false,
@@ -247,10 +246,8 @@ return {
                 preview_width = 0.6,
               },
             },
-            borderchars = {
-              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-              results = { " ", " ", " ", " ", " ", " ", " ", " " },
-              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+                        borderchars = {
+                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           oldfiles = {
@@ -340,16 +337,14 @@ return {
               return result
             end,
             layout_config = {
-              horizontal = {
                 width = 0.5,
                 height = 0.31,
+              horizontal = {
                 preview_width = 0.6,
               },
             },
-            borderchars = {
-              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-              results = { " ", " ", " ", " ", " ", " ", " ", " " },
-              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+              borderchars = {
+                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
             symbols = {
               "class",
@@ -387,9 +382,7 @@ return {
             },
             theme = "ivy",
             borderchars = {
-              prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-              results = { " ", " ", " ", " ", " ", " ", " ", " " },
-              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           ["ui-select"] = {
