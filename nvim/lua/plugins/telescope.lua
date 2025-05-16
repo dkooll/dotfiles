@@ -161,7 +161,7 @@ return {
               },
             },
             borderchars = {
-                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
 
@@ -188,8 +188,6 @@ return {
               },
             },
           },
-
-          --FIX: should be nonfloating and be able to go back to the history menu
           quickfixhistory = {
             theme = "ivy",
             previewer = false,
@@ -246,8 +244,8 @@ return {
                 preview_width = 0.6,
               },
             },
-                        borderchars = {
-                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+            borderchars = {
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           oldfiles = {
@@ -337,14 +335,14 @@ return {
               return result
             end,
             layout_config = {
-                width = 0.5,
-                height = 0.31,
+              width = 0.5,
+              height = 0.31,
               horizontal = {
                 preview_width = 0.6,
               },
             },
-              borderchars = {
-                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+            borderchars = {
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
             symbols = {
               "class",
@@ -373,7 +371,7 @@ return {
           undo = {
             use_delta = true,
             side_by_side = true,
-              layout_config = {
+            layout_config = {
               width = 0.5,
               height = 0.31,
               horizontal = {
@@ -382,7 +380,7 @@ return {
             },
             theme = "ivy",
             borderchars = {
-                preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+              preview = { " ", " ", " ", " ", " ", " ", " ", " " },
             },
           },
           ["ui-select"] = {

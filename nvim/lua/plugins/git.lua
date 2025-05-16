@@ -64,24 +64,24 @@ return {
       }
     end
   },
-{
-  "NeogitOrg/neogit",
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    "sindrets/diffview.nvim",
-    "nvim-telescope/telescope.nvim",
-  },
-  cmd = "Neogit",
-  keys = {
-    { "<leader>gg", "<cmd>Neogit kind=split_below<CR>", desc = "Neogit" },
-  },
-  opts = {
-    disable_signs = true,
-    disable_context_highlighting = true,
-    commit_view = {
-      kind = "tab",
-      position = "tab",
+  {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      "nvim-telescope/telescope.nvim",
     },
-  },
-}
+    cmd = "Neogit",
+    keys = {
+      { "<leader>gg", "<cmd>Neogit kind=split_below<CR>", desc = "Neogit" },
+    },
+    opts = {
+      disable_signs = true,
+      disable_context_highlighting = true,
+      commit_view = {
+        kind = "tab",
+        position = "tab",
+      },
+    },
+  }
 }
