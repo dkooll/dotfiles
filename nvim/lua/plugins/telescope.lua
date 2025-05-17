@@ -16,7 +16,7 @@ return {
       { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
       { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
       { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
-      { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
+      -- { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
       { "<leader>p",        "<cmd>Telescope treesitter<cr>",                desc = "Telescope: Treesitter List Symbols" },
       { "<leader>sm",       "<cmd>Telescope marks<cr>",                     desc = "Telescope: Marks" },
     },
@@ -65,7 +65,7 @@ return {
 
       telescope.setup {
         defaults = {
-          theme = 'dropdown',
+          theme = 'horizontal',
           previewer = true,
           buffer_previewer_maker = new_maker,
           file_ignore_patterns = {
@@ -188,17 +188,17 @@ return {
               },
             },
           },
-          quickfixhistory = {
-            theme = "ivy",
-            previewer = false,
-            layout_config = {
-              width = 0.5,
-              height = 0.31,
-              horizontal = {
-                preview_width = 0.6,
-              },
-            },
-          },
+          -- quickfixhistory = {
+          --   theme = "ivy",
+          --   previewer = false,
+          --   layout_config = {
+          --     width = 0.5,
+          --     height = 0.31,
+          --     horizontal = {
+          --       preview_width = 0.6,
+          --     },
+          --   },
+          -- },
           fd = {
             hidden = true,
             follow = true,
@@ -233,6 +233,20 @@ return {
               },
             },
           },
+          -- treesitter_ast = {
+          --   theme = "ivy",
+          --   previewer = true,
+          --   layout_config = {
+          --     width = 0.5,
+          --     height = 0.31,
+          --     horizontal = {
+          --       preview_width = 0.6,
+          --     },
+          --   },
+          --   borderchars = {
+          --     preview = { " ", " ", " ", " ", " ", " ", " ", " " },
+          --   },
+          -- },
           live_grep = {
             only_sort_text = true,
             previewer = true,
@@ -419,6 +433,7 @@ return {
         'fzf',
         'ui-select',
         'undo',
+        'ast_grep',
       }
 
       for _, ext in ipairs(extensions) do
