@@ -16,7 +16,6 @@ return {
       { "<leader>sc",       "<cmd>Telescope commands<cr>",                  desc = "Telescope: Find Commands" },
       { "<leader>su",       "<cmd>Telescope undo<cr>",                      desc = "Telescope: Undo List" },
       { "<leader>sq",       "<cmd>Telescope quickfix<cr>",                  desc = "Telescope: Quickfix" },
-      -- { "<leader>st",       "<cmd>Telescope quickfixhistory<cr>",           desc = "Telescope: Quickfix History" },
       { "<leader>p",        "<cmd>Telescope treesitter<cr>",                desc = "Telescope: Treesitter List Symbols" },
       { "<leader>sm",       "<cmd>Telescope marks<cr>",                     desc = "Telescope: Marks" },
     },
@@ -233,20 +232,6 @@ return {
               },
             },
           },
-          -- treesitter_ast = {
-          --   theme = "ivy",
-          --   previewer = true,
-          --   layout_config = {
-          --     width = 0.5,
-          --     height = 0.31,
-          --     horizontal = {
-          --       preview_width = 0.6,
-          --     },
-          --   },
-          --   borderchars = {
-          --     preview = { " ", " ", " ", " ", " ", " ", " ", " " },
-          --   },
-          -- },
           live_grep = {
             only_sort_text = true,
             previewer = true,
