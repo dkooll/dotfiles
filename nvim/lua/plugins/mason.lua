@@ -45,12 +45,30 @@ return {
         }
       })
 
-      -- Manually ensure servers are installed
       lspconfig.terraformls.setup({
         capabilities = capabilities,
         filetypes = { "terraform", "terraform-vars" },
         root_dir = lspconfig.util.root_pattern(".terraform", ".git"),
         single_file_support = true,
+      })
+
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            runtime = {
+              version = 'LuaJIT',
+            },
+            diagnostics = {
+              globals = { 'vim' },
+            },
+            workspace = {
+              checkThirdParty = false,
+              library = vim.api.nvim_get_runtime_file("", true)
+            },
+            completion = { callSnippet = "Replace" }
+          }
+        }
       })
 
       lspconfig.jsonls.setup({
