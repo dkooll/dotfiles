@@ -40,7 +40,7 @@ return {
       vim.api.nvim_set_hl(0, group, { foreground = color })
     end
 
-    set_highlight("AlphaHeader", "#919191")
+    set_highlight("AlphaHeader", "#8AB5AA")
     -- set_highlight("AlphaHeader", 0xB87333)
     set_highlight("AlphaFooter", 0x808080)
     set_highlight("AlphaShortcut", 0x808080)
