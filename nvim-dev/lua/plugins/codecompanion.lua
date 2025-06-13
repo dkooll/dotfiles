@@ -1,0 +1,82 @@
+return {
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     require("codecompanion").setup()
+  --   end,
+  --   lazy = false, -- Ensure it's always loaded
+  --   priority = 1000, -- Load it before other plugins
+  -- },
+}
+--
+-- return {
+--   "olimorris/codecompanion.nvim",
+--   lazy = true, -- Load only when needed
+--   dependencies = {
+--     "nvim-lua/plenary.nvim",
+--     "nvim-treesitter/nvim-treesitter",
+--   },
+--   keys = {
+--     { "<leader>ccd", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
+--   },
+--   config = function()
+--     require("codecompanion").setup({
+--       strategies = {
+--         chat = { adapter = "deepseek" },
+--         inline = { adapter = "deepseek" },
+--         agent = { adapter = "deepseek" },
+--       },
+--       adapters = {
+--         deepseek = function()
+--           return require("codecompanion.adapters").extend("deepseek", {
+--             env = {
+--               api_key = "cmd: echo $DEEPSEEK_API_KEY", -- Ensure DeepSeek API key is set
+--               endpoint = "https://api.deepseek.com/v1/chat/completions",
+--             },
+--           })
+--         end,
+--       },
+--     })
+--   end,
+-- }
+
+	-- "olimorris/codecompanion.nvim",
+ --  lazy = false,
+	-- dependencies = {
+	-- 	"nvim-lua/plenary.nvim",
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	"hrsh7th/nvim-cmp",                    -- Optional: For using slash commands and variables in the chat buffer
+	-- 	"nvim-telescope/telescope.nvim",       -- Optional: For using slash commands
+	-- 	{ "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
+	-- },
+	-- config = function()
+	-- 	require("codecompanion").setup({
+	-- 		strategies = {
+	-- 			chat = {
+	-- 				adapter = "anthropic",
+	-- 			},
+	-- 			inline = {
+	-- 				adapter = "anthropic",
+	-- 			},
+	-- 			agent = {
+	-- 				adapter = "anthropic",
+	-- 			},
+	-- 		},
+	-- 		adapters = {
+	-- 			anthropic = function()
+	-- 				return require("codecompanion.adapters").extend("anthropic", {
+	-- 					env = {
+	-- 						api_key = "cmd: echo $ANTHROPIC_API_KEY",
+	-- 					},
+	-- 				})
+	-- 			end,
+	-- 		},
+	-- 	})
+	--
+	-- 	vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+	-- 	vim.api.nvim_set_keymap("v", "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+	-- end,

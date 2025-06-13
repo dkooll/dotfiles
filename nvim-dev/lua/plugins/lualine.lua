@@ -7,54 +7,68 @@ return {
   event = "VeryLazy",
   opts = {
     options = {
-      theme = "auto",
+      theme = "catppuccin",
       globalstatus = true,
       icons_enabled = true,
-      component_separators = { left = "|", right = "|" },
-      section_separators = { left = "", right = "" },
+      component_separators = "",
+      section_separators = "",
       disabled_filetypes = {
-        statusline = { "help", "neo-tree", "toggleterm" },
+        statusline = { "help", "neo-tree", "toggleterm", "alpha" },
+        tabline = { "alpha" },
       },
+      refresh = { -- Optimize refresh settings
+        statusline = 1000,
+        tabline = 1000,
+        winbar = 1000,
+      }
     },
     sections = {
       lualine_a = {},
-      lualine_b = {
-        { "fancy_branch", color = { fg = "#7DAEA3", bg = "NONE" } },
-      },
-      lualine_c = {
+      lualine_b = {},
+      lualine_c = {},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {},
+    },
+    tabline = {
+      lualine_a = {
+        {
+          "fancy_branch",
+          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
+          color = { fg = "#7DAEA3", bg = "NONE" }
+        },
         {
           "filename",
-          color = { fg = "#D3869B" },
+          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
+          color = { fg = "#D3869B", bg = "NONE" },
           path = 1,
-          symbols = { modified = "  " },
+          symbols = { modified = "  " }
         },
         {
-          "diagnostics",
-          sources = { "nvim_diagnostic" },
-          symbols = { error = " ", warn = " ", info = " " },
+          "fancy_lsp_servers",
+          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 end,
+          color = { fg = "#D3869B", bg = "NONE" }
         },
-        { "fancy_searchcount" },
-      },
-      lualine_x = {
         {
           function()
             local lazy = require("lazy.status")
             return lazy.has_updates() and lazy.updates() or ""
           end,
-          cond = function()
-            return require("lazy.status").has_updates()
-          end,
-          color = { fg = "#7DAEA3", gui = "bold" },
+          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 and require("lazy.status").has_updates() end,
+          color = { fg = "#BD6F3E", bg = "NONE", gui = "bold" }
         },
-        { "fancy_lsp_servers", color = { fg = "#D3869B" } },
       },
+      lualine_b = {},
+      lualine_c = {},
+      lualine_x = {},
       lualine_y = {},
       lualine_z = {},
     },
     inactive_sections = {
       lualine_a = {},
       lualine_b = {},
-      lualine_c = { "filename" },
+      lualine_c = {},
+      lualine_x = {},
       lualine_y = {},
       lualine_z = {},
     },

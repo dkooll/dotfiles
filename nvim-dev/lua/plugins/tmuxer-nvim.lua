@@ -3,14 +3,27 @@ return {
   dependencies = { "nvim-telescope/telescope.nvim" },
   opts = {
     nvim_alias = "nvim-dev", -- Override
+    max_depth = 2,
+    theme = "ivy",
+    previewer = false,
+    border = true,
+    parent_highlight = {
+      fg = "#9E8069",
+      bold = true,
+    },
+    layout_config = {
+      width = 0.5,
+      height = 0.31,
+    }
   },
   keys = {
     {
       "<leader>tc",
       function()
-        require("tmuxer").open_workspace_popup(
-          { name = "workspaces", path = "~/Documents/workspaces" }
-        )
+        require("tmuxer").open_workspace_popup({
+          name = "workspaces",
+          path = "~/Documents/workspaces"
+        })
       end,
       desc = "Tmuxer: Create Tmux Session"
     },

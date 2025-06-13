@@ -27,6 +27,7 @@ return {
       "regex",
       "rust",
       "terraform",
+      "hcl",
       "vim",
       "yaml",
     },

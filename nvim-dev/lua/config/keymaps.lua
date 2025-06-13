@@ -1,10 +1,14 @@
 local opts = { noremap = true, silent = true }
 
--- Use Ctrl+hjkl for window movement
-vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
-vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
-vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
-vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+-- Change window layout
+vim.keymap.set('n', ',h', '<C-w>H', opts) -- ,h moves window left
+vim.keymap.set('n', ',l', '<C-w>L', opts) -- ,l moves window right
+
+-- Window movement with Ctrl+w followed by arrows
+vim.keymap.set('n', '<C-w><Left>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-w><Down>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-w><Up>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-w><Right>', '<C-w>l', opts)
 
 -- Move selected line / block of text in visual mode
 vim.keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
@@ -29,9 +33,6 @@ vim.keymap.set("v", "P", '"_dP', opts)
 -- quick save and quit
 vim.keymap.set('n', 'w', ':write!<CR>', opts)
 vim.keymap.set('n', 'q', ':q!<CR>', opts)
-
--- quick change word under cursor
-vim.keymap.set("n", "m", "ciw", opts)
 
 -- Resize windows with Option/Alt + or -
 vim.keymap.set("n", "≠", "<cmd>vertical resize +10<CR>", opts)
