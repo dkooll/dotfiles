@@ -1,21 +1,23 @@
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
-  opts = {
-    nvim_alias = "nvim-dev", -- Override
-    max_depth = 2,
-    theme = "ivy",
-    previewer = false,
-    border = true,
-    parent_highlight = {
-      fg = "#9E8069",
-      bold = true,
-    },
-    layout_config = {
-      width = 0.5,
-      height = 0.31,
-    }
-  },
+  config = function()
+    require("tmuxer").setup({
+      nvim_alias = "NVIM_APPNAME=nvim-dev nvim",
+      max_depth = 2,
+      theme = "ivy",
+      previewer = false,
+      border = true,
+      parent_highlight = {
+        fg = "#9E8069",
+        bold = true,
+      },
+      layout_config = {
+        width = 0.5,
+        height = 0.31,
+      }
+    })
+  end,
   keys = {
     {
       "<leader>tc",
