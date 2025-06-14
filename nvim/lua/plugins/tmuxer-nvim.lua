@@ -1,8 +1,15 @@
 return {
   "dkooll/tmuxer.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
+  cmd = { "WorkspaceOpen", "TmuxSessions" },
   config = function()
     require("tmuxer").setup({
+      workspaces = {
+        {
+          name = "workspaces",
+          path = "~/Documents/workspaces"
+        }
+      },
       max_depth = 2,
       theme = "ivy",
       previewer = false,
