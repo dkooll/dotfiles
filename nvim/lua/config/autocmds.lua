@@ -1,6 +1,5 @@
 local api = vim.api
 local opt = vim.opt
-
 local myGroup = api.nvim_create_augroup("MyAutocmds", { clear = true })
 
 -- Helper for creating autocommands
@@ -12,21 +11,26 @@ local function create_autocmd(event, pattern, callback)
   })
 end
 
--- Don’t auto-comment new lines
+-- Don't auto-comment new lines
 opt.formatoptions:remove({ 'c', 'r', 'o' })
 
--- Remove trailing whitespace on save (Lua-based removal)
+-- Remove trailing whitespace on save (optimized)
 create_autocmd("BufWritePre", "*", function()
-  local line_count = api.nvim_buf_line_count(0)
-  for i = 1, line_count do
-    local line = api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    if line then
-      local trimmed = line:gsub("%s+$", "")
-      if trimmed ~= line then
-        api.nvim_buf_set_lines(0, i - 1, i, false, { trimmed })
-      end
-    end
-  end
+  local save_cursor = api.nvim_win_get_cursor(0)
+  vim.cmd([[%s/\s\+$//e]])
+  api.nvim_win_set_cursor(0, save_cursor)
+end)
+
+-- YAML color scheme (using helper function)
+create_autocmd("ColorScheme", "*", function()
+  api.nvim_set_hl(0, '@keyword.directive', { fg = "#9E8069" })
+
+  -- Clear cursor line
+  api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
+
+  -- Fold colors
+  api.nvim_set_hl(0, 'FoldColumn', { fg = '#9E8069', bg = 'NONE' })
+  api.nvim_set_hl(0, 'Folded', { fg = '#9E8069', bg = 'NONE' })
 end)
 
 -- Go to last location when opening a file
@@ -43,24 +47,7 @@ create_autocmd("FileType", "man", function()
   vim.keymap.set('n', 'q', ':quit<CR>', { buffer = true, silent = true })
 end)
 
--- Clear cursor line after colorscheme load
-create_autocmd("ColorScheme", "*", function()
-  api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
+-- Terraform filetype detection
+create_autocmd({ "BufRead", "BufNewFile" }, { "*.tf", "*.tfvars", "*.tfstate" }, function()
+  vim.bo.filetype = "terraform"
 end)
-
--- Configure fold column colors using Lua API
-local function setup_fold_colors()
-  api.nvim_set_hl(0, 'FoldColumn', { fg = '#9E8069', bg = 'NONE' })
-  api.nvim_set_hl(0, 'Folded', { fg = '#9E8069', bg = 'NONE' })
-end
-
-create_autocmd("ColorScheme", "*", setup_fold_colors)
--- Run immediately in case colorscheme is already loaded
-setup_fold_colors()
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "*.tf", "*.tfvars", "*.tfstate" },
-  callback = function()
-    vim.bo.filetype = "terraform"
-  end,
-})
