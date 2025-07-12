@@ -92,10 +92,19 @@ return {
     vim.api.nvim_set_hl(0, 'NotesPink', { fg = "#D3869B" })
     vim.api.nvim_set_hl(0, 'NotesBlue', { fg = "#7DAEA3" })
     vim.api.nvim_set_hl(0, 'ObsidianParentDir', { fg = "#9E8069", bold = false })
+    vim.api.nvim_set_hl(0, 'NotesWhiteItalic', { fg = "#C0B8A8", italic = true })
+    vim.api.nvim_set_hl(0, 'NotesWhiteItalicDark', { fg = "#968A80", italic = true })
+    vim.api.nvim_set_hl(0, 'NotesLightItalic', { fg = "#C0B8A8", italic = true })
+    vim.api.nvim_set_hl(0, '@string.yaml', { fg = "#968A80", italic = true })
+    vim.api.nvim_set_hl(0, '@markup.raw.block.markdown.markdown', { fg = "#968A80", italic = true })
+    vim.api.nvim_set_hl(0, 'markdownCodeBlock', { fg = "#968A80", italic = true })
 
-    -- Define highlight string (extracted to avoid duplication)
     local NOTES_HIGHLIGHTS =
-    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesBrownBold,@markup.heading.2.markdown:NotesBrownBold,@markup.heading.3.markdown:NotesBrownBold,@markup.heading.4.markdown:NotesBrownBold,@markup.heading.5.markdown:NotesBrownBold,@markup.heading.6.markdown:NotesBrownBold,@markup.heading:NotesBrownBold,markdownCode:NotesBrown,markdownCodeDelimiter:NotesBrown,@markup.raw.markdown_inline:NotesBrown,@text.literal.markdown_inline:NotesBrown,@markup.strong.markdown_inline:NotesBrownBold,markdownItalic:NotesBrownItalic,markdownItalicDelimiter:NotesBrown,@text.emphasis:NotesBrownItalic,@text.strong:NotesBrownBold,@markup.italic.markdown_inline:NotesBrownItalic,@markup.bold.markdown_inline:NotesBrownBold,@markup.link.label:NotesBlue,@markup.link:NotesBlue'
+    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,@keyword.directive:NotesWhiteItalic,@property:NotesWhiteItalicDark,@string.yaml:NotesWhiteItalic'
+
+    --original yml colors
+    -- local NOTES_HIGHLIGHTS =
+    -- '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,Normal:NotesWhite'
 
     -- Helper function to check if file is a note
     local function is_notes_file(filename)

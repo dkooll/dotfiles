@@ -1,7 +1,9 @@
 # By default Reload config with shft + cmd + ,
 background = "#000000"
 background-opacity = 0.40
+# background-opacity = 0.35
 background-blur-radius = 35
+# background-blur-radius = 60
 
 font-family = MesloLGS NF
 font-size = 14
