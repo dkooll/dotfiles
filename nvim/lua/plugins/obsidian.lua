@@ -95,16 +95,17 @@ return {
     vim.api.nvim_set_hl(0, 'NotesWhiteItalic', { fg = "#C0B8A8", italic = true })
     vim.api.nvim_set_hl(0, 'NotesWhiteItalicDark', { fg = "#968A80", italic = true })
     vim.api.nvim_set_hl(0, 'NotesLightItalic', { fg = "#C0B8A8", italic = true })
-    vim.api.nvim_set_hl(0, '@string.yaml', { fg = "#968A80", italic = true })
+    vim.api.nvim_set_hl(0, 'NotesYamlString', { fg = "#968A80", italic = true })
+    vim.api.nvim_set_hl(0, 'NotesYamlKey', { fg = "#C0B8A8", italic = false })
     vim.api.nvim_set_hl(0, '@markup.raw.block.markdown.markdown', { fg = "#968A80", italic = true })
     vim.api.nvim_set_hl(0, 'markdownCodeBlock', { fg = "#968A80", italic = true })
 
     local NOTES_HIGHLIGHTS =
-    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,@keyword.directive:NotesWhiteItalic,@property:NotesWhiteItalicDark,@string.yaml:NotesWhiteItalic'
+    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,@keyword.directive:NotesWhiteItalic,@property:NotesYamlKey,@property.yaml:NotesYamlKey,@string.yaml:NotesYamlString'
 
     --original yml colors
     -- local NOTES_HIGHLIGHTS =
-    -- '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,Normal:NotesWhite'
+    -- '@punctuation.special:NotesBrown,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,Normal:NotesWhite'
 
     -- Helper function to check if file is a note
     local function is_notes_file(filename)
@@ -166,6 +167,17 @@ return {
             end
           end
         end)
+      end,
+    })
+
+    -- Reset YAML highlights for non-notes files
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+      pattern = { "*.yaml", "*.yml" },
+      callback = function()
+        local filename = vim.api.nvim_buf_get_name(0)
+        if not filename:match(NOTES_PATH_PATTERN) then
+          vim.wo.winhighlight = ''
+        end
       end,
     })
 
