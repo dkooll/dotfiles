@@ -628,20 +628,31 @@ return {
             -- Handle URLs (http/https)
             if cfile:match('^https?://') then
               vim.fn.system('open ' .. vim.fn.shellescape(cfile))
-              return ""
+              return
             end
 
             -- If it's an image file, open it
             if cfile:match('%.png$') or cfile:match('%.jpg$') or cfile:match('%.jpeg$') then
               local full_path = vim.fn.expand('%:p:h:h') .. '/attachments/' .. cfile
               vim.fn.system('open ' .. vim.fn.shellescape(full_path))
-              return ""
+              return
+            end
+
+            -- If it's a YAML file, open it from configs directory
+            if cfile:match('%.ya?ml$') then
+              local full_path = vim.fn.expand('%:p:h:h') .. '/configs/' .. cfile
+              if vim.fn.filereadable(full_path) == 1 then
+                vim.cmd('edit ' .. vim.fn.fnameescape(full_path))
+              else
+                print("YAML file not found: " .. full_path)
+              end
+              return
             end
 
             -- For everything else, use obsidian default
-            return require("obsidian").util.gf_passthrough()
+            require("obsidian").util.gf_passthrough()
           end,
-          opts = { noremap = false, expr = true, buffer = true },
+          opts = { noremap = false, expr = false, buffer = true },
         },
         ["<leader>ch"] = {
           action = function() return require("obsidian").util.toggle_checkbox() end,
