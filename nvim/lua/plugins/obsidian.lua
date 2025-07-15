@@ -638,16 +638,6 @@ return {
               return ""
             end
 
-            -- If it's a YAML/YML file, open it in vim
-            if cfile:match('%.ya?ml$') then
-              local workspace_path = get_workspace()
-              local full_path = workspace_path .. '/' .. cfile
-              if vim.fn.filereadable(full_path) == 1 then
-                vim.cmd('edit ' .. vim.fn.fnameescape(full_path))
-                return ""
-              end
-            end
-
             -- For everything else, use obsidian default
             return require("obsidian").util.gf_passthrough()
           end,
