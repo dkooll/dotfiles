@@ -76,7 +76,7 @@ return {
       { "<leader>gg", "<cmd>Neogit kind=split_below<CR>", desc = "Neogit" },
     },
     opts = {
-      disable_signs = true,
+      disable_signs = false,
       disable_context_highlighting = true,
       commit_view = {
         kind = "tab",
