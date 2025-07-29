@@ -25,3 +25,4 @@ auto-update = check
 adjust-cell-height = 30%
 unfocused-split-opacity = 1
 link-url = true
+keybind = shift+enter=text:\n

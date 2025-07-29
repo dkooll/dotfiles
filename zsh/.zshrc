@@ -64,3 +64,6 @@ alias lh='eza -ld .* --color=auto --icons'
 alias lg='eza -l --git --color=auto --icons'
 alias l='eza --color=auto'
 alias lrs='eza --tree --long --level=2 --color=auto --icons'
+export PATH="/Users/dennis.kool/.local/bin:$PATH"
+alias lg="lazygit log"
+alias lzg="lazygit --screen-mode=full log"

@@ -52,9 +52,7 @@
         name: "{{ item }}"
         state: present
       loop:
-        - alacritty
         - ghostty
-        - kitty
 
     - name: Install neovim node.js dependencies
       ansible.builtin.command:
