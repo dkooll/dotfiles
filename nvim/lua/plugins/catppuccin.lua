@@ -3,6 +3,7 @@ return {
   lazy = false,
   priority = 150,
   name = "catppuccin",
+  commit = "94f6e8a06b6bb7b8e5529cf9f93adb4654534241",
   opts = {
     color_overrides = {
       mocha = {
