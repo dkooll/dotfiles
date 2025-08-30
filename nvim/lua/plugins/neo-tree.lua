@@ -132,3 +132,111 @@ return {
     log_to_file = false,
   }
 }
+
+-- Oil.nvim - file manager that lets you edit your filesystem like a buffer
+-- return {
+--   {
+--     'stevearc/oil.nvim',
+--     opts = {
+--       default_file_explorer = true,
+--       skip_confirm_for_simple_edits = true,
+--       prompt_save_on_select_new_entry = false,
+--       watch_for_changes = false,
+--       columns = {
+--         "icon",
+--       },
+--       keymaps = {
+--         ["<CR>"] = "actions.select",
+--         ["<C-s>"] = "actions.select_vsplit",
+--         ["<C-h>"] = "actions.select_split",
+--         ["-"] = "actions.parent",
+--         ["g."] = "actions.toggle_hidden",
+--         ["a"] = {
+--           callback = function()
+--             vim.cmd("normal! o")
+--             vim.cmd("startinsert")
+--             vim.api.nvim_create_autocmd("InsertLeave", {
+--               buffer = 0,
+--               once = true,
+--               callback = function() vim.cmd("silent! w!") end,
+--             })
+--             vim.keymap.set("i", "<CR>", function()
+--               vim.cmd("stopinsert")
+--               vim.cmd("silent! w!")
+--             end, { buffer = 0, noremap = true })
+--           end,
+--           desc = "Create file/directory"
+--         },
+--         ["d"] = {
+--           callback = function()
+--             -- Get the file path before deleting
+--             local oil = require("oil")
+--             local entry = oil.get_cursor_entry()
+--             local dir = oil.get_current_dir()
+--
+--             if entry and dir then
+--               local file_path = dir .. entry.name
+--               vim.cmd("normal! dd")
+--               oil.save({ confirm = false })
+--
+--               -- Close buffer if file was open (optimized)
+--               vim.defer_fn(function()
+--                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+--                   if vim.api.nvim_buf_is_loaded(buf) then
+--                     local buf_name = vim.api.nvim_buf_get_name(buf)
+--                     if buf_name == file_path then
+--                       vim.api.nvim_buf_delete(buf, { force = true })
+--                       break -- Exit loop after finding the buffer
+--                     end
+--                   end
+--                 end
+--               end, 0)
+--             end
+--           end,
+--           desc = "Delete file/directory"
+--         },
+--       },
+--       use_default_keymaps = true,
+--       view_options = {
+--         show_hidden = true,
+--         is_always_hidden = function(name)
+--           return name == '..' or name == '.git'
+--         end,
+--       },
+--     },
+--     dependencies = {
+--       "nvim-tree/nvim-web-devicons",
+--     },
+--     config = function(_, opts)
+--       require("oil").setup(opts)
+--       -- Fix hidden file and directory colors
+--       vim.api.nvim_create_autocmd("ColorScheme", {
+--         callback = function()
+--           vim.api.nvim_set_hl(0, "OilHidden", { link = "Normal" })
+--           vim.api.nvim_set_hl(0, "OilDirHidden", { link = "Directory" })
+--         end
+--       })
+--       -- Apply immediately
+--       vim.api.nvim_set_hl(0, "OilHidden", { link = "Normal" })
+--       vim.api.nvim_set_hl(0, "OilDirHidden", { link = "Directory" })
+--     end,
+--     keys = {
+--       {
+--         "<leader>e",
+--         function()
+--           if vim.bo.filetype == "oil" then
+--             vim.cmd("bd!")
+--             if vim.fn.bufname() == "" or vim.bo.filetype == "" then
+--               vim.cmd("Alpha")
+--             end
+--           else
+--             -- Always open at workspace root
+--             require("oil").open(vim.fn.getcwd())
+--           end
+--         end,
+--         desc = "Toggle oil file explorer"
+--       },
+--     },
+--   },
+-- }
+--
