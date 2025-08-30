@@ -47,7 +47,16 @@ create_autocmd("FileType", "man", function()
   vim.keymap.set('n', 'q', ':quit<CR>', { buffer = true, silent = true })
 end)
 
--- Terraform filetype detection
+-- Terraform filetype detection and highlighting
 create_autocmd({ "BufRead", "BufNewFile" }, { "*.tf", "*.tfvars", "*.tfstate" }, function()
   vim.bo.filetype = "terraform"
+end)
+
+create_autocmd("FileType", "terraform", function()
+  -- Ensure syntax highlighting is properly applied
+  vim.schedule(function()
+    if vim.fn.exists(":TSBufEnable") > 0 then
+      vim.cmd("TSBufEnable highlight")
+    end
+  end)
 end)

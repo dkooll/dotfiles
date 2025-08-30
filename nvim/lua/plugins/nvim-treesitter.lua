@@ -79,19 +79,5 @@ return {
   },
   config = function(_, opts)
     require("nvim-treesitter.configs").setup(opts)
-    -- Force refresh syntax highlighting for terraform files
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-      pattern = { "*.tf", "*.tfvars", "*.hcl" },
-      callback = function()
-        vim.defer_fn(function()
-          if vim.bo.filetype == "terraform" or vim.bo.filetype == "hcl" then
-            vim.cmd("syntax sync fromstart")
-            vim.schedule(function()
-              vim.cmd("TSBufEnable highlight")
-            end)
-          end
-        end, 100)
-      end,
-    })
   end,
 }
