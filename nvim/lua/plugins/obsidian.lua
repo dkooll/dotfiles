@@ -1,6 +1,15 @@
 local function make_key(key, func_name, desc, param1, param2)
-  local action = param1 and function() require("obsidian-config")[func_name](param1, param2) end
-      or function() require("obsidian-config")[func_name]() end
+  local action = param1 and function()
+    local ok, err = pcall(require("obsidian-config")[func_name], param1, param2)
+    if not ok then
+      vim.notify("Obsidian error: " .. tostring(err), vim.log.levels.ERROR)
+    end
+  end or function()
+    local ok, err = pcall(require("obsidian-config")[func_name])
+    if not ok then
+      vim.notify("Obsidian error: " .. tostring(err), vim.log.levels.ERROR)
+    end
+  end
   return { key, action, desc = "Obsidian: " .. desc }
 end
 
@@ -60,7 +69,8 @@ return {
       { "BufWritePre", "*.md", function()
         local filename = vim.api.nvim_buf_get_name(0)
         if filename:match(NOTES_PATH_PATTERN) then
-          local lines = vim.api.nvim_buf_get_lines(0, 0, 20, false)
+          vim.cmd("undojoin")
+          local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
           for i, line in ipairs(lines) do
             if line:match("^modified:") then
               vim.api.nvim_buf_set_lines(0, i - 1, i, false, { "modified: " .. os.date("%Y-%m-%d %H:%M") })
@@ -113,11 +123,45 @@ return {
     local obsidian_config = {}
     vim.g.obsidian_current_workspace = WORKSPACES[1].name
     local tag_cache, cache_timestamp = {}, 0
+    local file_cache, file_cache_timestamp = {}, 0
+    local CACHE_DURATION = 10
+
+    local function safe_file_operation(func, error_msg)
+      local ok, result = pcall(func)
+      if not ok then
+        vim.notify(error_msg .. ": " .. tostring(result), vim.log.levels.ERROR)
+        return nil
+      end
+      return result
+    end
+
+    local function validate_input(input, input_type)
+      if not input or input == "" then
+        vim.notify("Invalid " .. input_type .. ": cannot be empty", vim.log.levels.WARN)
+        return false
+      end
+      if input_type == "filename" and input:match("[<>:\"|?*]") then
+        vim.notify("Invalid filename: contains illegal characters", vim.log.levels.WARN)
+        return false
+      end
+      return true
+    end
 
     local function get_workspace()
+      local workspace_name = vim.g.obsidian_current_workspace
+      if not workspace_name then
+        vim.notify("No workspace set, using default", vim.log.levels.WARN)
+        workspace_name = WORKSPACES[1].name
+      end
+
       for _, workspace in ipairs(WORKSPACES) do
-        if workspace.name == vim.g.obsidian_current_workspace then
-          return vim.fn.expand(workspace.path)
+        if workspace.name == workspace_name then
+          local expanded_path = vim.fn.expand(workspace.path)
+          if vim.fn.isdirectory(expanded_path) == 0 then
+            vim.notify("Workspace directory does not exist: " .. expanded_path, vim.log.levels.ERROR)
+            return vim.fn.expand(WORKSPACES[1].path)
+          end
+          return expanded_path
         end
       end
       return vim.fn.expand(WORKSPACES[1].path)
@@ -184,68 +228,87 @@ return {
 
     local function get_tags()
       local now = os.time()
-      if tag_cache.data and (now - cache_timestamp) < 30 then return tag_cache.data end
-
+      if tag_cache.data and (now - cache_timestamp) < CACHE_DURATION then return tag_cache.data end
       local ws = get_workspace()
+      if not ws then return {} end
       local tag_set = {}
       local cmd = vim.fn.executable('rg') == 1 and
-          string.format("rg --no-filename --no-line-number -o '(^  - [a-zA-Z0-9_-]+$|#[a-zA-Z0-9_-]+)' '%s' --type md",
+          string.format(
+            "rg --no-filename --no-line-number -o '(^  - [a-zA-Z0-9_-]+$|#[a-zA-Z0-9_-]+)' '%s' --type md 2>/dev/null",
             ws) or
-          string.format("grep -r -h -o -E '(^  - [a-zA-Z0-9_-]+$|#[a-zA-Z0-9_-]+)' '%s' --include='*.md'", ws)
-
-      local output = vim.fn.system(cmd)
-      if vim.v.shell_error == 0 then
+          string.format("grep -r -h -o -E '(^  - [a-zA-Z0-9_-]+$|#[a-zA-Z0-9_-]+)' '%s' --include='*.md' 2>/dev/null", ws)
+      local output = safe_file_operation(function() return vim.fn.system(cmd) end, "Failed to search for tags")
+      if output and vim.v.shell_error == 0 then
         for match in output:gmatch("[^\r\n]+") do
           local tag = match:match("^  %- (.+)") or match:match("#(.+)")
-          if tag and tag ~= "" then tag_set[tag] = true end
+          if tag and tag ~= "" and tag:len() <= 50 then tag_set[tag] = true end
         end
       end
-
       local tags = {}
-      for tag, _ in pairs(tag_set) do table.insert(tags, tag) end
+      for tag in pairs(tag_set) do table.insert(tags, tag) end
       table.sort(tags)
       tag_cache.data, cache_timestamp = tags, now
       return tags
     end
 
     local function get_files_with_tag(tag)
-      local ws = get_workspace()
-      local cmd = vim.fn.executable('rg') == 1 and
-          string.format("rg --files-with-matches '^  - %s$' '%s' --type md", vim.fn.shellescape(tag), ws) or
-          string.format("grep -l '^  - %s$' '%s'/*.md '%s'/*/*.md 2>/dev/null", vim.fn.shellescape(tag), ws, ws)
+      if not validate_input(tag, "tag") then return {} end
 
-      local output = vim.fn.system(cmd)
+      local ws = get_workspace()
+      if not ws then return {} end
+
+      local escaped_tag = vim.fn.shellescape(tag)
+      local cmd = vim.fn.executable('rg') == 1 and
+          string.format("rg --files-with-matches '^  - %s$' '%s' --type md 2>/dev/null", escaped_tag, ws) or
+          string.format("grep -l '^  - %s$' '%s'/*.md '%s'/*/*.md 2>/dev/null", escaped_tag, ws, ws)
+
+      local output = safe_file_operation(function() return vim.fn.system(cmd) end, "Failed to search files with tag")
       local files = {}
-      if vim.v.shell_error == 0 then
+      if output and vim.v.shell_error == 0 then
         for file in output:gmatch("[^\r\n]+") do
-          if file ~= "" then table.insert(files, file) end
+          if file ~= "" and vim.fn.filereadable(file) == 1 then
+            table.insert(files, file)
+          end
         end
       end
       return files
     end
 
     function obsidian_config.create_note(folder, prompt)
+      if not validate_input(folder, "folder") or not validate_input(prompt, "prompt") then return end
+
       local title = vim.fn.input(prompt)
-      if title == "" then return end
+      if not validate_input(title, "title") then return end
 
       local workspace = get_workspace()
+      if not workspace then return end
+
       local timestamp = os.time()
       local date = os.date("%Y-%m-%d")
+      local time = os.date("%H:%M")
       local safe_title = title:gsub("[^%w%s%-]", ""):gsub("%s+", "-"):lower()
+      if safe_title:len() > 50 then safe_title = safe_title:sub(1, 50) end
 
-      local filename = string.format("%s/%s/%s-%s.md", workspace, folder, date, safe_title)
+      local folder_path = string.format("%s/%s", workspace, folder)
+      if vim.fn.isdirectory(folder_path) == 0 then
+        vim.fn.mkdir(folder_path, "p")
+      end
+
+      local filename = string.format("%s/%s-%s.md", folder_path, date, safe_title)
       local template_path = string.format("%s/templates/%s.md", workspace, folder)
 
       if vim.fn.filereadable(template_path) == 0 then
-        print("Template not found: " .. template_path)
+        vim.notify("Template not found: " .. template_path, vim.log.levels.ERROR)
         return
       end
 
+      local template_content = vim.fn.readfile(template_path)
+      if not template_content then return end
+
       local content = {}
       local id = string.format("%s-%s", timestamp, safe_title)
-      local time = os.date("%H:%M")
 
-      for _, line in ipairs(vim.fn.readfile(template_path)) do
+      for _, line in ipairs(template_content) do
         local new_line = line:gsub("{{title}}", title)
             :gsub("{{date}}", date)
             :gsub("{{time}}", time)
@@ -255,112 +318,174 @@ return {
       end
 
       vim.fn.writefile(content, filename)
-      vim.cmd("edit " .. filename)
+      file_cache = {}
+      file_cache_timestamp = 0
+      tag_cache = {}
+      cache_timestamp = 0
+      vim.cmd("edit " .. vim.fn.fnameescape(filename))
     end
 
     function obsidian_config.search_notes()
-      require("telescope.pickers").new(telescope_config("Search Notes", get_workspace()), {
+      local workspace = get_workspace()
+      if not workspace then return end
+
+      require("telescope.pickers").new(telescope_config("Search Notes", workspace), {
         finder = require("telescope.finders").new_job(function(prompt)
           if not prompt or prompt == "" then return nil end
-          return { "rg", "--with-filename", "--line-number", "--column", "--smart-case", prompt, get_workspace(),
-            "--type", "md" }
+          return { "rg", "--with-filename", "--line-number", "--column", "--smart-case",
+            "--max-count", "100", prompt, workspace, "--type", "md" }
         end, function(entry)
           local make_entry = require("telescope.make_entry")
           local default_entry = make_entry.gen_from_vimgrep({})(entry)
           if not default_entry then return end
-          default_entry.display = make_file_display(default_entry.filename, get_workspace())
+          default_entry.display = make_file_display(default_entry.filename, workspace)
           return default_entry
         end, 120),
         sorter = require("telescope.config").values.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr)
+          require("telescope.actions").select_default:replace(function()
+            local selection = require("telescope.actions.state").get_selected_entry()
+            require("telescope.actions").close(prompt_bufnr)
+            if selection then
+              vim.cmd("edit " .. vim.fn.fnameescape(selection.filename))
+              if selection.lnum then
+                vim.api.nvim_win_set_cursor(0, { selection.lnum, selection.col - 1 })
+              end
+            end
+          end)
+          return true
+        end,
       }):find()
     end
 
     function obsidian_config.find_notes()
       local workspace_path = get_workspace()
-      local cmd = vim.fn.executable('fd') == 1 and string.format("fd -e md -t f . '%s'", workspace_path) or
-          vim.fn.executable('rg') == 1 and string.format("rg --files --type md '%s'", workspace_path) or
-          string.format("find '%s' -name '*.md' -type f", workspace_path)
+      if not workspace_path then return end
 
-      local output = vim.fn.system(cmd)
-      local files = {}
-      if vim.v.shell_error == 0 then
-        for file in output:gmatch("[^\r\n]+") do
-          if file ~= "" and vim.fn.filereadable(file) == 1 then
-            table.insert(files, file)
+      local now = os.time()
+      if file_cache.data and file_cache.workspace == workspace_path and (now - file_cache_timestamp) < CACHE_DURATION then
+        picker("Find Notes", file_cache.data, function(file)
+          vim.cmd("edit " .. vim.fn.fnameescape(file))
+        end, true, function(prompt_bufnr, map)
+          map("i", "<C-d>", function()
+            local selection = require("telescope.actions.state").get_selected_entry()
+            if selection and selection.value then
+              os.remove(selection.value)
+              file_cache = {}
+              local current_line = require("telescope.actions.state").get_current_line()
+              require("telescope.actions").close(prompt_bufnr)
+              vim.schedule(function()
+                obsidian_config.find_notes()
+                if current_line ~= "" then vim.api.nvim_feedkeys(current_line, "n", false) end
+              end)
+            end
+          end)
+        end)
+        return
+      end
+
+      vim.schedule(function()
+        local cmd = vim.fn.executable('fd') == 1 and string.format("fd -e md -t f . '%s' 2>/dev/null", workspace_path) or
+            vim.fn.executable('rg') == 1 and string.format("rg --files --type md '%s' 2>/dev/null", workspace_path) or
+            string.format("find '%s' -name '*.md' -type f 2>/dev/null", workspace_path)
+
+        local output = safe_file_operation(function() return vim.fn.system(cmd) end, "Failed to find notes")
+        local files = {}
+        if output and vim.v.shell_error == 0 then
+          for file in output:gmatch("[^\r\n]+") do
+            if file ~= "" and vim.fn.filereadable(file) == 1 then
+              table.insert(files, file)
+            end
           end
         end
-      end
-      table.sort(files)
+        table.sort(files)
 
-      picker("Find Notes", files, function(file) vim.cmd("edit " .. file) end, true, function(prompt_bufnr, map)
-        map("i", "<C-d>", function()
-          local selection = require("telescope.actions.state").get_selected_entry()
-          if selection and selection.value then
-            os.remove(selection.value)
-            local current_line = require("telescope.actions.state").get_current_line()
-            require("telescope.actions").close(prompt_bufnr)
-            vim.schedule(function()
-              obsidian_config.find_notes()
-              if current_line ~= "" then vim.api.nvim_feedkeys(current_line, "n", false) end
-            end)
-          end
+        file_cache = { data = files, workspace = workspace_path }
+        file_cache_timestamp = now
+
+        picker("Find Notes", files, function(file)
+          vim.cmd("edit " .. vim.fn.fnameescape(file))
+        end, true, function(prompt_bufnr, map)
+          map("i", "<C-d>", function()
+            local selection = require("telescope.actions.state").get_selected_entry()
+            if selection and selection.value then
+              os.remove(selection.value)
+              file_cache = {}
+              local current_line = require("telescope.actions.state").get_current_line()
+              require("telescope.actions").close(prompt_bufnr)
+              vim.schedule(function()
+                obsidian_config.find_notes()
+                if current_line ~= "" then vim.api.nvim_feedkeys(current_line, "n", false) end
+              end)
+            end
+          end)
         end)
       end)
     end
 
     function obsidian_config.show_backlinks()
-      local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":t:r")
+      local current_file = vim.api.nvim_buf_get_name(0)
+      if not validate_input(current_file, "current file") then return end
+
+      local filename = vim.fn.fnamemodify(current_file, ":t:r")
       local workspace_path = get_workspace()
-      local cmd = string.format("rg --with-filename --line-number '\\[\\[.*%s.*\\]\\]' '%s' --type md", filename,
-        workspace_path)
-      local output = vim.fn.system(cmd)
-      local results = {}
+      if not workspace_path then return end
 
-      if vim.v.shell_error == 0 then
-        for line in output:gmatch("[^\r\n]+") do
-          if line ~= "" then table.insert(results, line) end
+      local escaped_filename = vim.fn.shellescape(filename)
+      local cmd = string.format(
+        "rg --with-filename --line-number --max-count 50 '\\[\\[.*%s.*\\]\\]' '%s' --type md 2>/dev/null",
+        escaped_filename, workspace_path)
+
+      vim.schedule(function()
+        local output = safe_file_operation(function() return vim.fn.system(cmd) end, "Failed to search backlinks")
+        local results = {}
+
+        if output and vim.v.shell_error == 0 then
+          for line in output:gmatch("[^\r\n]+") do
+            if line ~= "" then table.insert(results, line) end
+          end
         end
-      end
 
-      if #results == 0 then
-        print("No backlinks found for " .. filename)
-        return
-      end
+        if #results == 0 then
+          vim.notify("No backlinks found for " .. filename, vim.log.levels.INFO)
+          return
+        end
 
-      require("telescope.pickers").new(telescope_config("Backlinks", nil), {
-        finder = require("telescope.finders").new_table({
-          results = results,
-          entry_maker = function(entry)
-            local file_path, lnum, text = entry:match("^([^:]+):(%d+):(.*)$")
-            if not file_path then return end
-            return {
-              value = entry,
-              display = make_file_display(file_path, get_workspace()),
-              ordinal = file_path,
-              filename = file_path,
-              lnum = tonumber(lnum),
-              text = text,
-            }
-          end,
-        }),
-        sorter = require("telescope.config").values.generic_sorter({}),
-      }):find()
+        require("telescope.pickers").new(telescope_config("Backlinks", nil), {
+          finder = require("telescope.finders").new_table({
+            results = results,
+            entry_maker = function(entry)
+              local file_path, lnum, text = entry:match("^([^:]+):(%d+):(.*)$")
+              if not file_path then return end
+              return {
+                value = entry,
+                display = make_file_display(file_path, workspace_path),
+                ordinal = file_path,
+                filename = file_path,
+                lnum = tonumber(lnum),
+                text = text,
+              }
+            end,
+          }),
+          sorter = require("telescope.config").values.generic_sorter({}),
+        }):find()
+      end)
     end
 
     function obsidian_config.show_links()
       local current_file = vim.api.nvim_buf_get_name(0)
       local cmd = string.format("rg --with-filename --line-number '\\[\\[.*\\]\\]' '%s'", current_file)
-      local output = vim.fn.system(cmd)
+      local output = safe_file_operation(function() return vim.fn.system(cmd) end, "Failed to search links")
       local results = {}
 
-      if vim.v.shell_error == 0 then
+      if output and vim.v.shell_error == 0 then
         for line in output:gmatch("[^\r\n]+") do
           if line ~= "" then table.insert(results, line) end
         end
       end
 
       if #results == 0 then
-        print("No links found in current file")
+        vim.notify("No links found in current file", vim.log.levels.INFO)
         return
       end
 
@@ -389,7 +514,7 @@ return {
       local function show_tags()
         picker("Find Tags", get_tags(), function(tag)
           picker("Files with tag: " .. tag, get_files_with_tag(tag), function(file)
-            vim.cmd("edit " .. file)
+            vim.cmd("edit " .. vim.fn.fnameescape(file))
           end, true, function(prompt_bufnr, map)
             local back_to_tags = function()
               require("telescope.actions").close(prompt_bufnr)
@@ -411,10 +536,18 @@ return {
         end
       end
 
+      if #available == 0 then
+        vim.notify("No other workspaces available", vim.log.levels.INFO)
+        return
+      end
+
       picker("Switch Workspace", available, function(ws)
         vim.g.obsidian_current_workspace = ws
-        tag_cache, cache_timestamp = {}, 0
-        print("Switched to " .. ws .. " workspace - tag cache cleared")
+        tag_cache = {}
+        cache_timestamp = 0
+        file_cache = {}
+        file_cache_timestamp = 0
+        vim.notify("Switched to " .. ws .. " workspace", vim.log.levels.INFO)
       end, false)
     end
 

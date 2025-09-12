@@ -1,10 +1,15 @@
 return {
   "catppuccin/nvim",
   lazy = false,
-  priority = 150,
+  priority = 1000,
   name = "catppuccin",
   commit = "94f6e8a06b6bb7b8e5529cf9f93adb4654534241",
   opts = {
+    flavour = "mocha",
+    compile_path = vim.fn.stdpath("cache") .. "/catppuccin",
+    no_italic = false,
+    no_bold = false,
+    no_underline = false,
     color_overrides = {
       mocha = {
         rosewater = "#EA6962",
@@ -35,9 +40,19 @@ return {
         crust = "#151819",
       },
     },
-    styles = {},
     transparent_background = true,
     show_end_of_buffer = false,
+    integrations = {
+      cmp = true,
+      gitsigns = true,
+      nvimtree = true,
+      treesitter = true,
+      telescope = {
+        enabled = true,
+      },
+      lsp_trouble = false,
+      which_key = true,
+    },
     custom_highlights = function(colors)
       return {
         CursorLineNr = { fg = colors.mauve },
@@ -54,11 +69,11 @@ return {
   },
   config = function(_, opts)
     require("catppuccin").setup(opts)
-    vim.cmd([[
-      set guicursor=n-v-c:block-CursorInsert,i-ci-ve:hor20-CursorInsert,r-cr:hor20-CursorInsert,o:hor50-CursorInsert
-      highlight CursorInsert guifg=NONE guibg=#9E8069
-      highlight Cursor guifg=NONE guibg=#9E8069
-      colorscheme catppuccin
-    ]])
+    vim.cmd.colorscheme("catppuccin")
+
+    vim.api.nvim_set_hl(0, "CursorInsert", { fg = "NONE", bg = "#9E8069" })
+    vim.api.nvim_set_hl(0, "Cursor", { fg = "NONE", bg = "#9E8069" })
+    vim.opt.guicursor =
+    "n-v-c:block-CursorInsert,i-ci-ve:hor20-CursorInsert,r-cr:hor20-CursorInsert,o:hor50-CursorInsert"
   end,
 }

@@ -12,35 +12,37 @@ vim.keymap.set("n", "<leader>L", "<cmd>Lazy update<CR>", { desc = "Lazy: Update 
 require("lazy").setup("plugins", {
   defaults = {
     lazy = true,
-    colorscheme = { "catppuccin" },
+    version = false,
   },
   install = {
-    missing = true
+    missing = true,
+    colorscheme = { "catppuccin" },
   },
   performance = {
     cache = {
-      enabled = true
+      enabled = true,
     },
     reset_packpath = true,
     rtp = {
       reset = true,
+      paths = {},
       disabled_plugins = {
-        "gzip", "matchit", "matchparen",
-        "netrwPlugin", "tarPlugin", "tohtml",
-        "tutor", "zipPlugin"
+        "gzip", "matchit", "matchparen", "netrwPlugin",
+        "tarPlugin", "tohtml", "tutor", "zipPlugin",
+        "rplugin", "syntax", "synmenu", "optwin",
+        "compiler", "bugreport", "ftplugin"
       },
     },
   },
   ui = {
-    border = "rounded"
+    border = "rounded",
+    backdrop = 60,
   },
   checker = {
-    enabled = true,
-    notify = false
+    enabled = false,
   },
   change_detection = {
-    enabled = true,
-    notify = false
+    enabled = false,
   },
   debug = false,
 })
