@@ -421,7 +421,6 @@ return {
         'fzf',
         'ui-select',
         'undo',
-        'ast_grep',
       }
 
       for _, ext in ipairs(extensions) do
