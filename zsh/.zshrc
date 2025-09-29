@@ -50,6 +50,19 @@ for key in ~/.ssh/id_rsa_*; do
     [[ -f $key ]] && ssh-add -q "$key" 2>/dev/null
 done
 
+# Functions
+nvim() {
+  local session_name=${PWD##*/}
+  session_name=${session_name//-/_}
+
+  if ! tmux has-session -t "$session_name" 2>/dev/null; then
+    tmux new-session -d -s "$session_name" -c "$PWD" 'nvim'
+  else
+    tmux new-window -t "$session_name" -c "$PWD" 'nvim'
+  fi
+  tmux attach-session -t "$session_name"
+}
+
 # Alias definitions
 alias tf='terraform'
 alias cd='z'

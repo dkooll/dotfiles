@@ -1,5 +1,6 @@
 return {
   "dkooll/tmuxer.nvim",
+  -- branch = "feat/last-session-command",
   dependencies = { "nvim-telescope/telescope.nvim" },
   cmd = { "WorkspaceOpen", "TmuxSessions" },
   config = function()
@@ -41,6 +42,6 @@ return {
         require("tmuxer").tmux_sessions()
       end,
       desc = "Tmuxer: Switch Tmux Session"
-    },
-  },
+    }
+  }
 }
