@@ -48,19 +48,23 @@ create_autocmd("ColorScheme", "*", function()
   api.nvim_set_hl(0, 'CursorLine', { bg = 'NONE' })
 end)
 
--- Configure fold column colors using Lua API
-local function setup_fold_colors()
+-- Configure fold column colors and transparent backgrounds
+local function setup_colorscheme_overrides()
   api.nvim_set_hl(0, 'FoldColumn', { fg = '#9E8069', bg = 'NONE' })
   api.nvim_set_hl(0, 'Folded', { fg = '#9E8069', bg = 'NONE' })
+  -- Transparent backgrounds for floating windows with thin borders
+  api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+  api.nvim_set_hl(0, 'FloatBorder', { fg = '#303030', bg = 'NONE' })
+  -- Mason
+  api.nvim_set_hl(0, 'MasonNormal', { bg = 'NONE' })
+  api.nvim_set_hl(0, 'MasonHeader', { bg = 'NONE' })
+  api.nvim_set_hl(0, 'MasonHeaderSecondary', { bg = 'NONE' })
+  api.nvim_set_hl(0, 'MasonBorder', { fg = '#303030', bg = 'NONE' })
+  -- Lazy
+  api.nvim_set_hl(0, 'LazyNormal', { bg = 'NONE' })
+  api.nvim_set_hl(0, 'LazyBorder', { fg = '#303030', bg = 'NONE' })
 end
 
-create_autocmd("ColorScheme", "*", setup_fold_colors)
+create_autocmd("ColorScheme", "*", setup_colorscheme_overrides)
 -- Run immediately in case colorscheme is already loaded
-setup_fold_colors()
-
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "*.tf", "*.tfvars", "*.tfstate" },
-  callback = function()
-    vim.bo.filetype = "terraform"
-  end,
-})
+setup_colorscheme_overrides()

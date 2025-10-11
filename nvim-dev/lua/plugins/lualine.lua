@@ -17,9 +17,9 @@ return {
         tabline = { "alpha" },
       },
       refresh = { -- Optimize refresh settings
-        statusline = 1000,
-        tabline = 1000,
-        winbar = 1000,
+        statusline = 2000,
+        tabline = 2000,
+        winbar = 2000,
       }
     },
     sections = {
@@ -51,10 +51,20 @@ return {
         },
         {
           function()
-            local lazy = require("lazy.status")
-            return lazy.has_updates() and lazy.updates() or ""
+            -- Cache lazy updates to avoid frequent require() calls
+            local current_time = vim.fn.reltimefloat(vim.fn.reltime())
+            if not vim.g.lazy_updates_cache or not vim.g.lazy_updates_time or (current_time - vim.g.lazy_updates_time) > 5.0 then
+              local lazy = require("lazy.status")
+              vim.g.lazy_updates_cache = lazy.has_updates() and lazy.updates() or ""
+              vim.g.lazy_updates_time = current_time
+            end
+            return vim.g.lazy_updates_cache
           end,
-          cond = function() return vim.fn.buflisted(vim.fn.bufnr()) == 1 and require("lazy.status").has_updates() end,
+          cond = function()
+            if not vim.fn.buflisted(vim.fn.bufnr()) == 1 then return false end
+            -- Use cached check to avoid require() call
+            return vim.g.lazy_updates_cache and vim.g.lazy_updates_cache ~= ""
+          end,
           color = { fg = "#BD6F3E", bg = "NONE", gui = "bold" }
         },
       },

@@ -13,7 +13,6 @@ return {
     config = function()
       local mason = require("mason")
       local mason_tool_installer = require("mason-tool-installer")
-      local lspconfig = require("lspconfig")
       local cmp_nvim_lsp = require("cmp_nvim_lsp")
       local schemastore = require("schemastore")
 
@@ -37,6 +36,8 @@ return {
           "bash-language-server",
           "vim-language-server",
           "pyright",
+          "gopls",
+          "rust-analyzer",
 
           "prettier",
           "stylua",
@@ -45,59 +46,34 @@ return {
         }
       })
 
-      lspconfig.terraformls.setup({
-        capabilities = capabilities,
-        filetypes = { "terraform", "terraform-vars" },
-        root_dir = lspconfig.util.root_pattern(".terraform", ".git"),
-        single_file_support = true,
-      })
+      -- Load LSP configurations from lsp/ folder
+      local lsp_config_path = vim.fn.stdpath("config") .. "/lsp"
+      local lsp_servers = {}
 
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        settings = {
-          Lua = {
-            runtime = {
-              version = 'LuaJIT',
-            },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            workspace = {
-              checkThirdParty = false,
-              library = vim.api.nvim_get_runtime_file("", true)
-            },
-            completion = { callSnippet = "Replace" }
-          }
-        }
-      })
+      -- Read all .lua files in lsp/ folder
+      local lsp_files = vim.fn.glob(lsp_config_path .. "/*.lua", false, true)
+      for _, file in ipairs(lsp_files) do
+        local server_name = vim.fn.fnamemodify(file, ":t:r")
+        local config = dofile(file)
 
-      lspconfig.jsonls.setup({
-        capabilities = capabilities,
-        settings = {
-          json = {
-            schemas = schemastore.json.schemas(),
-            validate = { enable = true }
-          }
-        }
-      })
+        -- Merge capabilities into config
+        config.capabilities = capabilities
 
-      lspconfig.bashls.setup({
-        capabilities = capabilities,
-      })
+        -- Special handling for jsonls to add schemastore
+        if server_name == "jsonls" then
+          config.settings = config.settings or {}
+          config.settings.json = config.settings.json or {}
+          config.settings.json.schemas = schemastore.json.schemas()
+          config.settings.json.validate = { enable = true }
+        end
 
-      lspconfig.vimls.setup({
-        capabilities = capabilities,
-      })
+        -- Configure the LSP server
+        vim.lsp.config(server_name, config)
+        table.insert(lsp_servers, server_name)
+      end
 
-      lspconfig.pyright.setup({
-        capabilities = capabilities,
-      })
-
-      pcall(function()
-        lspconfig.solidity_ls_nomicfoundation.setup({
-          capabilities = capabilities,
-        })
-      end)
+      -- Enable all loaded LSP servers
+      vim.lsp.enable(lsp_servers)
 
       vim.diagnostic.config({
         virtual_text = true,

@@ -413,6 +413,18 @@ return {
       vim.api.nvim_set_hl(0, 'TelescopePromptPrefix', { fg = "#9E8069" })
       vim.api.nvim_set_hl(0, 'TelescopeMatching', { fg = "#7DAEA3" })
       vim.api.nvim_set_hl(0, 'TelescopeBoldType', { fg = "#9E8069", bold = true })
+      -- Transparent backgrounds with colored borders
+      vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopeBorder', { fg = "#303030", bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { fg = "#303030", bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopeResultsNormal', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { fg = "#303030", bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePreviewNormal', { bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { fg = "#303030", bg = "NONE" })
+      vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { bg = "NONE" })
 
       local extensions = {
         'fzf',

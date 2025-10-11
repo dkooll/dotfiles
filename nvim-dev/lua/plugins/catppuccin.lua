@@ -1,7 +1,7 @@
 return {
   "catppuccin/nvim",
   lazy = false,
-  priority = 150,
+  priority = 1000,
   name = "catppuccin",
   opts = {
     color_overrides = {
@@ -37,6 +37,16 @@ return {
     styles = {},
     transparent_background = true,
     show_end_of_buffer = false,
+    integrations = {
+      cmp = true,
+      gitsigns = true,
+      nvimtree = true,
+      treesitter = true,
+      telescope = {
+        enabled = true,
+      },
+      lsp_trouble = false,
+    },
     custom_highlights = function(colors)
       return {
         CursorLineNr = { fg = colors.mauve },
@@ -48,6 +58,9 @@ return {
         Visual = { fg = "#9E8069" },
         FloatBorder = { fg = "#303030" },
         Comment = { fg = "#9E8069" },
+        -- Terraform LSP semantic token highlights
+        ["@lsp.type.enumMember.terraform"] = { fg = colors.peach },
+        ["@type.builtin.terraform"] = { fg = colors.yellow },
       }
     end,
   },
