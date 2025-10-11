@@ -37,7 +37,7 @@ return {
     })
 
     local function set_highlight(group, color)
-      vim.api.nvim_set_hl(0, group, { foreground = color })
+      vim.api.nvim_set_hl(0, group, { fg = color })
     end
 
     set_highlight("AlphaHeader", "#8AB5AA")

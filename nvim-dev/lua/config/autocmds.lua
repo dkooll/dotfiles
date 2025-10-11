@@ -15,18 +15,12 @@ end
 -- Don’t auto-comment new lines
 opt.formatoptions:remove({ 'c', 'r', 'o' })
 
--- Remove trailing whitespace on save (Lua-based removal)
+-- Remove trailing whitespace on save (skip binary buffers)
 create_autocmd("BufWritePre", "*", function()
-  local line_count = api.nvim_buf_line_count(0)
-  for i = 1, line_count do
-    local line = api.nvim_buf_get_lines(0, i - 1, i, false)[1]
-    if line then
-      local trimmed = line:gsub("%s+$", "")
-      if trimmed ~= line then
-        api.nvim_buf_set_lines(0, i - 1, i, false, { trimmed })
-      end
-    end
+  if vim.bo.binary then
+    return
   end
+  vim.cmd([[silent! keepjumps keeppatterns %s/\s\+$//e]])
 end)
 
 -- Go to last location when opening a file
@@ -52,19 +46,15 @@ end)
 local function setup_colorscheme_overrides()
   api.nvim_set_hl(0, 'FoldColumn', { fg = '#9E8069', bg = 'NONE' })
   api.nvim_set_hl(0, 'Folded', { fg = '#9E8069', bg = 'NONE' })
-  -- Transparent backgrounds for floating windows with thin borders
   api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
   api.nvim_set_hl(0, 'FloatBorder', { fg = '#303030', bg = 'NONE' })
-  -- Mason
   api.nvim_set_hl(0, 'MasonNormal', { bg = 'NONE' })
   api.nvim_set_hl(0, 'MasonHeader', { bg = 'NONE' })
   api.nvim_set_hl(0, 'MasonHeaderSecondary', { bg = 'NONE' })
   api.nvim_set_hl(0, 'MasonBorder', { fg = '#303030', bg = 'NONE' })
-  -- Lazy
   api.nvim_set_hl(0, 'LazyNormal', { bg = 'NONE' })
   api.nvim_set_hl(0, 'LazyBorder', { fg = '#303030', bg = 'NONE' })
 end
 
 create_autocmd("ColorScheme", "*", setup_colorscheme_overrides)
--- Run immediately in case colorscheme is already loaded
 setup_colorscheme_overrides()

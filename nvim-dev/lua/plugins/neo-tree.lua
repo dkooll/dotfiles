@@ -74,7 +74,7 @@ return {
     filesystem = {
       use_libuv_file_watcher = true,
       async_directory_scan = "auto",
-      scan_mode = "deep",
+      scan_mode = "shallow",
       filtered_items = {
         hide_dotfiles = false,
         hide_gitignored = false,
