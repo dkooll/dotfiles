@@ -61,8 +61,9 @@ return {
             return vim.g.lazy_updates_cache
           end,
           cond = function()
-            if not vim.fn.buflisted(vim.fn.bufnr()) == 1 then return false end
-            -- Use cached check to avoid require() call
+            if vim.fn.buflisted(vim.fn.bufnr()) ~= 1 then
+              return false
+            end
             return vim.g.lazy_updates_cache and vim.g.lazy_updates_cache ~= ""
           end,
           color = { fg = "#BD6F3E", bg = "NONE", gui = "bold" }
