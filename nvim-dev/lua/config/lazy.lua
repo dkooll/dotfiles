@@ -28,9 +28,7 @@ require("lazy").setup("plugins", {
       paths = {},
       disabled_plugins = {
         "gzip", "matchit", "matchparen", "netrwPlugin",
-        "tarPlugin", "tohtml", "tutor", "zipPlugin",
-        "rplugin", "syntax", "synmenu", "optwin",
-        "compiler", "bugreport", "ftplugin"
+        "tarPlugin", "tohtml", "tutor", "zipPlugin"
       },
     },
   },

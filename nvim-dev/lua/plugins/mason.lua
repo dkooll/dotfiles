@@ -106,7 +106,14 @@ return {
     keys = {
       -- LSP Actions
       { "<leader>la", vim.lsp.buf.code_action,                                                       desc = "Code actions" },
-      { "<leader>lA", vim.lsp.buf.range_code_action,                                                 mode = "v",                           desc = "Range code actions" },
+      {
+        "<leader>lA",
+        function()
+          vim.lsp.buf.code_action()
+        end,
+        mode = "v",
+        desc = "Range code actions",
+      },
       { "<leader>lf", vim.lsp.buf.format,                                                            desc = "Format code" },
       { "<leader>lr", vim.lsp.buf.rename,                                                            desc = "Rename symbol" },
       { "<leader>ls", vim.lsp.buf.signature_help,                                                    desc = "Signature help" },
