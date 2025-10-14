@@ -59,7 +59,7 @@ return {
     end
 
     local NOTES_HIGHLIGHTS =
-    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,@keyword.directive:NotesWhiteItalic,@property:NotesYamlKey,@property.yaml:NotesYamlKey,@string.yaml:NotesYamlString'
+    '@punctuation.special:NotesBrown,@markup.heading.1.markdown:NotesLightItalic,@markup.heading.2.markdown:NotesLightItalic,@markup.heading.3.markdown:NotesLightItalic,@markup.heading.4.markdown:NotesLightItalic,@markup.heading.5.markdown:NotesLightItalic,@markup.heading.6.markdown:NotesLightItalic,@markup.heading:NotesLightItalic,markdownCode:NotesWhiteItalic,@markup.raw.markdown_inline:NotesWhiteItalic,@text.literal.markdown_inline:NotesWhiteItalic,@markup.strong.markdown_inline:NotesLightItalic,markdownItalic:NotesLightItalic,markdownItalicDelimiter:NotesLightItalic,@text.emphasis:NotesLightItalic,@text.strong:NotesLightItalic,@markup.italic.markdown_inline:NotesLightItalic,@markup.bold.markdown_inline:NotesLightItalic,@markup.link.label:NotesBlue,@markup.link:NotesBlue,@markup.link.url:NotesBlue,@text.uri:NotesBlue,@text.reference:NotesBlue,@keyword.directive:NotesWhiteItalic,@property:NotesYamlKey,@property.yaml:NotesYamlKey,@string.yaml:NotesYamlString'
 
     local function is_notes_file(filename)
       return vim.bo.filetype == "markdown" and filename:match(NOTES_PATH_PATTERN)
@@ -77,6 +77,19 @@ return {
               break
             end
           end
+        end
+      end },
+      { "BufWritePost", "*.md", function()
+        local filename = vim.api.nvim_buf_get_name(0)
+        if vim.bo.filetype == "markdown" and filename:match(NOTES_PATH_PATTERN) then
+          -- Save cursor position and reload to fix highlighting
+          local view = vim.fn.winsaveview()
+          vim.defer_fn(function()
+            vim.cmd("edit")
+            vim.fn.winrestview(view)
+            -- Re-trigger BufEnter to reinitialize obsidian.nvim state
+            vim.cmd("doautocmd BufEnter")
+          end, 50)
         end
       end },
       { { "BufEnter", "BufWinEnter" }, "*", function()
@@ -563,43 +576,38 @@ return {
           action = function()
             local cfile = vim.fn.expand('<cfile>')
 
-            -- Handle wikilink with alias: [[filename|alias]] - extract just the filename
-            local filename = cfile:match('%[%[([^|%]]+)')
-            if filename then
-              cfile = filename
-            else
-              -- Strip simple wikilink brackets
-              cfile = cfile:gsub('%[%[', ''):gsub('%]%]', '')
+            -- Check for URLs first (before stripping brackets)
+            if cfile:match('^https?://') or cfile:match('%[%[https?://') then
+              local url = cfile:match('https?://[^%]%s]+') or cfile:match('^https?://.*$')
+              if url then
+                vim.fn.system('open ' .. vim.fn.shellescape(url))
+                return
+              end
             end
 
-            -- Handle URLs (http/https)
-            if cfile:match('^https?://') then
-              vim.fn.system('open ' .. vim.fn.shellescape(cfile))
-              return
-            end
+            -- Extract filename from wikilink if present
+            local filename = cfile:match('%[%[([^|%]]+)') or cfile:gsub('%[%[', ''):gsub('%]%]', '')
 
-            -- If it's an image file, open it
-            if cfile:match('%.png$') or cfile:match('%.jpg$') or cfile:match('%.jpeg$') then
-              local full_path = vim.fn.expand('%:p:h:h') .. '/attachments/' .. cfile
+            -- Handle image files - open in system viewer
+            if filename:match('%.png$') or filename:match('%.jpe?g$') then
+              local full_path = vim.fn.expand('%:p:h:h') .. '/attachments/' .. filename
               vim.fn.system('open ' .. vim.fn.shellescape(full_path))
               return
             end
 
-            -- If it's a YAML file, open it from configs directory
-            if cfile:match('%.ya?ml$') then
-              local full_path = vim.fn.expand('%:p:h:h') .. '/configs/' .. cfile
+            -- Handle YAML files from configs directory
+            if filename:match('%.ya?ml$') then
+              local full_path = vim.fn.expand('%:p:h:h') .. '/configs/' .. filename
               if vim.fn.filereadable(full_path) == 1 then
                 vim.cmd('edit ' .. vim.fn.fnameescape(full_path))
-              else
-                print("YAML file not found: " .. full_path)
+                return
               end
-              return
             end
 
-            -- For everything else, use obsidian default
-            require("obsidian").util.gf_passthrough()
+            -- For markdown files/wikilinks, let obsidian handle it
+            return require("obsidian").util.gf_passthrough()
           end,
-          opts = { noremap = false, expr = false, buffer = true },
+          opts = { noremap = false, expr = true, buffer = true },
         },
         ["<leader>ch"] = {
           action = function() return require("obsidian").util.toggle_checkbox() end,
@@ -623,29 +631,27 @@ return {
       ui = {
         enable = true,
         update_debounce = 200,
+        max_file_length = 5000,
         checkboxes = {
           [" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
           ["x"] = { char = "", hl_group = "ObsidianDone" },
           [">"] = { char = "", hl_group = "ObsidianRightArrow" },
           ["~"] = { char = "󰰱", hl_group = "ObsidianTilde" },
         },
-        external_link_icon = { char = "", hl_group = "ObsidianExtLinkIcon" },
-        reference_text = { hl_group = "ObsidianRefText" },
-        highlight_text = { hl_group = "ObsidianHighlightText" },
-        tags = { hl_group = "ObsidianTag" },
         hl_groups = {
           ObsidianTodo = { bold = true, fg = "#9E8069" },
           ObsidianDone = { bold = true, fg = "#9E8069" },
           ObsidianRightArrow = { bold = true, fg = "#9E8069" },
           ObsidianTilde = { bold = true, fg = "#9E8069" },
-          ObsidianRefText = { underline = true, fg = "#7DAEA3" },
-          ObsidianExtLinkIcon = { fg = "#9E8069" },
-          ObsidianTag = { italic = true, fg = "#9E8069" },
-          ObsidianHighlightText = { bg = "#9E8069" },
-          ObsidianBlockID = { italic = true, fg = "#9E8069" },
         },
       },
-      attachments = { img_folder = "attachments" },
+      attachments = {
+        img_folder = "attachments",
+        img_text_func = function(client, path)
+          path = client:vault_relative_path(path) or path
+          return string.format("![%s](%s)", path.name, path)
+        end,
+      },
     })
   end
 }
